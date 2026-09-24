@@ -1,0 +1,38 @@
+# 问题1：多模态特征提取环境依赖
+# Python >= 3.9
+# 安装命令: pip install -r requirements.txt
+
+# ---------- 基础科学计算 ----------
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# ---------- 可视化 ----------
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# ---------- 工具 ----------
+tqdm>=4.65.0
+openpyxl>=3.1.0
+
+# ---------- 音频处理 ----------
+librosa>=0.10.0
+soundfile>=0.12.0
+
+# ---------- 视频/图像处理 ----------
+opencv-python>=4.8.0
+Pillow>=10.0.0
+
+# ---------- 深度学习框架 (CPU版，如需GPU请去pytorch官网选CUDA版本) ----------
+--index-url https://download.pytorch.org/whl/cpu
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# ---------- NLP / Transformers ----------
+transformers>=4.35.0
+sentencepiece>=0.1.99
+protobuf>=4.24.0
+
+# ---------- 人脸检测 (纯PyTorch，无需dlib) ----------
+facenet-pytorch>=2.5.0

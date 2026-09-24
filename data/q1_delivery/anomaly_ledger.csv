@@ -1,0 +1,152 @@
+﻿sample_id,modality,anomaly_code,severity,reason_zh,action,counts_as_deletion
+-mJ2ud6oKI8_1,audio,A1_audio_digital_silence,WARN,音轨为数字静音：包络恒为 0，全程无任何音频内容。该样本的语音特征不可解读为「情感平淡」，应视为模态缺失。,保留并标注,0
+-mJ2ud6oKI8_2,audio,A1_audio_digital_silence,WARN,音轨为数字静音：包络恒为 0，全程无任何音频内容。该样本的语音特征不可解读为「情感平淡」，应视为模态缺失。,保留并标注,0
+-s9qJ7ATP7w_8,audio,A2_vad_zero_but_energy,WARN,VAD 判定有声帧为 0，但包络存在非零能量：VAD 阈值相对该样本的整体低电平偏严。特征本身有效，仅有声标记偏保守。,保留并标注,0
+-mJ2ud6oKI8_1,vision,A3_vision_face_all_fail,WARN,MTCNN 在全部帧均未检出人脸（face_ratio=0），视觉特征为零向量。**不得据此删样本**——这正是题目要求的「面部检测失败」场景。,保留并标注,0
+-ri04Z7vwnc_0,vision,A3_vision_face_all_fail,WARN,MTCNN 在全部帧均未检出人脸（face_ratio=0），视觉特征为零向量。**不得据此删样本**——这正是题目要求的「面部检测失败」场景。,保留并标注,0
+-HwX2H8Z4hY_9,vision,A4_vision_face_partial,WARN,人脸仅部分帧检出（0<face_ratio<0.5）：未检出帧由相邻有效帧插值补齐，这些帧的视觉特征不具溯源资格。,保留并标注,0
+-NFrJFQijFE_1,vision,A4_vision_face_partial,WARN,人脸仅部分帧检出（0<face_ratio<0.5）：未检出帧由相邻有效帧插值补齐，这些帧的视觉特征不具溯源资格。,保留并标注,0
+-NFrJFQijFE_2,vision,A4_vision_face_partial,WARN,人脸仅部分帧检出（0<face_ratio<0.5）：未检出帧由相邻有效帧插值补齐，这些帧的视觉特征不具溯源资格。,保留并标注,0
+-ri04Z7vwnc_2,vision,A4_vision_face_partial,WARN,人脸仅部分帧检出（0<face_ratio<0.5）：未检出帧由相邻有效帧插值补齐，这些帧的视觉特征不具溯源资格。,保留并标注,0
+-mJ2ud6oKI8_1,vision,A5_vision_energy_zero_but_valid,WARN,视觉特征能量恰为 0，但 *_valid 掩码仍有 True：**掩码语义陷阱的实证**——valid=True 仅表示槽被分配了单元，不代表该模态可用。可用性必须看 face_ratio。,保留并标注,0
+-ri04Z7vwnc_0,vision,A5_vision_energy_zero_but_valid,WARN,视觉特征能量恰为 0，但 *_valid 掩码仍有 True：**掩码语义陷阱的实证**——valid=True 仅表示槽被分配了单元，不代表该模态可用。可用性必须看 face_ratio。,保留并标注,0
+-3g5yACwYnA_13,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-3g5yACwYnA_2,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-3g5yACwYnA_9,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-571d8cVauQ_5,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-9y-fZ3swSY_4,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-AUZQgSxyPQ_2,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-HeZS2-Prhc_2,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-HwX2H8Z4hY_5,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-HwX2H8Z4hY_6,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-I_e4mIh0yE_1,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-I_e4mIh0yE_3,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-MeTTeMJBNc_13,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-MeTTeMJBNc_7,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-NFrJFQijFE_2,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-RfYyzHpjk4_11,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-RfYyzHpjk4_2,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-THoVjtIkeU_6,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-UacrmKiTn4_10,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-UuX1xuaiiE_6,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-aNfi7CP8vM_7,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-dxfTGcXJoc_1,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-dxfTGcXJoc_6,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-egA8-b7-3M_1,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-egA8-b7-3M_13,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-egA8-b7-3M_17,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-egA8-b7-3M_18,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-egA8-b7-3M_20,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-egA8-b7-3M_26,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-egA8-b7-3M_9,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-lzEya4AM_4_5,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-mJ2ud6oKI8_9,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-ri04Z7vwnc_2,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-ri04Z7vwnc_5,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-s9qJ7ATP7w_1,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-s9qJ7ATP7w_4,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-s9qJ7ATP7w_5,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-s9qJ7ATP7w_6,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-s9qJ7ATP7w_7,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-s9qJ7ATP7w_8,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-t217m2on-s_7,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-tANM6ETl_M_3,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-tPCytz4rww_10,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-tPCytz4rww_12,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-uywlfIYOS8_4,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-wny0OAz3g8_2,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-wny0OAz3g8_5,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-wny0OAz3g8_7,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-wny0OAz3g8_9,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-yRb-Jum7EQ_1,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-yRb-Jum7EQ_5,audio,A6_audio_shorter_than_video,INFO,音频容器时长短于视频且差值 >0.1s（恒为 ~0.17s，系统性）：AAC 编码器 priming/填充导致，非个别文件损坏。,保留并标注,0
+-3g5yACwYnA_13,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-3g5yACwYnA_2,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-571d8cVauQ_0,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-9y-fZ3swSY_4,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-HwX2H8Z4hY_2,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-HwX2H8Z4hY_5,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-HwX2H8Z4hY_6,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-I_e4mIh0yE_1,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-I_e4mIh0yE_3,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-MeTTeMJBNc_13,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-NFrJFQijFE_2,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-RfYyzHpjk4_11,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-RfYyzHpjk4_2,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-THoVjtIkeU_2,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-UacrmKiTn4_10,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-UuX1xuaiiE_0,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-UuX1xuaiiE_3,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-UuX1xuaiiE_6,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-aNfi7CP8vM_7,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-egA8-b7-3M_13,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-egA8-b7-3M_17,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-egA8-b7-3M_20,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-egA8-b7-3M_26,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-egA8-b7-3M_9,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-iRBcNs9oI8_3,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-iRBcNs9oI8_6,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-iRBcNs9oI8_7,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-mJ2ud6oKI8_6,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-ri04Z7vwnc_0,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-ri04Z7vwnc_2,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-ri04Z7vwnc_5,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-s9qJ7ATP7w_1,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-s9qJ7ATP7w_4,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-s9qJ7ATP7w_5,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-s9qJ7ATP7w_6,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-s9qJ7ATP7w_7,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-s9qJ7ATP7w_8,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-tANM6ETl_M_3,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-tPCytz4rww_10,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-tPCytz4rww_11,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-uywlfIYOS8_4,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-wny0OAz3g8_0,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-wny0OAz3g8_2,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-wny0OAz3g8_5,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-wny0OAz3g8_7,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-wny0OAz3g8_9,audio,A7_audio_valid_slots_lt_50,INFO,A6 的直接后果：音频覆盖不到时间轴末端，尾部若干槽无源单元，由插值补齐并置 valid=False。,保留并标注,0
+-571d8cVauQ_0,vision,A8_pts_beyond_axis,WARN,视觉末帧 PTS 越出公共时间轴（+0.033~+0.067s），被 time_to_slot 的 clip 并入末槽。已有意为之并显式计数。,保留并标注,0
+-9y-fZ3swSY_0,vision,A8_pts_beyond_axis,WARN,视觉末帧 PTS 越出公共时间轴（+0.033~+0.067s），被 time_to_slot 的 clip 并入末槽。已有意为之并显式计数。,保留并标注,0
+-UUCSKoHeMA_0,vision,A8_pts_beyond_axis,WARN,视觉末帧 PTS 越出公共时间轴（+0.033~+0.067s），被 time_to_slot 的 clip 并入末槽。已有意为之并显式计数。,保留并标注,0
+-UuX1xuaiiE_0,vision,A8_pts_beyond_axis,WARN,视觉末帧 PTS 越出公共时间轴（+0.033~+0.067s），被 time_to_slot 的 clip 并入末槽。已有意为之并显式计数。,保留并标注,0
+-s9qJ7ATP7w_0,vision,A8_pts_beyond_axis,WARN,视觉末帧 PTS 越出公共时间轴（+0.033~+0.067s），被 time_to_slot 的 clip 并入末槽。已有意为之并显式计数。,保留并标注,0
+(全局),all,D1_DURATION_FLOAT32,ERROR,align_multimodal.save_sample_aligned 曾把 duration/slot_edges 存为 float32，而 slot_unit_index 是用 float64 的 duration 算的。落在槽边界上的单元归属差一个槽——实测 12026 个非空槽中 39 个（0.32%）的溯源链无法从落盘文件复现，99/100 样本的 duration 被舍入改动。修复：改存 float64；复现违例由 39 降为 0，特征数组与掩码零变化。,已修复（本轮）,0
+(全局),all,D2_OFFICIAL_ID_FORMAT,ERROR,"align_multimodal.save_summary_csv 曾用 replace('_','$_$',1) 按第一个下划线切分 sample_id，而本批有 4 个 video_id 自身含下划线（-I_e4mIh0yE、-lzEya4AM_4、-tANM6ETl_M、-wMB_hJL-3o），涉及 6 条样本（其 sample_id 出现两个及以上下划线），导致 18/300 行的 official_id 写成 -I$_$e4mIh0yE_1（应为 -I_e4mIh0yE$_$1）。修复：改为按最后一个下划线切分。已修复后 0 行不符。",已修复（本轮）,0
+(全局),vision,D3_FRAMES_TABLE_KEYED_READER,ERROR,face_probe.py 的 _read_csv() 按 sample_id 建字典，被误用于读逐帧表 face_probe_frames.csv——该表每条样本 3 行，一建字典就只剩最后一行。后果：(1) 续探时内存里的逐帧证据由 297 行缩成 100 行，当轮未重新探测的样本其证据会被写少；(2)『样本行已存在』的续探判据因此恒不成立，整批 100 条被无谓重探（实测耗时约 12 分钟）。修复：新增 _read_csv_rows() 供逐帧表使用，并给 run() 加收尾自检（每样本帧数必须等于抽样帧数，不齐则 error 报出）。该缺陷只影响探测工具与证据完整性，不改动任何特征文件。,已修复（本轮）,0
+-MeTTeMJBNc_13,audio,LONG_PAUSE,INFO,有声帧占比 <0.1：含明显停顿结构。这是题目要求的「停顿明显」一类样本，**保留而非剔除**。,保留并标注,0
+-THoVjtIkeU_2,audio,LONG_PAUSE,INFO,有声帧占比 <0.1：含明显停顿结构。这是题目要求的「停顿明显」一类样本，**保留而非剔除**。,保留并标注,0
+-aqamKhZ1Ec_0,audio,LONG_PAUSE,INFO,有声帧占比 <0.1：含明显停顿结构。这是题目要求的「停顿明显」一类样本，**保留而非剔除**。,保留并标注,0
+-mJ2ud6oKI8_1,audio,LONG_PAUSE,INFO,有声帧占比 <0.1：含明显停顿结构。这是题目要求的「停顿明显」一类样本，**保留而非剔除**。,保留并标注,0
+-mJ2ud6oKI8_2,audio,LONG_PAUSE,INFO,有声帧占比 <0.1：含明显停顿结构。这是题目要求的「停顿明显」一类样本，**保留而非剔除**。,保留并标注,0
+-s9qJ7ATP7w_8,audio,LONG_PAUSE,INFO,有声帧占比 <0.1：含明显停顿结构。这是题目要求的「停顿明显」一类样本，**保留而非剔除**。,保留并标注,0
+(全局),vision,R1_FILL_MISSING_FACES_INPLACE,INFO,unaligned_vision._fill_missing_faces 在「只有 1 帧有效」分支里对入参做原地赋值（features[:] = features[valid[0]]）。当前调用点传入的是新建数组，故无害；但该函数有副作用，若将来复用需注意。,已识别风险，本批结果不受影响,0
+(全局),text,R2_POOLER_RANDOM_INIT,INFO,管线用 AutoModel 加载 roberta-base，其 pooler.dense.* 因权重文件不含该张量而随机初始化。管线只取 last_hidden_state，从不使用 pooler，故对特征无影响（V9 的掩码补全已独立证明权重确为预训练成果）。,已解释，不影响特征,0
+-3g5yACwYnA_2,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-571d8cVauQ_0,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-571d8cVauQ_5,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-9y-fZ3swSY_4,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-I_e4mIh0yE_1,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-I_e4mIh0yE_3,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-MeTTeMJBNc_13,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-NFrJFQijFE_2,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-RfYyzHpjk4_11,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-UuX1xuaiiE_6,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-aNfi7CP8vM_7,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-egA8-b7-3M_17,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-egA8-b7-3M_20,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-iRBcNs9oI8_3,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-iRBcNs9oI8_6,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-iRBcNs9oI8_7,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-iRBcNs9oI8_8,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-mJ2ud6oKI8_9,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-ri04Z7vwnc_5,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-s9qJ7ATP7w_1,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-s9qJ7ATP7w_4,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-s9qJ7ATP7w_5,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-s9qJ7ATP7w_6,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-t217m2on-s_7,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-wny0OAz3g8_2,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-wny0OAz3g8_5,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-wny0OAz3g8_9,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
+-yRb-Jum7EQ_1,vision,VFR_frame_gap,INFO,帧间隔 >0.1s（最大 0.1667s，即丢失一帧）：源视频为变帧率。视觉 pts 用解码器实测值，故不影响对齐正确性。,保留并标注,0
