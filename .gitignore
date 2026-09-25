@@ -41,6 +41,11 @@ dist/
 # ---------- 5. 临时与一次性产物 ----------
 # 小批量验证的临时产物（README 标明「可删」）
 data/_tmp_textcheck/
+# 冒烟测试输出（1~2 条样本的连通性验证，可随时由正式命令重跑）
+data/q2_smoke/
+data/q3_smoke/
+# 一次性脚手架脚本的临时输出
+temp_output.txt
 # 一次性恢复脚本的临时输出
 *.tmp
 *.bak

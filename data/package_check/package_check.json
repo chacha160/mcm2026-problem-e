@@ -1,0 +1,90 @@
+{
+  "limit_bytes": 52428800,
+  "deliverable_bytes": 37504963,
+  "deliverable_ratio": 0.71535,
+  "remaining_bytes": 14923837,
+  "groups": [
+    {
+      "group": "q1_delivery",
+      "path": "data\\q1_delivery",
+      "exists": 1,
+      "n_files": 27,
+      "bytes": 16086777
+    },
+    {
+      "group": "q2",
+      "path": "data\\q2",
+      "exists": 1,
+      "n_files": 13,
+      "bytes": 11137035
+    },
+    {
+      "group": "q3",
+      "path": "data\\q3",
+      "exists": 1,
+      "n_files": 17,
+      "bytes": 10281151
+    }
+  ],
+  "code_bytes": 1112565,
+  "identity_hits": [],
+  "interface_check": {
+    "expected_fields": [
+      "text_bert",
+      "audio",
+      "vision"
+    ],
+    "attachment2_train": {
+      "text_bert": [
+        3,
+        50
+      ],
+      "audio": [
+        50,
+        74
+      ],
+      "vision": [
+        50,
+        35
+      ],
+      "has_768_text": true
+    },
+    "attachment3": {
+      "text_bert": [
+        3,
+        50
+      ],
+      "audio": [
+        50,
+        74
+      ],
+      "vision": [
+        50,
+        35
+      ],
+      "has_768_text": false
+    },
+    "attachment4": {
+      "text_bert": [
+        3,
+        50
+      ],
+      "audio": [
+        50,
+        74
+      ],
+      "vision": [
+        50,
+        35
+      ],
+      "has_768_text": true
+    },
+    "interface_consistent": true,
+    "note": "问题二的模型输入统一为 text_bert(3,50) + audio(50,74) + vision(50,35)，训练（附件2）、推理（附件3）、问题三（附件4）三处形状完全一致；附件3 不提供 768 维 text，故 768 维文本分支**不进入主模型**，仅作为附件2/4 上的消融对照。"
+  },
+  "verdict": {
+    "size_ok": true,
+    "identity_ok": true,
+    "interface_ok": true
+  }
+}

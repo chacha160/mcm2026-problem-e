@@ -1,0 +1,1481 @@
+{
+  "attachment2": {
+    "train": {
+      "n": 3395,
+      "valid_len": {
+        "min": 3,
+        "median": 22,
+        "max": 50
+      },
+      "modality_available_ratio": {
+        "text": 1.0,
+        "audio": 1.0,
+        "vision": 0.9676
+      },
+      "samples_with_missing": {
+        "text": 0,
+        "audio": 4,
+        "vision": 421
+      },
+      "missing_slot_total": {
+        "text": 0,
+        "audio": 65,
+        "vision": 4249
+      }
+    },
+    "valid": {
+      "n": 728,
+      "valid_len": {
+        "min": 3,
+        "median": 23,
+        "max": 50
+      },
+      "modality_available_ratio": {
+        "text": 1.0,
+        "audio": 1.0,
+        "vision": 0.9794
+      },
+      "samples_with_missing": {
+        "text": 0,
+        "audio": 1,
+        "vision": 85
+      },
+      "missing_slot_total": {
+        "text": 0,
+        "audio": 46,
+        "vision": 980
+      }
+    },
+    "test": {
+      "n": 727,
+      "valid_len": {
+        "min": 4,
+        "median": 23,
+        "max": 50
+      },
+      "modality_available_ratio": {
+        "text": 1.0,
+        "audio": 1.0,
+        "vision": 0.9615
+      },
+      "samples_with_missing": {
+        "text": 0,
+        "audio": 0,
+        "vision": 99
+      },
+      "missing_slot_total": {
+        "text": 0,
+        "audio": 0,
+        "vision": 1024
+      }
+    }
+  },
+  "attachment3": [
+    {
+      "key": "attachment3_01",
+      "L": 8,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "missing_runs": {
+        "audio": [],
+        "vision": []
+      }
+    },
+    {
+      "key": "attachment3_02",
+      "L": 30,
+      "missing_slots": {
+        "text": 0,
+        "audio": 5,
+        "vision": 5
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            2,
+            3
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        "vision": [
+          [
+            2,
+            3
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            9,
+            11
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_03",
+      "L": 34,
+      "missing_slots": {
+        "text": 0,
+        "audio": 5,
+        "vision": 9
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            6,
+            7
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            31,
+            32
+          ]
+        ],
+        "vision": [
+          [
+            6,
+            7
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            20,
+            22
+          ],
+          [
+            23,
+            27
+          ],
+          [
+            31,
+            32
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_04",
+      "L": 33,
+      "missing_slots": {
+        "text": 0,
+        "audio": 2,
+        "vision": 2
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            6,
+            7
+          ],
+          [
+            8,
+            9
+          ]
+        ],
+        "vision": [
+          [
+            6,
+            7
+          ],
+          [
+            8,
+            9
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_05",
+      "L": 14,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "missing_runs": {
+        "audio": [],
+        "vision": []
+      }
+    },
+    {
+      "key": "attachment3_06",
+      "L": 27,
+      "missing_slots": {
+        "text": 0,
+        "audio": 3,
+        "vision": 3
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            14,
+            15
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            25,
+            26
+          ]
+        ],
+        "vision": [
+          [
+            14,
+            15
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            25,
+            26
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_07",
+      "L": 23,
+      "missing_slots": {
+        "text": 0,
+        "audio": 3,
+        "vision": 3
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            10,
+            11
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            14,
+            15
+          ]
+        ],
+        "vision": [
+          [
+            10,
+            11
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            14,
+            15
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_08",
+      "L": 17,
+      "missing_slots": {
+        "text": 0,
+        "audio": 2,
+        "vision": 2
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            9,
+            11
+          ]
+        ],
+        "vision": [
+          [
+            9,
+            11
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_09",
+      "L": 16,
+      "missing_slots": {
+        "text": 0,
+        "audio": 2,
+        "vision": 2
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            3,
+            5
+          ]
+        ],
+        "vision": [
+          [
+            3,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_10",
+      "L": 8,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "missing_runs": {
+        "audio": [],
+        "vision": []
+      }
+    },
+    {
+      "key": "attachment3_11",
+      "L": 16,
+      "missing_slots": {
+        "text": 0,
+        "audio": 4,
+        "vision": 4
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            4,
+            6
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            14,
+            15
+          ]
+        ],
+        "vision": [
+          [
+            4,
+            6
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            14,
+            15
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_12",
+      "L": 15,
+      "missing_slots": {
+        "text": 0,
+        "audio": 2,
+        "vision": 2
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            5,
+            6
+          ],
+          [
+            13,
+            14
+          ]
+        ],
+        "vision": [
+          [
+            5,
+            6
+          ],
+          [
+            13,
+            14
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_13",
+      "L": 21,
+      "missing_slots": {
+        "text": 0,
+        "audio": 2,
+        "vision": 2
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            5,
+            6
+          ],
+          [
+            14,
+            15
+          ]
+        ],
+        "vision": [
+          [
+            5,
+            6
+          ],
+          [
+            14,
+            15
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_14",
+      "L": 25,
+      "missing_slots": {
+        "text": 0,
+        "audio": 2,
+        "vision": 2
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            21,
+            23
+          ]
+        ],
+        "vision": [
+          [
+            21,
+            23
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_15",
+      "L": 29,
+      "missing_slots": {
+        "text": 0,
+        "audio": 3,
+        "vision": 3
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            2,
+            3
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            18,
+            19
+          ]
+        ],
+        "vision": [
+          [
+            2,
+            3
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            18,
+            19
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_16",
+      "L": 36,
+      "missing_slots": {
+        "text": 0,
+        "audio": 4,
+        "vision": 4
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            5,
+            6
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            25,
+            26
+          ]
+        ],
+        "vision": [
+          [
+            5,
+            6
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            25,
+            26
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_17",
+      "L": 24,
+      "missing_slots": {
+        "text": 0,
+        "audio": 8,
+        "vision": 8
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            1,
+            4
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            21,
+            22
+          ]
+        ],
+        "vision": [
+          [
+            1,
+            4
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            21,
+            22
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_18",
+      "L": 19,
+      "missing_slots": {
+        "text": 0,
+        "audio": 3,
+        "vision": 3
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            2,
+            4
+          ],
+          [
+            5,
+            6
+          ]
+        ],
+        "vision": [
+          [
+            2,
+            4
+          ],
+          [
+            5,
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_19",
+      "L": 26,
+      "missing_slots": {
+        "text": 0,
+        "audio": 7,
+        "vision": 7
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            3,
+            5
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            21,
+            22
+          ]
+        ],
+        "vision": [
+          [
+            3,
+            5
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            21,
+            22
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_20",
+      "L": 50,
+      "missing_slots": {
+        "text": 0,
+        "audio": 14,
+        "vision": 14
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            6,
+            7
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            31,
+            32
+          ],
+          [
+            38,
+            42
+          ],
+          [
+            43,
+            45
+          ],
+          [
+            48,
+            49
+          ]
+        ],
+        "vision": [
+          [
+            6,
+            7
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            31,
+            32
+          ],
+          [
+            38,
+            42
+          ],
+          [
+            43,
+            45
+          ],
+          [
+            48,
+            49
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_21",
+      "L": 11,
+      "missing_slots": {
+        "text": 0,
+        "audio": 3,
+        "vision": 3
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            2,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            8,
+            9
+          ]
+        ],
+        "vision": [
+          [
+            2,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            8,
+            9
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_22",
+      "L": 19,
+      "missing_slots": {
+        "text": 0,
+        "audio": 4,
+        "vision": 4
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            7,
+            8
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            16,
+            17
+          ]
+        ],
+        "vision": [
+          [
+            7,
+            8
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            16,
+            17
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_23",
+      "L": 15,
+      "missing_slots": {
+        "text": 0,
+        "audio": 4,
+        "vision": 4
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            6,
+            7
+          ],
+          [
+            10,
+            13
+          ]
+        ],
+        "vision": [
+          [
+            6,
+            7
+          ],
+          [
+            10,
+            13
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_24",
+      "L": 10,
+      "missing_slots": {
+        "text": 0,
+        "audio": 2,
+        "vision": 2
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            1,
+            2
+          ],
+          [
+            7,
+            8
+          ]
+        ],
+        "vision": [
+          [
+            1,
+            2
+          ],
+          [
+            7,
+            8
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_25",
+      "L": 11,
+      "missing_slots": {
+        "text": 0,
+        "audio": 2,
+        "vision": 2
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            1,
+            2
+          ],
+          [
+            5,
+            6
+          ]
+        ],
+        "vision": [
+          [
+            1,
+            2
+          ],
+          [
+            5,
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_26",
+      "L": 24,
+      "missing_slots": {
+        "text": 0,
+        "audio": 6,
+        "vision": 6
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            1,
+            2
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            15,
+            17
+          ],
+          [
+            22,
+            23
+          ]
+        ],
+        "vision": [
+          [
+            1,
+            2
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            15,
+            17
+          ],
+          [
+            22,
+            23
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_27",
+      "L": 23,
+      "missing_slots": {
+        "text": 0,
+        "audio": 8,
+        "vision": 8
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            2,
+            5
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            20,
+            22
+          ]
+        ],
+        "vision": [
+          [
+            2,
+            5
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            20,
+            22
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_28",
+      "L": 35,
+      "missing_slots": {
+        "text": 0,
+        "audio": 11,
+        "vision": 11
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            6,
+            8
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            21,
+            23
+          ],
+          [
+            26,
+            28
+          ],
+          [
+            29,
+            30
+          ],
+          [
+            31,
+            32
+          ]
+        ],
+        "vision": [
+          [
+            6,
+            8
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            21,
+            23
+          ],
+          [
+            26,
+            28
+          ],
+          [
+            29,
+            30
+          ],
+          [
+            31,
+            32
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_29",
+      "L": 20,
+      "missing_slots": {
+        "text": 0,
+        "audio": 8,
+        "vision": 8
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            2,
+            3
+          ],
+          [
+            7,
+            11
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            17,
+            19
+          ]
+        ],
+        "vision": [
+          [
+            2,
+            3
+          ],
+          [
+            7,
+            11
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            17,
+            19
+          ]
+        ]
+      }
+    },
+    {
+      "key": "attachment3_30",
+      "L": 26,
+      "missing_slots": {
+        "text": 0,
+        "audio": 12,
+        "vision": 12
+      },
+      "missing_runs": {
+        "audio": [
+          [
+            1,
+            2
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            7,
+            11
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            20,
+            24
+          ]
+        ],
+        "vision": [
+          [
+            1,
+            2
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            7,
+            11
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            20,
+            24
+          ]
+        ]
+      }
+    }
+  ],
+  "attachment4": [
+    {
+      "key": "01",
+      "L": 24,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "02",
+      "L": 21,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "03",
+      "L": 35,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "04",
+      "L": 28,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "05",
+      "L": 17,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "06",
+      "L": 37,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "07",
+      "L": 50,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "08",
+      "L": 13,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "09",
+      "L": 20,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "10",
+      "L": 32,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "11",
+      "L": 16,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "12",
+      "L": 44,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "13",
+      "L": 32,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 30
+      },
+      "has_video": true
+    },
+    {
+      "key": "14",
+      "L": 37,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "15",
+      "L": 23,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "16",
+      "L": 13,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "17",
+      "L": 26,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "18",
+      "L": 50,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "19",
+      "L": 41,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    },
+    {
+      "key": "20",
+      "L": 45,
+      "missing_slots": {
+        "text": 0,
+        "audio": 0,
+        "vision": 0
+      },
+      "has_video": true
+    }
+  ]
+}

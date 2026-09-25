@@ -28,6 +28,115 @@ ATTACHMENT1_DIR = r"D:\23届建模\data\attachment1\exercise\附件1-数据集�
 LABEL_XLSX_NAME = "label-100.xlsx"
 LABEL_SHEET_NAME = "label"
 
+# ==================== 四个附件的统一入口（自动定位，兼容目录被移动/改名）====================
+# 赛题把全部素材打包为 `E题数据.zip`，解压后是一层同名嵌套目录。历史上本仓库的
+# ATTACHMENT1_DIR 指向过一个已不存在的 `data/attachment1/exercise/` 路径，导致
+# check_data.py 误报、而 q1_delivery 只能靠调用方显式传参才能工作。
+# 这里改为**运行时自动搜索**：先试若干候选路径，再对 data/ 做一次有界递归查找，
+# 找到第一个同时包含「附件2-数据集特征文件」的目录即认定为 E题数据根。
+# 这样 README 里的命令在目录被重排后仍然可用，且找不到时给出可操作的报错而不是 None。
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# 候选路径（按优先级），用 os.path.join 拼以规避反斜杠转义
+_ATT_ROOT_CANDIDATES = (
+    os.path.join(PROJECT_ROOT, "data", "attachment1", "E题数据", "E题数据"),
+    os.path.join(PROJECT_ROOT, "data", "attachment1", "E题数据"),
+    os.path.join(PROJECT_ROOT, "data", "attachment1", "exercise"),
+    os.path.join(PROJECT_ROOT, "data", "attachment1"),
+)
+
+# 认定「某目录是 E题数据 根」的判据：必须含有附件2 目录
+_ATT_ROOT_SENTINEL = "附件2-数据集特征文件"
+
+# 附件目录名（与官方发布完全一致，禁止改写，否则跨机器复现会错位）
+ATT2_DIRNAME = "附件2-数据集特征文件"
+ATT3_DIRNAME = "附件3-模态缺失特征样本"
+ATT4_DIRNAME = "附件4-可解释专项视频样本与特征文件"
+ATT1_DIRNAME = "附件1-数据集原始多模态样本"
+
+# 附件2 特征文件名（与赛题正文一致）
+ATT2_ALIGNED_PKL = "aligned_50.pkl"
+ATT2_UNALIGNED_PKL = "unaligned_50.pkl"
+ATT2_LABEL_XLSX = "label.xlsx"
+
+
+def _is_e_root(path: str) -> bool:
+    return os.path.isdir(os.path.join(path, _ATT_ROOT_SENTINEL))
+
+
+def find_e_root(start: str = None, max_depth: int = 4) -> str:
+    """定位 E题数据 根目录（含「附件2-数据集特征文件」的那一层）。
+
+    失败时抛 FileNotFoundError 并列出已尝试的候选，避免把 None 静默传给下游。
+    """
+    start = start or os.path.join(PROJECT_ROOT, "data")
+    for cand in _ATT_ROOT_CANDIDATES:
+        if _is_e_root(cand):
+            return cand
+    # 有界递归兜底：只下探 max_depth 层，跳过明显的非数据目录
+    skip = {".git", "__pycache__", ".claude", "node_modules"}
+    base_depth = start.rstrip("\\/").count(os.sep)
+    for root, dirs, _files in os.walk(start):
+        if root.count(os.sep) - base_depth >= max_depth:
+            dirs[:] = []
+            continue
+        dirs[:] = [d for d in dirs if d not in skip]
+        if _is_e_root(root):
+            return root
+    raise FileNotFoundError(
+        "未能定位 E题数据 根目录（判据：目录下存在 '附件2-数据集特征文件'）。\n"
+        "已尝试的候选路径：\n  " + "\n  ".join(_ATT_ROOT_CANDIDATES) +
+        f"\n请在 {os.path.abspath(start)} 下确认附件已解压，"
+        "或设置环境变量 E_DATA_ROOT 指向正确目录。"
+    )
+
+
+def e_root() -> str:
+    """带环境变量覆盖的 E题数据 根目录（结果缓存）。"""
+    env = os.environ.get("E_DATA_ROOT")
+    if env and _is_e_root(env):
+        return env
+    global _E_ROOT_CACHE
+    try:
+        return _E_ROOT_CACHE
+    except NameError:
+        pass
+    _E_ROOT_CACHE = find_e_root()
+    return _E_ROOT_CACHE
+
+
+def attachment_dir(kind: str) -> str:
+    """返回附件目录。kind ∈ {'1','2','3','4'}；附件4 存在一层同名嵌套，已做展平。"""
+    root = e_root()
+    name = {"1": ATT1_DIRNAME, "2": ATT2_DIRNAME, "3": ATT3_DIRNAME, "4": ATT4_DIRNAME}[kind]
+    p = os.path.join(root, name)
+    if not os.path.isdir(p):
+        raise FileNotFoundError(f"附件{kind} 目录不存在：{p}")
+    # 附件3/附件4 解压后多一层同名目录，展平到真正含数据的那一层
+    inner = os.path.join(p, name)
+    return inner if os.path.isdir(inner) else p
+
+
+def attachment1_root() -> str:
+    """附件1 下真正存放 label-100.xlsx 与 100 个 video_id 子目录的那一层。"""
+    p = attachment_dir("1")
+    for cand in (p, *[os.path.join(p, d) for d in sorted(os.listdir(p))
+                      if os.path.isdir(os.path.join(p, d))]):
+        if os.path.isfile(os.path.join(cand, LABEL_XLSX_NAME)):
+            return cand
+    raise FileNotFoundError(f"在 {p} 下未找到 {LABEL_XLSX_NAME}")
+
+
+# 把 ATTACHMENT1_DIR 指向**真实存在**的目录，使 check_data.py / utils.py /
+# unaligned_common.py 等既有模块无需修改即可正常工作；定位失败时保留原字面量，
+# 让这些模块按自己的方式报错（不影响 Q2/Q3，它们不依赖附件1）。
+try:
+    ATTACHMENT1_DIR = attachment1_root()
+except Exception as _exc:  # noqa: BLE001
+    ATTACHMENT1_DIR = os.path.join(PROJECT_ROOT, "data", "attachment1", ATT1_DIRNAME)
+    _ATTACHMENT1_LOOKUP_ERROR = str(_exc)
+
 # ==================== 遗留常量（已无任何代码使用，勿据此判断路径有效性）====================
 # 下面三条属于**已删除的上一版流水线**（extractors/ + main.py + alignment.py + report.py）：
 #   · data/output_features/ 是空目录（0 文件），feature_summary.csv 从未由当前流水线写出；

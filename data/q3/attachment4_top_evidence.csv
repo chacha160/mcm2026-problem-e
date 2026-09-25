@@ -1,0 +1,218 @@
+﻿sample,rank,scope,pred_polarity,pred_intensity,modality,slot,attention,is_missing_slot,time_start_sec,time_end_sec,text_fragment,keyframe_ref
+01,1,global_topk,Positive,0.384812,text,11,0.133845,False,4.062,4.593,is essential to,
+01,2,global_topk,Positive,0.384812,text,22,0.10926,False,7.454,8.162,mileage requirements,
+01,3,global_topk,Positive,0.384812,text,15,0.079261,False,5.302,5.479,the new belt,
+01,4,global_topk,Positive,0.384812,text,17,0.075861,False,5.656,6.214,belt performs to,
+01,5,global_topk,Positive,0.384812,text,10,0.075784,False,3.885,4.062,belt is essential,
+01,6,modality_topk,Positive,0.384812,audio,6,0.000482,False,2.394,2.926,when replacing the,
+01,7,modality_topk,Positive,0.384812,audio,17,0.000475,False,5.656,6.214,belt performs to,
+01,8,modality_topk,Positive,0.384812,audio,12,0.000473,False,4.062,4.593,essential to ensuring,
+01,9,modality_topk,Positive,0.384812,vision,20,0.007176,False,6.745,6.922,its mileage requirements,01@6.834s
+01,10,modality_topk,Positive,0.384812,vision,21,0.004889,False,6.922,7.454,mileage requirements,01@7.188s
+01,11,modality_topk,Positive,0.384812,vision,18,0.004043,False,6.214,6.568,performs to its,01@6.391s
+02,12,global_topk,Positive,0.590874,text,12,0.479229,False,1.827,1.936,happiness - not,
+02,13,global_topk,Positive,0.590874,text,18,0.062939,False,2.265,2.484,other’s misery.,
+02,14,global_topk,Positive,0.590874,text,10,0.06174,False,1.279,1.498,other’s happiness -,
+02,15,global_topk,Positive,0.590874,text,15,0.058906,False,2.046,2.155,by each other’s,
+02,16,global_topk,Positive,0.590874,text,7,0.057824,False,1.06,1.17,each other’s happiness,
+02,17,modality_topk,Positive,0.590874,audio,12,0.000414,False,1.827,1.936,happiness - not,
+02,18,modality_topk,Positive,0.590874,audio,15,0.000408,False,2.046,2.155,by each other’s,
+02,19,modality_topk,Positive,0.590874,audio,13,0.0004,False,1.936,2.046,- not by,
+02,20,modality_topk,Positive,0.590874,vision,15,0.000543,False,2.046,2.155,by each other’s,02@2.101s
+02,21,modality_topk,Positive,0.590874,vision,3,0.000532,False,0.622,0.732,want to live,02@0.677s
+02,22,modality_topk,Positive,0.590874,vision,12,0.000521,False,1.827,1.936,happiness - not,02@1.882s
+03,23,global_topk,Negative,0.524323,text,20,0.341383,False,5.013,5.393,take rental income,
+03,24,global_topk,Negative,0.524323,text,14,0.150835,False,3.643,4.253,is just Bankwest,
+03,25,global_topk,Negative,0.524323,text,30,0.119231,False,8.323,8.513,take rental yield,
+03,26,global_topk,Negative,0.524323,text,13,0.082121,False,3.453,3.643,think is just,
+03,27,global_topk,Negative,0.524323,text,12,0.068904,False,3.123,3.453,I think is,
+03,28,modality_topk,Negative,0.524323,audio,20,0.000188,False,5.013,5.393,take rental income,
+03,29,modality_topk,Negative,0.524323,audio,18,0.000185,False,4.823,5.013,who don't take,
+03,30,modality_topk,Negative,0.524323,audio,12,0.000184,False,3.123,3.453,I think is,
+03,31,modality_topk,Negative,0.524323,vision,26,0.00029,False,7.373,7.563,"into account, they",03@7.468s
+03,32,modality_topk,Negative,0.524323,vision,24,0.00025,False,6.343,6.993,"income into account,",03@6.668s
+03,33,modality_topk,Negative,0.524323,vision,33,0.000242,False,8.893,9.572,into account.,03@9.233s
+04,34,global_topk,Positive,0.699109,text,10,0.182239,False,1.851,3.062,"exercise, should I",
+04,35,global_topk,Positive,0.699109,text,25,0.121488,False,5.596,6.72,goodbye?] Absolutely not.,
+04,36,global_topk,Positive,0.699109,text,24,0.101983,False,5.351,5.596,goodbye?] Absolutely not.,
+04,37,global_topk,Positive,0.699109,text,13,0.085537,False,3.525,3.647,I kiss my,
+04,38,global_topk,Positive,0.699109,text,20,0.076515,False,4.731,4.976,"cheering ""GO BLUE""",
+04,39,modality_topk,Positive,0.699109,audio,20,0.000389,False,4.731,4.976,"cheering ""GO BLUE""",
+04,40,modality_topk,Positive,0.699109,audio,26,0.000377,False,6.72,6.842,Absolutely not.,
+04,41,modality_topk,Positive,0.699109,audio,15,0.000377,False,3.87,3.993,my chances of,
+04,42,modality_topk,Positive,0.699109,vision,7,0.001734,False,1.376,1.498,"the team exercise,",04@1.437s
+04,43,modality_topk,Positive,0.699109,vision,6,0.001472,False,1.053,1.376,at the team,04@1.214s
+04,44,modality_topk,Positive,0.699109,vision,10,0.001329,False,1.851,3.062,"exercise, should I",04@2.456s
+05,45,global_topk,Positive,0.391144,text,11,0.168269,False,4.064,4.269,marketer for Red,
+05,46,global_topk,Positive,0.391144,text,3,0.166045,False,1.458,1.934,my name is,
+05,47,global_topk,Positive,0.391144,text,1,0.138738,False,1.252,1.458,"Hi, my",
+05,48,global_topk,Positive,0.391144,text,5,0.134737,False,2.345,2.55,"is Chloe, video",
+05,49,global_topk,Positive,0.391144,text,12,0.091308,False,4.269,4.475,for Red Wagon,
+05,50,modality_topk,Positive,0.391144,audio,15,0.000904,False,4.886,5.502,Wagon Marketing.,
+05,51,modality_topk,Positive,0.391144,audio,10,0.000893,False,3.447,4.064,video marketer for,
+05,52,modality_topk,Positive,0.391144,audio,12,0.00089,False,4.269,4.475,for Red Wagon,
+05,53,modality_topk,Positive,0.391144,vision,4,0.001133,False,1.934,2.345,"name is Chloe,",05@2.139s
+05,54,modality_topk,Positive,0.391144,vision,3,0.00111,False,1.458,1.934,my name is,05@1.696s
+05,55,modality_topk,Positive,0.391144,vision,15,0.001086,False,4.886,5.502,Wagon Marketing.,05@5.194s
+06,56,global_topk,Positive,1.127617,text,33,0.161272,False,6.953,7.343,movie solely for,
+06,57,global_topk,Positive,1.127617,text,14,0.147362,False,2.482,2.612,just like to,
+06,58,global_topk,Positive,1.127617,text,6,0.120696,False,1.182,1.312,fan of dancing,
+06,59,global_topk,Positive,1.127617,text,13,0.108437,False,2.482,2.612,"sense, just like",
+06,60,global_topk,Positive,1.127617,text,26,0.081533,False,6.043,6.173,you might want,
+06,61,modality_topk,Positive,1.127617,audio,20,0.000105,False,4.242,4.632,"dance, see impressive",
+06,62,modality_topk,Positive,1.127617,audio,28,9.5e-05,False,6.303,6.433,want to check,
+06,63,modality_topk,Positive,1.127617,audio,12,9.4e-05,False,2.222,2.482,"that sense, just",
+06,64,modality_topk,Positive,1.127617,vision,35,0.000161,False,7.473,7.603,for that,06@7.537s
+06,65,modality_topk,Positive,1.127617,vision,34,0.000121,False,7.343,7.473,solely for that,06@7.408s
+06,66,modality_topk,Positive,1.127617,vision,32,0.000105,False,6.693,6.953,this movie solely,06@6.823s
+07,67,global_topk,Positive,0.532288,text,22,0.068877,False,7.479,8.927,"hobby, the future",
+07,68,global_topk,Positive,0.532288,text,15,0.059565,False,5.527,5.996,“enthusiastically discussed the,
+07,69,global_topk,Positive,0.532288,text,20,0.047622,False,6.602,7.4,"growing the hobby,",
+07,70,global_topk,Positive,0.532288,text,37,0.045611,False,15.756,15.835,leading organizations involved,
+07,71,global_topk,Positive,0.532288,text,14,0.044794,False,5.289,5.527,attendees “enthusiastically discussed,
+07,72,modality_topk,Positive,0.532288,audio,6,0.00038,False,1.574,1.733,Michael Baadke reports,
+07,73,modality_topk,Positive,0.532288,audio,27,0.000379,False,9.403,10.642,"shows, and dealers",
+07,74,modality_topk,Positive,0.532288,audio,48,0.000368,False,20.943,21.023,make it succeed,
+07,75,modality_topk,Positive,0.532288,vision,44,0.000875,False,18.728,18.886,can work together,07@18.807s
+07,76,modality_topk,Positive,0.532288,vision,38,0.000813,False,15.835,15.914,organizations involved in,07@15.875s
+07,77,modality_topk,Positive,0.532288,vision,42,0.000766,False,18.171,18.648,stamp hobby can,07@18.41s
+08,78,global_topk,Positive,0.560181,text,5,0.229159,False,1.451,1.905,"us to tonight,",
+08,79,global_topk,Positive,0.560181,text,8,0.217962,False,2.132,3.04,the Universal Design,
+08,80,global_topk,Positive,0.560181,text,11,0.160381,False,3.721,4.402,Grand Challenge,
+08,81,global_topk,Positive,0.560181,text,9,0.109179,False,3.04,3.494,Universal Design Grand,
+08,82,global_topk,Positive,0.560181,text,3,0.08201,False,0.997,1.224,That brings us,
+08,83,modality_topk,Positive,0.560181,audio,4,0.002307,False,1.224,1.451,brings us to,
+08,84,modality_topk,Positive,0.560181,audio,6,0.002304,False,1.451,1.905,"to tonight, the",
+08,85,modality_topk,Positive,0.560181,audio,3,0.002283,False,0.997,1.224,That brings us,
+08,86,modality_topk,Positive,0.560181,vision,10,0.006453,False,3.494,3.721,Design Grand Challenge,08@3.608s
+08,87,modality_topk,Positive,0.560181,vision,9,0.005567,False,3.04,3.494,Universal Design Grand,08@3.267s
+08,88,modality_topk,Positive,0.560181,vision,11,0.005292,False,3.721,4.402,Grand Challenge,08@4.062s
+09,89,global_topk,Negative,1.991874,text,7,0.256726,False,1.133,1.219,not like this,
+09,90,global_topk,Negative,1.991874,text,16,0.244029,False,4.499,4.586,not recommend it,
+09,91,global_topk,Negative,1.991874,text,15,0.138824,False,4.499,4.586,not recommend it,
+09,92,global_topk,Negative,1.991874,text,17,0.118215,False,4.586,4.846,not recommend it,
+09,93,global_topk,Negative,1.991874,text,8,0.094685,False,1.133,1.219,like this movie,
+09,94,modality_topk,Negative,1.991874,audio,16,4.3e-05,False,4.499,4.586,not recommend it,
+09,95,modality_topk,Negative,1.991874,audio,12,4.3e-05,False,1.479,1.566,"all, I would",
+09,96,modality_topk,Negative,1.991874,audio,18,4.3e-05,False,4.846,4.933,recommend it,
+09,97,modality_topk,Negative,1.991874,vision,3,0.000203,False,0.646,0.733,(uhh) I did,09@0.689s
+09,98,modality_topk,Negative,1.991874,vision,4,0.000186,False,0.646,0.733,I did not,09@0.689s
+09,99,modality_topk,Negative,1.991874,vision,7,0.000144,False,1.133,1.219,not like this,09@1.176s
+10,100,global_topk,Negative,1.928078,text,30,0.185697,False,9.121,9.533,pretty terrible,
+10,101,global_topk,Negative,1.928078,text,22,0.126859,False,6.369,6.973,not against that,
+10,102,global_topk,Negative,1.928078,text,23,0.085858,False,6.973,7.26,against that but,
+10,103,global_topk,Negative,1.928078,text,10,0.077774,False,2.14,2.415,like to see,
+10,104,global_topk,Negative,1.928078,text,21,0.073304,False,6.369,6.973,I'm not against,
+10,105,modality_topk,Negative,1.928078,audio,20,6.7e-05,False,5.911,6.369,so I'm not,
+10,106,modality_topk,Negative,1.928078,audio,28,6.1e-05,False,8.549,8.846,was pretty terrible,
+10,107,modality_topk,Negative,1.928078,audio,29,5.9e-05,False,8.846,9.121,was pretty terrible,
+10,108,modality_topk,Negative,1.928078,vision,16,0.000652,False,4.351,4.698,chick flicks sometimes,10@4.524s
+10,109,modality_topk,Negative,1.928078,vision,15,0.00049,False,4.351,4.698,chick flicks sometimes,10@4.524s
+10,110,modality_topk,Negative,1.928078,vision,30,0.000217,False,9.121,9.533,pretty terrible,10@9.327s
+11,111,global_topk,Negative,1.859198,text,2,0.264515,False,0.656,0.799,I would be,
+11,112,global_topk,Negative,1.859198,text,4,0.183161,False,0.943,1.373,be ashamed to,
+11,113,global_topk,Negative,1.859198,text,12,0.133865,False,4.515,4.659,I was a,
+11,114,global_topk,Negative,1.859198,text,13,0.131466,False,4.659,4.802,was a director,
+11,115,global_topk,Negative,1.859198,text,11,0.084417,False,4.231,4.515,if I was,
+11,116,modality_topk,Negative,1.859198,audio,12,0.000153,False,4.515,4.659,I was a,
+11,117,modality_topk,Negative,1.859198,audio,10,0.000149,False,4.088,4.231,film if I,
+11,118,modality_topk,Negative,1.859198,audio,9,0.000146,False,3.944,4.088,this film if,
+11,119,modality_topk,Negative,1.859198,vision,10,0.000348,False,4.088,4.231,film if I,11@4.16s
+11,120,modality_topk,Negative,1.859198,vision,9,0.000345,False,3.944,4.088,this film if,11@4.016s
+11,121,modality_topk,Negative,1.859198,vision,12,0.0003,False,4.515,4.659,I was a,11@4.587s
+12,122,global_topk,Negative,0.825504,text,2,0.143132,False,0.714,1.077,"Or worse, an",
+12,123,global_topk,Negative,0.825504,text,15,0.14216,False,5.656,5.838,but usually by,
+12,124,global_topk,Negative,0.825504,text,23,0.1348,False,7.377,7.709,or perhaps by,
+12,125,global_topk,Negative,0.825504,text,14,0.104501,False,5.475,5.656,but usually by,
+12,126,global_topk,Negative,0.825504,text,41,0.060943,False,11.788,12.151,is very low.,
+12,127,modality_topk,Negative,0.825504,audio,20,7.2e-05,False,6.383,7.014,"of their own,",
+12,128,modality_topk,Negative,0.825504,audio,12,6.6e-05,False,4.598,5.293,"good credit, but",
+12,129,modality_topk,Negative,0.825504,audio,28,6.6e-05,False,8.364,8.545,"their own, they",
+12,130,modality_topk,Negative,0.825504,vision,20,0.000112,False,6.383,7.014,"of their own,",12@6.698s
+12,131,modality_topk,Negative,0.825504,vision,21,9.9e-05,False,7.014,7.377,"their own, or",12@7.196s
+12,132,modality_topk,Negative,0.825504,vision,33,9.7e-05,False,9.753,10.117,"their credit sag,",12@9.935s
+13,133,global_topk,Neutral,0.277328,text,1,0.081601,False,0.033,0.137,"For example,",
+13,134,global_topk,Neutral,0.277328,text,20,0.075773,False,4.276,5.133,a relationship between,
+13,135,global_topk,Neutral,0.277328,text,26,0.071929,False,6.619,6.723,of the given,
+13,136,global_topk,Neutral,0.277328,text,7,0.066105,False,1.686,1.791,take a set,
+13,137,global_topk,Neutral,0.277328,text,19,0.065046,False,4.172,4.276,a relationship between,
+13,138,modality_topk,Neutral,0.277328,audio,6,0.000872,False,1.478,1.686,could take a,
+13,139,modality_topk,Neutral,0.277328,audio,4,0.000844,False,1.374,1.478,"example, I could",
+13,140,modality_topk,Neutral,0.277328,audio,20,0.000835,False,4.276,5.133,a relationship between,
+14,141,global_topk,Negative,0.568025,text,14,0.694681,False,2.879,3.325,Limited and the,
+14,142,global_topk,Negative,0.568025,text,22,0.064701,False,5.052,5.198,Director of Uniform,
+14,143,global_topk,Negative,0.568025,text,2,0.052472,False,0.689,0.835,He is the,
+14,144,global_topk,Negative,0.568025,text,17,0.047516,False,3.591,3.883,the former Executive,
+14,145,global_topk,Negative,0.568025,text,21,0.03426,False,5.052,5.198,Executive Director of,
+14,146,modality_topk,Negative,0.568025,audio,27,0.000177,False,6.798,7.48,Final Examination (UFE),
+14,147,modality_topk,Negative,0.568025,audio,26,0.000171,False,5.928,6.798,Final Examination (UFE),
+14,148,modality_topk,Negative,0.568025,audio,20,0.000171,False,4.613,5.052,Executive Director of,
+14,149,modality_topk,Negative,0.568025,vision,20,0.000493,False,4.613,5.052,Executive Director of,14@4.833s
+14,150,modality_topk,Negative,0.568025,vision,28,0.000451,False,6.798,7.48,Examination (UFE) courses,14@7.139s
+14,151,modality_topk,Negative,0.568025,vision,27,0.00043,False,6.798,7.48,Final Examination (UFE),14@7.139s
+15,152,global_topk,Neutral,0.306702,text,15,0.468298,False,4.834,5.217,they believed in,
+15,153,global_topk,Neutral,0.306702,text,3,0.183856,False,1.361,1.495,"However, despite their",
+15,154,global_topk,Neutral,0.306702,text,1,0.143965,False,0.282,0.852,"However, despite",
+15,155,global_topk,Neutral,0.306702,text,20,0.063534,False,6.31,6.696,to transform lives,
+15,156,global_topk,Neutral,0.306702,text,8,0.041616,False,2.427,2.959,"poverty, the family",
+15,157,modality_topk,Neutral,0.306702,audio,6,0.000205,False,1.894,2.027,"their poverty, the",
+15,158,modality_topk,Neutral,0.306702,audio,5,0.000205,False,1.495,1.894,"despite their poverty,",
+15,159,modality_topk,Neutral,0.306702,audio,20,0.000204,False,6.31,6.696,to transform lives,
+15,160,modality_topk,Neutral,0.306702,vision,16,0.000321,False,5.217,5.35,believed in its,15@5.284s
+15,161,modality_topk,Neutral,0.306702,vision,21,0.000288,False,6.696,7.232,transform lives,15@6.964s
+15,162,modality_topk,Neutral,0.306702,vision,20,0.000277,False,6.31,6.696,to transform lives,15@6.503s
+16,163,global_topk,Negative,2.193851,text,5,0.287809,False,1.765,1.903,"a terrible, this",
+16,164,global_topk,Negative,2.193851,text,10,0.284418,False,2.18,2.756,a terrible movie,
+16,165,global_topk,Negative,2.193851,text,8,0.129159,False,2.042,2.18,is a terrible,
+16,166,global_topk,Negative,2.193851,text,9,0.09906,False,2.18,2.756,a terrible movie,
+16,167,global_topk,Negative,2.193851,text,4,0.096509,False,1.059,1.765,"a terrible, this",
+16,168,modality_topk,Negative,2.193851,audio,6,9e-05,False,1.903,2.042,"terrible, this is",
+16,169,modality_topk,Negative,2.193851,audio,10,8.8e-05,False,2.18,2.756,a terrible movie,
+16,170,modality_topk,Negative,2.193851,audio,3,8.6e-05,False,0.921,1.059,"a terrible, this",
+16,171,modality_topk,Negative,2.193851,vision,9,0.000531,False,2.18,2.756,a terrible movie,16@2.468s
+16,172,modality_topk,Negative,2.193851,vision,11,0.000365,False,2.756,3.032,terrible movie,16@2.894s
+16,173,modality_topk,Negative,2.193851,vision,10,0.000356,False,2.18,2.756,a terrible movie,16@2.468s
+17,174,global_topk,Positive,0.641476,text,10,0.248261,False,3.743,4.234,your presentations is,
+17,175,global_topk,Positive,0.641476,text,17,0.12107,False,6.888,6.999,make people think,
+17,176,global_topk,Positive,0.641476,text,19,0.079261,False,6.999,7.5,think you turned,
+17,177,global_topk,Positive,0.641476,text,14,0.05902,False,5.761,5.872,easy and will,
+17,178,global_topk,Positive,0.641476,text,21,0.058036,False,7.973,8.456,turned into a,
+17,179,modality_topk,Positive,0.641476,audio,20,0.000342,False,7.5,7.973,you turned into,
+17,180,modality_topk,Positive,0.641476,audio,17,0.000334,False,6.888,6.999,make people think,
+17,181,modality_topk,Positive,0.641476,audio,15,0.000328,False,5.872,6.455,and will make,
+17,182,modality_topk,Positive,0.641476,vision,7,0.000969,False,2.125,2.336,concepts to your,17@2.23s
+17,183,modality_topk,Positive,0.641476,vision,20,0.000874,False,7.5,7.973,you turned into,17@7.737s
+17,184,modality_topk,Positive,0.641476,vision,8,0.000847,False,2.336,2.897,to your presentations,17@2.617s
+18,185,global_topk,Neutral,0.28469,text,40,0.251566,False,14.72,14.847,agreement on mackerel,
+18,186,global_topk,Neutral,0.28469,text,43,0.055111,False,15.602,16.569,quotas with Norway,
+18,187,global_topk,Neutral,0.28469,text,28,0.047588,False,11.427,11.554,based on the,
+18,188,global_topk,Neutral,0.28469,text,12,0.043136,False,4.028,4.155,been MSC –,
+18,189,global_topk,Neutral,0.28469,text,26,0.040715,False,10.646,11.3,MSC certification based,
+18,190,modality_topk,Neutral,0.28469,audio,4,0.000323,False,1.031,1.158,Denmark - the,
+18,191,modality_topk,Neutral,0.28469,audio,28,0.000322,False,11.427,11.554,based on the,
+18,192,modality_topk,Neutral,0.28469,audio,48,0.000321,False,17.458,17.712,European Union.,
+18,193,modality_topk,Neutral,0.28469,vision,48,0.000443,False,17.458,17.712,European Union.,18@17.585s
+18,194,modality_topk,Neutral,0.28469,vision,46,0.000428,False,16.95,17.077,and the European,18@17.014s
+18,195,modality_topk,Neutral,0.28469,vision,45,0.000419,False,16.823,16.95,Norway and the,18@16.887s
+19,196,global_topk,Positive,1.359489,text,17,0.23081,False,6.484,6.743,and unfortunately some,
+19,197,global_topk,Positive,1.359489,text,15,0.09818,False,4.188,6.484,"to mistakes, and",
+19,198,global_topk,Positive,1.359489,text,12,0.086499,False,3.112,3.241,they own up,
+19,199,global_topk,Positive,1.359489,text,21,0.047248,False,7.719,8.368,haters out there,
+19,200,global_topk,Positive,1.359489,text,3,0.044589,False,1.56,2.077,People are surprisingly,
+19,201,modality_topk,Positive,1.359489,audio,20,0.000373,False,7.131,7.719,some haters out,
+19,202,modality_topk,Positive,1.359489,audio,29,0.000305,False,9.673,9.932,jump all over,
+19,203,modality_topk,Positive,1.359489,audio,34,0.000271,False,11.848,11.977,but for the,
+19,204,modality_topk,Positive,1.359489,vision,38,0.004463,False,12.356,12.615,"part, people understand",19@12.485s
+19,205,modality_topk,Positive,1.359489,vision,22,0.004431,False,8.368,8.637,out there love,19@8.503s
+19,206,modality_topk,Positive,1.359489,vision,23,0.004344,False,8.637,8.767,there love to,19@8.702s
+20,207,global_topk,Positive,0.895589,text,42,0.081879,False,10.255,10.421,day today.,
+20,208,global_topk,Positive,0.895589,text,13,0.071728,False,2.941,3.538,the description of,
+20,209,global_topk,Positive,0.895589,text,3,0.066251,False,0.994,1.536,"of course, click",
+20,210,global_topk,Positive,0.895589,text,27,0.058532,False,6.886,7.483,live updates and,
+20,211,global_topk,Positive,0.895589,text,15,0.057584,False,3.704,4.22,the description of,
+20,212,modality_topk,Positive,0.895589,audio,20,0.000447,False,5.049,5.215,"for more, and",
+20,213,modality_topk,Positive,0.895589,audio,28,0.000441,False,7.483,7.649,updates and a,
+20,214,modality_topk,Positive,0.895589,audio,15,0.000437,False,3.704,4.22,the description of,
+20,215,modality_topk,Positive,0.895589,vision,20,0.005014,False,5.049,5.215,"for more, and",20@5.132s
+20,216,modality_topk,Positive,0.895589,vision,15,0.004068,False,3.704,4.22,the description of,20@3.962s
+20,217,modality_topk,Positive,0.895589,vision,16,0.003953,False,4.22,4.552,description of this,20@4.386s
