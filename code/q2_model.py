@@ -4,9 +4,9 @@ q2_model.py —— 缺失模态鲁棒的三模态情感预测网络（问题二�
 
 赛题要求与本文档的对应
 ----------------------
-赛题第 24–25 行（问题二）：缺失模态下仍能稳定预测情感极性与强度，并分析
+赛题问题2：缺失模态下仍能稳定预测情感极性与强度，并分析
 「缺失模态类型 / 缺失位置 / 缺失时长」三因素对性能的影响。
-赛题第 28 行（问题三）：模型需具可解释性，关键证据可对应到原始文本片段、
+赛题问题3：模型需具可解释性，关键证据可对应到原始文本片段、
 语音时段或视觉关键帧。
 
 因此主干的三个硬性设计约束：
@@ -28,7 +28,7 @@ q2_model.py —— 缺失模态鲁棒的三模态情感预测网络（问题二�
 
 3. **可解释性内建，不做事后编造**。槽级重要性同时来自
    (a) 分类/回归头前的槽级注意力权重、(b) 逐模态留一（leave-one-modality-out）
-   的预测变化量。两者都要能落到具体槽号，才能在第 28 行要求下映射回
+   的预测变化量。两者都要能落到具体槽号，才能在问题3的要求下映射回
    文本片段 / 语音时段 / 视觉关键帧。
 """
 
@@ -61,6 +61,14 @@ DROPOUT = 0.15
 TEXT_EMB_DIM = 64       # 词元嵌入维度（先嵌入再投影，控制参数量以适配 50 MB 提交上限）
 TEXT_VOCAB = 30522      # BERT 系词表大小（实测 input_ids 首槽为 101=[CLS]）
 MODALITY_DROPOUT = 0.25  # 训练期随机整模态丢弃的概率，用于制造缺失鲁棒性
+
+# 结构消融的取值。交付模型恒为 "full"，其余四项只用于消融对照：
+#   full          三路结构信号齐全（交付配置）
+#   no_state_emb  不把「缺失状态」作为输入告知模型（缺失槽与观测槽在输入上不可分）
+#   no_obs_mask   注意力不按逐模态观测掩码屏蔽（缺失槽被当作真实观测参与 softmax）
+#   union_mask    掩码退化为跨模态并集（复现早期缺陷：屏蔽某模态会连带屏蔽其他模态）
+#   no_md         训练期不做整模态随机丢弃
+STRUCTURE_CHOICES = ("full", "no_state_emb", "no_obs_mask", "union_mask", "no_md")
 
 
 @dataclass
@@ -196,8 +204,18 @@ class MissingAwareFusionEncoder(nn.Module):
         局部缺失错误地平滑进整个模态向量。
     """
 
-    def __init__(self, cfg: ModelConfig, text_emb_table: Optional[np.ndarray] = None):
+    def __init__(self, cfg: ModelConfig, text_emb_table: Optional[np.ndarray] = None,
+                 structure: str = "full"):
+        """`structure` 选择结构信号的使用方式，取值见 STRUCTURE_CHOICES。
+
+        它是**消融专用**的开关：交付模型恒为 `full`。消融路径与交付路径
+        共用同一份前向代码，只在这一个分支上不同——这样消融表里的差异
+        才只能归因于被拆掉的那路信号，而不是「另写了一个模型」。
+        """
         super().__init__()
+        if structure not in STRUCTURE_CHOICES:
+            raise ValueError(f"未知的 structure：{structure!r}，可选 {STRUCTURE_CHOICES}")
+        self.structure = structure
         self.cfg = cfg
         d = cfg.d_model
         S, M = cfg.seq_len, cfg.n_modalities
@@ -283,12 +301,27 @@ class MissingAwareFusionEncoder(nn.Module):
         state = torch.where(miss_flag, torch.ones_like(state), state)          # 1=有效区内缺失
         unavailable = (~modal_avail).view(B, M, 1).expand(B, M, S)
         state = torch.where(unavailable, torch.full_like(state, 2), state)     # 2=整体不可用
-        x = x + self.state_embed[state]
+        # 消融 no_state_emb：整路撤掉缺失状态嵌入，模型只能从被置零的数值特征
+        # 自行推断「这里没信号」——这正是本文主张「缺失须显式建模」要反驳的做法。
+        if self.structure != "no_state_emb":
+            x = x + self.state_embed[state]
 
         # 每槽是否参与计算：模态自身可用 且 **该模态**在该槽有观测
-        usable = modal_avail.view(B, M, 1) & obs_mask                          # (B,M,S)
+        #
+        # 消融分支说明：
+        #   union_mask —— 复现早期缺陷：把三模态观测 OR 成 (B,S) 再广播回各模态，
+        #                 于是「屏蔽某模态」会连带屏蔽其他模态在同一槽位的观测。
+        #   no_obs_mask —— 注意力不屏蔽缺失槽（缺失槽被当作真实观测参与 softmax），
+        #                 但模态整体不可用时仍屏蔽（否则会引入非法输入）。
+        if self.structure == "union_mask":
+            union = obs_mask.any(dim=1, keepdim=True)                          # (B,1,S)
+            usable = modal_avail.view(B, M, 1) & union.expand(B, M, S)
+        elif self.structure == "no_obs_mask":
+            usable = modal_avail.view(B, M, 1).expand(B, M, S).clone()
+        else:
+            usable = modal_avail.view(B, M, 1) & obs_mask                      # (B,M,S)
 
-        if modality_dropout and self.training:
+        if modality_dropout and self.training and self.structure != "no_md":
             # 训练期整模态随机丢弃：让模型见过「任意模态消失」的情形，
             # 这是问题二「缺失模态鲁棒」在训练侧的对应手段。
             keep = torch.rand((B, M), device=dev) > MODALITY_DROPOUT
@@ -373,10 +406,13 @@ class MaskedTriModalModel(nn.Module):
     """对外统一封装：负责把 numpy 批次转成张量并规范输出。"""
 
     def __init__(self, cfg: Optional[ModelConfig] = None,
-                 text_emb_table: Optional[np.ndarray] = None):
+                 text_emb_table: Optional[np.ndarray] = None,
+                 structure: str = "full"):
         super().__init__()
         self.cfg = as_config(cfg)
-        self.encoder = MissingAwareFusionEncoder(self.cfg, text_emb_table=text_emb_table)
+        self.structure = structure
+        self.encoder = MissingAwareFusionEncoder(self.cfg, text_emb_table=text_emb_table,
+                                                 structure=structure)
 
     def forward(self, batch: Dict[str, torch.Tensor],
                 modality_dropout: bool = False,

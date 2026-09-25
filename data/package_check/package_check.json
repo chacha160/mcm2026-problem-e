@@ -1,32 +1,46 @@
 {
   "limit_bytes": 52428800,
-  "deliverable_bytes": 37504963,
-  "deliverable_ratio": 0.71535,
-  "remaining_bytes": 14923837,
+  "deliverable_bytes": 37537885,
+  "deliverable_ratio": 0.715978,
+  "remaining_bytes": 14890915,
   "groups": [
     {
       "group": "q1_delivery",
       "path": "data\\q1_delivery",
       "exists": 1,
       "n_files": 27,
-      "bytes": 16086777
+      "bytes": 16089203
     },
     {
       "group": "q2",
       "path": "data\\q2",
       "exists": 1,
-      "n_files": 13,
-      "bytes": 11137035
+      "n_files": 14,
+      "bytes": 11138755
     },
     {
       "group": "q3",
       "path": "data\\q3",
       "exists": 1,
       "n_files": 17,
-      "bytes": 10281151
+      "bytes": 10283745
+    },
+    {
+      "group": "q2q3_audit",
+      "path": "data\\q2q3",
+      "exists": 1,
+      "n_files": 1,
+      "bytes": 23848
+    },
+    {
+      "group": "package_check",
+      "path": "data\\package_check",
+      "exists": 1,
+      "n_files": 2,
+      "bytes": 2334
     }
   ],
-  "code_bytes": 1112565,
+  "code_bytes": 1164706,
   "identity_hits": [],
   "interface_check": {
     "expected_fields": [

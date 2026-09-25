@@ -4,14 +4,14 @@ q2_train.py —— 问题二：缺失模态场景下的鲁棒情感预测
 
 赛题口径（逐条对应，不自行加码也不遗漏）
 ----------------------------------------
-第 30 行「用附件2 的训练集训练、验证集验证，对附件3 做推理」：
+赛题问题2与问题3共用的「说明」段「用附件2 的训练集训练、验证集验证，对附件3 做推理」：
     · 训练 = 附件2 `train`（3395 条）
     · 验证 = 附件2 `valid`（728 条），**只用于早停与超参选择**
     · 附件2 `test`（727 条）**不参与任何选择**，仅作最终报告
     · 推理 = 附件3 的 30 条，导出预测 CSV
-第 24 行「模态缺失下仍能稳定预测情感极性与强度」：
+赛题问题2「模态缺失下仍能稳定预测情感极性与强度」：
     主结果表 + 退化曲线（按附件3 实际缺失槽数分档）
-第 25 行「分析缺失模态类型、缺失位置、缺失时长三因素影响」：
+赛题问题2「分析缺失模态类型、缺失位置、缺失时长三因素影响」：
     `run_missingness_experiment()` 做 4 类型 × 4 位置 × 3 时长 = 48 组受控实验
 红线 R1（不增删改样本与标签）：
     受控缺失实验只在**内存中的副本**上做，绝不落盘、绝不改写附件2/3 的原文件；
@@ -94,13 +94,15 @@ def train_model(train_np: Dict[str, np.ndarray], y_pol_tr: np.ndarray, y_int_tr:
                 epochs: int, batch_size: int, lr: float, patience: int,
                 device: torch.device, verbose: bool = True,
                 seed: int = SEED,
-                text_emb_table: Optional[np.ndarray] = None
+                text_emb_table: Optional[np.ndarray] = None,
+                structure: str = "full"
                 ) -> Tuple[M.MaskedTriModalModel, Dict]:
     torch.manual_seed(seed)
     np.random.seed(seed)
 
     cfg = M.ModelConfig()
-    model = M.MaskedTriModalModel(cfg, text_emb_table=text_emb_table).to(device)
+    model = M.MaskedTriModalModel(cfg, text_emb_table=text_emb_table,
+                                  structure=structure).to(device)
     if verbose:
         print(f"  文本支路初始化：{'官方768维蒸馏表（PCA→64）' if text_emb_table is not None else '随机'}"
               f"，参数量 {sum(p.numel() for p in model.parameters()):,}")
@@ -163,7 +165,7 @@ def train_model(train_np: Dict[str, np.ndarray], y_pol_tr: np.ndarray, y_int_tr:
                    "best_valid": best["valid"], "history": hist}
 
 
-# ==================== 受控缺失实验（赛题第 25 行）====================
+# ==================== 受控缺失实验（赛题问题2的三因素要求）====================
 
 MISS_TYPES = {
     "text": (0,),
@@ -266,8 +268,76 @@ def run_missingness_experiment(model, valid_np: Dict[str, np.ndarray],
     return rows
 
 
+# ==================== 结构消融实验（赛题问题2「消融实验」）====================
+#
+# 48 组受控缺失实验回答的是「缺失类型/位置/时长各有多大影响」，
+# 属于**敏感性分析**；它不回答「本文的缺失感知设计本身值不值得」。
+# 后者需要一个把结构信号逐路拆掉的对照，即本节。
+#
+# 探针条件取「文本缺失 · 中部 · 40%」：文本是唯一显著有害的缺失类型
+# （见受控实验规则一），因此最能暴露结构差异；固定成单一条件是刻意的，
+# 目的是让五行结果之间**只差结构信号这一路**，不掺入缺失配置的变化。
+#
+# 五个变体共用同一份训练代码、同一随机种子、同一轮数与同一蒸馏初值，
+# 唯一差异由 `q2_model.STRUCTURE_CHOICES` 的分支引入。
+
+STRUCTURE_LABELS = {
+    "full": "完整（交付配置）",
+    "no_state_emb": "去掉缺失状态嵌入",
+    "no_obs_mask": "注意力不屏蔽缺失槽",
+    "union_mask": "掩码退化为跨模态并集",
+    "no_md": "去掉训练期模态丢弃",
+}
+STRUCTURE_PROBE = ("text", "middle", "medium")   # 类型 / 位置 / 时长
+
+
+def run_structure_ablation(train_np, y_pol_tr, y_int_tr, valid_np, y_pol_va, y_int_va,
+                           test_np, y_pol_te, y_int_te, table, args, device) -> List[Dict]:
+    """逐路拆掉结构信号，在同一受控缺失探针下对比。"""
+    tname, pos, dname = STRUCTURE_PROBE
+    mods = MISS_TYPES[tname]
+    ratio = MISS_DURATIONS[dname]
+    probe_va = inject_missing(valid_np, mods, pos, ratio, args.seed)
+    probe_te = inject_missing(test_np, mods, pos, ratio, args.seed)
+
+    rows: List[Dict] = []
+    for st in M.STRUCTURE_CHOICES:
+        print(f"\n[结构消融] {st} —— {STRUCTURE_LABELS[st]}")
+        mdl, hist = train_model(train_np, y_pol_tr, y_int_tr,
+                                valid_np, y_pol_va, y_int_va,
+                                args.epochs, args.batch_size, args.lr, args.patience,
+                                device, verbose=False, seed=args.seed,
+                                text_emb_table=table, structure=st)
+        clean_va = evaluate(mdl, valid_np, y_pol_va, y_int_va, device)
+        probe_va_m = evaluate(mdl, probe_va, y_pol_va, y_int_va, device)
+        probe_te_m = evaluate(mdl, probe_te, y_pol_te, y_int_te, device)
+        rows.append({
+            "structure": st, "structure_label": STRUCTURE_LABELS[st],
+            "probe": f"{tname}/{pos}/{dname}",
+            "best_epoch": hist["best_epoch"],
+            # 无缺失条件下的指标：用于确认「拆掉结构信号」不是把干净场景也弄坏了
+            "clean_valid_macro_f1": clean_va["macro_f1"],
+            "clean_valid_accuracy": clean_va["accuracy"],
+            "clean_valid_mae": clean_va["mae"],
+            "clean_valid_pearson": clean_va["pearson"],
+            # 探针条件下的指标：这里才是结构信号该发挥作用的地方
+            "probe_valid_macro_f1": probe_va_m["macro_f1"],
+            "probe_valid_accuracy": probe_va_m["accuracy"],
+            "probe_valid_mae": probe_va_m["mae"],
+            "probe_valid_pearson": probe_va_m["pearson"],
+            "probe_test_macro_f1": probe_te_m["macro_f1"],
+            "probe_test_accuracy": probe_te_m["accuracy"],
+            "probe_test_mae": probe_te_m["mae"],
+            "probe_test_pearson": probe_te_m["pearson"],
+        })
+        print(f"    干净 valid: macroF1={clean_va['macro_f1']:.4f} MAE={clean_va['mae']:.4f}"
+              f"  |  探针 valid: macroF1={probe_va_m['macro_f1']:.4f} "
+              f"MAE={probe_va_m['mae']:.4f} r={probe_va_m['pearson']:.4f}")
+    return rows
+
+
 def summarize_missingness(rows: List[Dict]) -> Dict[str, Dict[str, float]]:
-    """把 48 组实验按三个因素各自聚合，直接产出赛题第 25 行要的「规律」。"""
+    """把 48 组实验按三个因素各自聚合，直接产出赛题问题2要的「影响规律」。"""
     def agg(key: str) -> Dict[str, Dict[str, float]]:
         out: Dict[str, Dict[str, float]] = {}
         groups: Dict[str, List[Dict]] = {}
@@ -547,6 +617,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--lr", type=float, default=1e-3)
     ap.add_argument("--patience", type=int, default=12)
     ap.add_argument("--seed", type=int, default=SEED)
+    ap.add_argument("--structure-ablation-only", action="store_true",
+                    help=("只跑结构消融：训练五个结构变体并写 structure_ablation.csv，"
+                          "不训练也不改写交付模型"))
+    ap.add_argument("--structure-ablation", action="store_true",
+                    help=("结构消融：在同一受控缺失探针下逐一拆掉结构信号"
+                          "（state_emb / obs_mask / 逐模态掩码 / 模态丢弃），"
+                          "输出 structure_ablation.csv"))
     ap.add_argument("--skip-experiment", action="store_true",
                     help="跳过 48 组受控缺失实验（快速出主结果用）")
     ap.add_argument("--text-table", choices=("distill", "random", "both"),
@@ -637,6 +714,34 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
           f"{tbl_stats['source_dim']}→{tbl_stats['target_dim']} 维")
     print(f"  仅由附件2 train 统计（验证/测试/附件3/附件4 未参与），缓存于 {tbl_path}")
 
+    # ---- 1c. 只跑结构消融：五个变体各自训练，不触碰交付模型 ----
+    # 用途：交付模型（q2_model.pt）已经生成问题三的全部产物，重训会得到另一个
+    # 实例（参数漂移约 1e-2）而与已生成产物不再同源。结构消融只需要「同一探针下
+    # 五行只差结构信号」，与交付模型无关，故单独一条路径，产物只写
+    # structure_ablation.csv，其余任何文件都不改写。
+    if args.structure_ablation_only:
+        out_csv = os.path.join(args.out, "structure_ablation.csv")
+        print("\n[结构消融] 探针 = "
+              f"{STRUCTURE_PROBE[0]}缺失/{STRUCTURE_PROBE[1]}/{STRUCTURE_PROBE[2]}；"
+              f"变体 = {'/'.join(M.STRUCTURE_CHOICES)}")
+        print("  五个变体共用同一划分、同一种子、同一轮数与同一蒸馏初值；"
+              "只写 structure_ablation.csv，不改动交付模型与既有产物。")
+        struct_rows = run_structure_ablation(
+            train_np, y_pol_tr, y_int_tr, valid_np, y_pol_va, y_int_va,
+            test_np, y_pol_te, y_int_te, table, args, device)
+        _write_csv(out_csv, struct_rows)
+        ref = next(r for r in struct_rows if r["structure"] == "full")
+        print(f"\n  [相对完整配置的差值（探针 valid）]  基准 macroF1="
+              f"{ref['probe_valid_macro_f1']:.4f}")
+        for r in struct_rows:
+            if r["structure"] == "full":
+                continue
+            print(f"    {r['structure']:14s} ΔmacroF1="
+                  f"{r['probe_valid_macro_f1']-ref['probe_valid_macro_f1']:+.4f}  "
+                  f"ΔMAE={r['probe_valid_mae']-ref['probe_valid_mae']:+.4f}")
+        print(f"\n产物：{out_csv}")
+        return 0
+
     # ---- 2. 训练 ----
     print("\n[训练] 只按 valid 早停；test 全程不参与任何选择")
     table_for_run = table if args.text_table != "random" else None
@@ -717,7 +822,29 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if off_target:
             print("    ⚠ 越界样例：" + json.dumps(off_target[:2], ensure_ascii=False))
 
-    # ---- 5. 附件3 推理（赛题第 30 行的交付要求）----
+    # ---- 4b. 结构消融：结构信号逐路拆解（赛题问题2「消融实验」）----
+    if args.structure_ablation:
+        print("\n[结构消融] 探针 = "
+              f"{STRUCTURE_PROBE[0]}缺失/{STRUCTURE_PROBE[1]}/{STRUCTURE_PROBE[2]}；"
+              f"变体 = {'/'.join(M.STRUCTURE_CHOICES)}")
+        struct_rows = run_structure_ablation(
+            train_np, y_pol_tr, y_int_tr, valid_np, y_pol_va, y_int_va,
+            test_np, y_pol_te, y_int_te, table, args, device)
+        _write_csv(os.path.join(args.out, "structure_ablation.csv"), struct_rows)
+        ref = next(r for r in struct_rows if r["structure"] == "full")
+        print(f"\n  [相对完整配置的损失（探针 valid）]  基准 macroF1="
+              f"{ref['probe_valid_macro_f1']:.4f}")
+        for r in struct_rows:
+            if r["structure"] == "full":
+                continue
+            print(f"    {r['structure']:14s} ΔmacroF1="
+                  f"{r['probe_valid_macro_f1']-ref['probe_valid_macro_f1']:+.4f}  "
+                  f"ΔMAE={r['probe_valid_mae']-ref['probe_valid_mae']:+.4f}")
+        metrics_extra["structure_ablation"] = struct_rows
+        metrics["structure_ablation"] = struct_rows
+
+
+    # ---- 5. 附件3 推理（赛题问题2对附件3 的交付要求）----
     print("\n[附件3 推理] 30 条缺失样本")
     a3 = Q.load_attachment3()
     a3_np = M.stack_attachment3(a3)

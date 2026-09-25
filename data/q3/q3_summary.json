@@ -78,15 +78,64 @@
     "total": 20,
     "ratio": 1.0
   },
+  "dominance_criteria": {
+    "definitions": {
+      "attention": "归因：槽级注意力占比的 argmax",
+      "kl": "因果：KL(原分布‖掩蔽后分布) 的 argmax（本文主判据）",
+      "delta": "因果：Δ=p(原类)−p_masked(原类) 的 argmax"
+    },
+    "pairwise": {
+      "attention_vs_kl": {
+        "agree": 20,
+        "total": 20,
+        "ratio": 1.0
+      },
+      "attention_vs_delta": {
+        "agree": 18,
+        "total": 20,
+        "ratio": 0.9
+      },
+      "kl_vs_delta": {
+        "agree": 18,
+        "total": 20,
+        "ratio": 0.9
+      }
+    },
+    "why_kl": "Δ 可为负——拿掉某模态后原类概率反而上升，说明该模态在被冗余补偿甚至拖后腿；按 max(Δ) 定序会把这类模态选成主模态，语义说反。KL 恒非负，故用它作主判据。",
+    "disagreement_samples": [
+      {
+        "sample": "05",
+        "attention": "text",
+        "kl": "text",
+        "delta": "vision",
+        "loo_delta": {
+          "text": -0.042379,
+          "audio": -0.028608,
+          "vision": 0.169911
+        }
+      },
+      {
+        "sample": "19",
+        "attention": "text",
+        "kl": "text",
+        "delta": "vision",
+        "loo_delta": {
+          "text": 0.016423,
+          "audio": -0.013674,
+          "vision": 0.138668
+        }
+      }
+    ]
+  },
   "figures": [
-    "data/q3\\figures\\evidence_timeline_01.png",
-    "data/q3\\figures\\evidence_timeline_02.png",
-    "data/q3\\figures\\evidence_timeline_03.png",
-    "data/q3\\figures\\evidence_timeline_04.png",
-    "data/q3\\figures\\keyframes_01.png",
-    "data/q3\\figures\\keyframes_02.png",
-    "data/q3\\figures\\keyframes_03.png",
-    "data/q3\\figures\\keyframes_04.png",
-    "data/q3\\figures\\modality_attention_all.png"
+    "../data/q3\\figures\\evidence_timeline_01.png",
+    "../data/q3\\figures\\evidence_timeline_02.png",
+    "../data/q3\\figures\\evidence_timeline_03.png",
+    "../data/q3\\figures\\evidence_timeline_04.png",
+    "../data/q3\\figures\\keyframes_01.png",
+    "../data/q3\\figures\\keyframes_02.png",
+    "../data/q3\\figures\\keyframes_03.png",
+    "../data/q3\\figures\\keyframes_04.png",
+    "../data/q3\\figures\\modality_attention_all.png"
   ]
 }

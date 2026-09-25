@@ -1,6 +1,6 @@
 {
   "pipeline_version": "1.1.0",
-  "generated_at": "2026-09-24 16:55:04",
+  "generated_at": "2026-09-25 14:52:01",
   "code_fingerprints": {
     "text": "21be8f9319ca",
     "audio": "6ef068f13f6d",
@@ -248,12 +248,18 @@
     "audio_hop_length": {
       "config_declared": 512,
       "actual_effective": 800,
-      "explanation": "config.AUDIO_HOP_LENGTH=512 **从未被使用**。unaligned_audio.py 用 hop = round(sr/rate_hz) = 16000/20 = 800。交付参数以 actual_effective 为准。"
+      "explanation": "config.AUDIO_HOP_LENGTH=512 未被任何计算路径使用：全库仅本处引用它，用于记录这处声明与实际的偏离。unaligned_audio.py 用 hop = round(sr/rate_hz) = 16000/20 = 800。交付参数以 actual_effective 为准。"
     },
     "text_align_strategy": {
       "config_declared": "word_interpolate",
       "actual_effective": "由 align_multimodal.align_series 独立完成（time_bin）",
-      "explanation": "该常量属于上一版「直接对齐」流水线，当前管线先出变长特征再单独对齐。"
+      "explanation": "该常量属于上一版「直接对齐」流水线，当前管线先出变长特征再单独对齐；同样仅本处引用，无计算路径依赖。"
+    },
+    "video_fps": {
+      "config_declared": 25.0,
+      "actual_effective": 15.0,
+      "realized_fps": 15.183,
+      "explanation": "config.VIDEO_FPS=25 未被任何计算路径使用：视觉抽帧速率由 unaligned_vision.OFFICIAL_RATE_HZ=15.0 决定（该常量是模块级常量，不取自 config）；实测抽帧率为 realized_fps。容器标称 nominal_fps 只作记录，不参与抽帧，故三者互不相等是预期行为。"
     }
   },
   "reproduce": [

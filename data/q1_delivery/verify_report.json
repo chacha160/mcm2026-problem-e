@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-24 17:04:07",
+ "generated_at": "2026-09-25 14:52:48",
  "pipeline_version": "1.1.0",
  "code_fingerprint": "baf09dccc8f5",
  "python": "3.13.9",
@@ -11,7 +11,7 @@
   "aligned_dir": "D:\\23届建模\\data\\aligned",
   "summary_csv": "D:\\23届建模\\data\\aligned\\align_summary.csv"
  },
- "elapsed_sec": 36.58,
+ "elapsed_sec": 21.89,
  "summary": {
   "total": 12,
   "passed": 12,
@@ -250,11 +250,11 @@
    "passed": true,
    "checked": 100,
    "failed": 0,
-   "detail": "对 100 条样本重新执行 ffprobe，视频流时长与文件内 duration 的最大绝对偏差 3.30e-05 s（阈值 1e-3 s），耗时 9.3s。",
+   "detail": "对 100 条样本重新执行 ffprobe，视频流时长与文件内 duration 的最大绝对偏差 3.30e-05 s（阈值 1e-3 s），耗时 5.7s。",
    "evidence": {
     "max_deviation_sec": 3.300000000017178e-05,
     "probed_samples": 100,
-    "elapsed_sec": 9.28
+    "elapsed_sec": 5.72
    },
    "caveat": ""
   },
@@ -329,7 +329,7 @@
    "passed": true,
    "checked": 4,
    "failed": 0,
-   "detail": "对齐产物最早写入时间 2026-09-24 16:04:45 晚于未对齐产物最新写入时间 2026-09-24 16:04:30，交付自洽（对齐确实建立在当前特征之上）。",
+   "detail": "对齐产物最早写入时间 2026-09-25 13:24:33 晚于未对齐产物最新写入时间 2026-09-24 16:04:30，交付自洽（对齐确实建立在当前特征之上）。",
    "evidence": {
     "unaligned_newest": "text/-yRb-Jum7EQ_6.npz",
     "aligned_oldest": "-3g5yACwYnA_13.npz",
@@ -347,7 +347,7 @@
       "file": "-yRb-Jum7EQ_6.npz"
      }
     },
-    "aligned_newest": "2026-09-24 16:04:48"
+    "aligned_newest": "2026-09-25 13:24:37"
    },
    "caveat": ""
   },

@@ -4,18 +4,18 @@ q3_explain.py —— 问题三：可解释的多模态情感预测与关键证�
 
 赛题要求（逐条对应）
 --------------------
-第 27 行「构建可解释的多模态情感预测模型」：
+赛题问题3「构建可解释性多模态情感预测模型」：
     复用问题二的主干（同一输入接口、同一缺失语义），但把「解释」做进模型内部
     而不是事后拟合：槽级注意力权重 + 模态留一扰动，两者都直接来自前向计算。
-第 28 行「识别出影响预测结果的关键证据；关键证据需可对应至原始文本片段、
+赛题问题3「关键证据需可对应至原始文本片段、
         语音时段或视觉关键帧」：
     由 q3_timebase 重建的槽位时间基准，把关键槽号还原成
     ① 文本片段（词）② 语音时段（秒） ③ 视觉关键帧（真实抽帧 + 人脸马赛克）
-第 29 行「分析不同模态在情感判断中的作用程度和主要参考模态」：
+赛题问题3「分析不同模态在情感判断中的作用程度和主要参考模态」：
     · 作用程度 = 模态留一扰动引起的预测变化（因果口径）+ 注意力占比（归因口径），
       两个口径并列输出，不一致时一并报告而不是只留好看的那个；
     · 主要参考模态 = 扰动口径下损失最大的模态。
-第 48–52 行的论文要求：
+赛题「四、结果与提交说明·4.问题3相关内容」的论文要求：
     `attachment4_explanations.csv` 给出 20 条全量三件套（预测 + 模态作用 + 关键证据），
     图件给出典型样本的证据时间轴与关键帧。
 
@@ -202,8 +202,8 @@ def attribute_sample(model, enc_np: Dict[str, np.ndarray], i: int,
             break
 
     # 逐模态证据：只取全局 top-k 有个实际麻烦——某模态注意力整体偏低时会被
-    # 完全挤出证据表（实测未训练模型下 5 条证据里一条语音都没有）。而赛题第 28
-    # 行要求证据能落到「文本片段 / 语音时段 / 视觉关键帧」三类上，第 29 行还要求
+    # 完全挤出证据表（实测未训练模型下 5 条证据里一条语音都没有）。而问题3
+    # 要求证据能落到「文本片段 / 语音时段 / 视觉关键帧」三类上，问题3还要求
     # 比较各模态的作用。故另外按模态各取 top-k 并列输出，并如实标注某模态
     # 确实没有可用槽（而不是用别的模态顶上）。
     per_mod: List[Tuple[int, int, float]] = []
@@ -304,8 +304,19 @@ def build_explanations(model, enc_np: Dict[str, np.ndarray],
             "loo_flip_text": att["modal_loo_flip"]["text"],
             "loo_flip_audio": att["modal_loo_flip"]["audio"],
             "loo_flip_vision": att["modal_loo_flip"]["vision"],
-            "dominant_modality_loo": att["dominant_modality"] or "",
-            "dominant_modality_drop": att["dominant_modality_by_drop"] or "",
+            # 三个「主要参考模态」判据并列输出。选哪一个是**判据问题**，不是对错
+            # 问题，所以不隐藏另外两个——三者不一致的样本恰好是最该被复查的样本。
+            #   _attention：归因口径，槽级注意力占比的 argmax
+            #   _kl       ：因果口径，KL(原分布‖掩蔽后分布) 的 argmax（本文采用）
+            #   _delta    ：因果口径，Δ=p(原类)−p_masked(原类) 的 argmax
+            # 用 _kl 而非 _delta 定序，是因为 Δ 可为负（拿掉某模态后原类概率反而
+            # 上升），max(Δ) 会把「拖后腿的模态」选成主模态，语义正好说反。
+            "dominant_modality_attention": max(
+                Q.MODALITIES,
+                key=lambda m: float(att["modal_share_attention"][Q.MODALITIES.index(m)]))
+            if float(sum(att["modal_share_attention"])) > 0 else "",
+            "dominant_modality_kl": att["dominant_modality"] or "",
+            "dominant_modality_delta": att["dominant_modality_by_drop"] or "",
             "vision_fully_missing": not bool(s.info.available["vision"]),
             "token_word_map": "weighted",
             "top_evidence": evid_records,
@@ -413,7 +424,7 @@ def write_explanation_cards(rows: Sequence[Dict], samples: Sequence["Q.Sample4"]
                       f"{r[f'modality_loo_kl_{m}']:.4f} | "
                       f"{'是' if r[f'loo_flip_{m}'] else '否'} |")
         L_.append("")
-        dom = r["dominant_modality_loo"] or "**未能确定**"
+        dom = r["dominant_modality_kl"] or "**未能确定**"
         L_.append(f"**主要参考模态**（留一口径）：**{dom}**\n")
 
         L_.append("**关键证据定位**\n")
@@ -575,7 +586,7 @@ def make_figures(rows: Sequence[Dict], samples: Sequence["Q.Sample4"],
             ax.set_xlim(0, max(tb.duration, 1e-3))
         axes[0].set_title(
             f"[{r['sample']}] pred={r['pred_polarity']}  intensity={r['pred_intensity']:.2f}  "
-            f"dominant(LOO)={r['dominant_modality_loo'] or 'n/a'}  "
+            f"dominant(KL)={r['dominant_modality_kl'] or 'n/a'}  "
             f"timebase={r['timebase_level']}", fontsize=10)
         axes[-1].set_xlabel(
             "time (s) —  bar height = slot attention (normalized within modality); "
@@ -732,7 +743,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     # 汇总：模态作用程度与主要参考模态的总体分布
     dom_counts: Dict[str, int] = {}
     for r in rows:
-        k = r["dominant_modality_loo"] or "undetermined"
+        k = r["dominant_modality_kl"] or "undetermined"
         dom_counts[k] = dom_counts.get(k, 0) + 1
     share_mean = {m: float(np.mean([r[f"modality_attention_{m}"] for r in rows]))
                   for m in Q.MODALITIES}
@@ -742,7 +753,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                    for m in Q.MODALITIES}
     loo_flip_n = {m: int(np.sum([r[f"loo_flip_{m}"] for r in rows]))
                   for m in Q.MODALITIES}
-    # 证据覆盖：每个模态是否都被某条样本的关键证据点到（赛题第 28 行的硬要求）
+    # 证据覆盖：每个模态是否都被某条样本的关键证据点到（赛题问题3的硬要求）
     evid_mod_cov = {m: int(np.sum([any(e["modality"] == m for e in r["top_evidence"])
                                    for r in rows])) for m in Q.MODALITIES}
     pred_dist: Dict[str, int] = {}
@@ -799,14 +810,40 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         for c in _an["conclusions"]:
             print(f"  · {c}")
 
-    # 两个口径是否一致：按样本统计 dominant(LOO) 与 attention 最大模态是否相同
-    agree = 0
-    for r in rows:
-        att_top = max(Q.MODALITIES, key=lambda m: r[f"modality_attention_{m}"])
-        if r["dominant_modality_loo"] == att_top:
-            agree += 1
-    summary["loo_vs_attention_agreement"] = {
-        "agree": agree, "total": len(rows), "ratio": round(agree / len(rows), 4)}
+    # 三套判据两两是否一致。本文的主结论（文本主导）若只靠单一判据支撑，
+    # 就无法区分「模型确实如此」与「判据选得讨巧」；三套判据两两一致才说明
+    # 结论对判据的选择不敏感。
+    cols = ("dominant_modality_attention", "dominant_modality_kl",
+            "dominant_modality_delta")
+    pair: Dict[str, Dict[str, object]] = {}
+    for i in range(len(cols)):
+        for j in range(i + 1, len(cols)):
+            a, b = cols[i], cols[j]
+            n = sum(1 for r in rows if r[a] == r[b] and r[a])
+            pair[f"{a.replace('dominant_modality_', '')}_vs_"
+                 f"{b.replace('dominant_modality_', '')}"] = {
+                "agree": n, "total": len(rows), "ratio": round(n / len(rows), 4)}
+    # 主判据（KL）与归因判据的一致率沿用旧字段名，保持既有引用不失效
+    main_pair = pair["attention_vs_kl"]
+    summary["loo_vs_attention_agreement"] = dict(main_pair)
+    summary["dominance_criteria"] = {
+        "definitions": {
+            "attention": "归因：槽级注意力占比的 argmax",
+            "kl": "因果：KL(原分布‖掩蔽后分布) 的 argmax（本文主判据）",
+            "delta": "因果：Δ=p(原类)−p_masked(原类) 的 argmax",
+        },
+        "pairwise": pair,
+        "why_kl": ("Δ 可为负——拿掉某模态后原类概率反而上升，说明该模态在被冗余"
+                   "补偿甚至拖后腿；按 max(Δ) 定序会把这类模态选成主模态，语义"
+                   "说反。KL 恒非负，故用它作主判据。"),
+        "disagreement_samples": [
+            {"sample": r["sample"], "attention": r["dominant_modality_attention"],
+             "kl": r["dominant_modality_kl"], "delta": r["dominant_modality_delta"],
+             "loo_delta": {m: r[f"modality_loo_{m}"] for m in Q.MODALITIES}}
+            for r in rows
+            if len({r["dominant_modality_attention"], r["dominant_modality_kl"],
+                    r["dominant_modality_delta"]}) > 1],
+    }
 
     if not args.no_figures:
         made = make_figures(rows, a4, tbs, args.out, alpha_all=alpha_all)
@@ -831,8 +868,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     print(f"  留一 KL 均值  ：{ {k: round(v,4) for k,v in loo_kl_mean.items()} }")
     print(f"  拿掉即翻转类别：{loo_flip_n}")
     print(f"  证据模态覆盖  ：{evid_mod_cov}（每模态被点到的样本数 / {len(rows)}）")
-    print(f"  主要参考模态分布：{dom_counts}")
-    print(f"  两口径一致率：{agree}/{len(rows)} = {agree/len(rows):.2%}")
+    print(f"  主要参考模态分布（KL 判据）：{dom_counts}")
+    print("  三套判据两两一致率：")
+    for k, v in summary["dominance_criteria"]["pairwise"].items():
+        print(f"    {k:22s} {v['agree']}/{v['total']} = {v['ratio']:.2%}")
+    _dis = summary["dominance_criteria"]["disagreement_samples"]
+    if _dis:
+        print(f"  判据不一致的样本 {len(_dis)} 条（已写入 q3_summary.json，"
+              f"这些正是最该复查的样本）：")
+        for d in _dis:
+            print(f"    样本 {d['sample']}: 归因={d['attention']} "
+                  f"KL={d['kl']} Δ={d['delta']}  "
+                  f"Δ值={ {m: round(v,4) for m, v in d['loo_delta'].items()} }")
     print(f"  视觉整段缺失样本：{summary['vision_fully_missing_samples']}")
     print(f"\n产物目录：{args.out}")
     return 0

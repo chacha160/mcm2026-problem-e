@@ -139,7 +139,7 @@ except Exception as _exc:  # noqa: BLE001
 
 # ==================== 遗留常量（已无任何代码使用，勿据此判断路径有效性）====================
 # 下面三条属于**已删除的上一版流水线**（extractors/ + main.py + alignment.py + report.py）：
-#   · data/output_features/ 是空目录（0 文件），feature_summary.csv 从未由当前流水线写出；
+#   · data/output_features/ 目录已删除，feature_summary.csv 从未由当前流水线写出；
 #   · data/temp_audio/ 也不会再出现——现流水线用 ffmpeg 管道直接解码到内存，不落临时 wav
 #     （原因见 unaligned_common.py 的说明：按 clip_id 命名的临时 wav 会跨视频互相覆盖）。
 # 保留它们只是为了让 check_data.py 之类的诊断脚本仍可 import 而不报 AttributeError。
@@ -147,20 +147,23 @@ except Exception as _exc:  # noqa: BLE001
 #   data/unaligned_features/{text,audio,vision}/<sample_id>.npz  未对齐特征
 #   data/aligned/<sample_id>.npz 与 data/aligned/aligned_50.npz   对齐结果
 #   data/q1_delivery/                                            问题一交付物
-OUTPUT_DIR = r"D:\23届建模\data\output_features"      # 遗留，不再写出
+OUTPUT_DIR = r"D:\23届建模\data\output_features"      # 遗留常量：目录已删，保留只为诊断脚本 import 不报错
 TEMP_AUDIO_DIR = r"D:\23届建模\data\temp_audio"       # 遗留，不再写出
 SUMMARY_CSV = os.path.join(OUTPUT_DIR, "feature_summary.csv")   # 遗留，不再写出
 
-# 日志目录（在用）
-LOG_DIR = r"D:\23届建模\code\logs"
+# 日志目录（在用）。按本文件位置推导，不写死盘符——
+# 历史版本曾硬编码绝对路径，换机器/换盘符后 logger 会直接失效。
+LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
 
 # ==================== 模型与工具配置 ====================
 # 文本预训练模型（Hugging Face 模型名）
 TEXT_MODEL_NAME = "roberta-base"  # 备选: "bert-base-uncased"
 # 文本最大子词长度（RoBERTa 位置编码上限为 514）
 TEXT_MAX_LENGTH = 512
-# 文本时序对齐策略：
-#   "word_interpolate"   —— 子词先按词求平均得到「词」向量，再线性插值到50步（本题要求，默认）
+# 文本时序对齐策略 —— 当前流水线不使用：本管线先出变长词级特征，
+# 再由 align_multimodal.align_series 的 time_bin 对齐，不在此处插值。
+# 下列取值属上一版「直接对齐」流水线，保留仅为记录偏离与历史对照：
+#   "word_interpolate"   —— 子词先按词求平均得到「词」向量，再线性插值到50步
 #   "token_interpolate"  —— 不做词级平均，直接对子词序列插值（消融对比用）
 #   "sentence_pooling"   —— 全句均值向量复制50份（消融对比用）
 TEXT_ALIGN_STRATEGY = "word_interpolate"
@@ -192,7 +195,9 @@ VISION_PROJECTION_SEED = 42
 
 # ==================== 音频提取参数 ====================
 AUDIO_SAMPLE_RATE = 16000   # 重采样目标频率
-AUDIO_HOP_LENGTH = 512      # 帧移（samples），@16kHz ≈ 32ms
+# 当前流水线不使用：unaligned_audio.py 按 hop = round(sr/rate_hz) = 16000/20
+# 取 800 样点（50 ms）。保留此常量只为在交付凭据里如实记录这处声明与实际的偏离。
+AUDIO_HOP_LENGTH = 512      # （未生效）帧移（samples），按此值 @16kHz ≈ 32ms
 AUDIO_WIN_LENGTH = 1024     # 窗长（samples），@16kHz = 64ms
 AUDIO_N_FFT = 1024          # FFT点数
 AUDIO_N_MFCC = 20           # MFCC维数
@@ -208,7 +213,9 @@ AUDIO_VAD_REL_RATIO = 0.05
 AUDIO_VAD_MIN_VOICED_RATIO = 0.02
 
 # ==================== 视频提取参数 ====================
-VIDEO_FPS = 25              # 抽帧帧率
+# 当前流水线不使用：视觉抽帧速率由 unaligned_vision.OFFICIAL_RATE_HZ = 15.0 决定，
+# 不取自 config。同上，保留只为记录偏离。
+VIDEO_FPS = 25              # （未生效）抽帧帧率
 VIDEO_FACE_SIZE = 160       # 人脸图像缩放尺寸
 
 # ==================== 可复现性配置 ====================

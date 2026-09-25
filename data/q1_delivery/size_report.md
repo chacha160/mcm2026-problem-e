@@ -11,9 +11,9 @@
 |---|---|
 | anomaly_ledger.csv | 0.033 |
 | features_q1.npz | 11.635 |
-| alignment_q1.json | 0.758 |
+| alignment_q1.json | 0.759 |
 | summary_q1.csv | 0.044 |
-| extract_config.json | 0.009 |
+| extract_config.json | 0.010 |
 | size_budget.csv | 0.001 |
 | typical_samples.csv | 0.001 |
 | figures/-a55Q6RWvTA_3_timeline.png | 0.841 |
@@ -21,7 +21,7 @@
 | figures/-s9qJ7ATP7w_8_timeline.png | 0.648 |
 | figures/-UuX1xuaiiE_1_timeline.png | 0.752 |
 | figures/-ri04Z7vwnc_0_timeline.png | 0.325 |
-| **合计** | **15.701** |
+| **合计** | **15.702** |
 
 余量 34.30 MB（上限 50 MB）。
 

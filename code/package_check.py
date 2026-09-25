@@ -2,10 +2,10 @@
 """
 package_check.py —— 提交体积核算与赛题红线扫描
 
-赛题第 54–56 行要求：全部附件合计不超过 50 MB，且不得含身份信息。
-第 10 行 R1：不替换、不增加、不删除、不修改任何样本或标签。
-第 17 行 R2：训练/验证/专项测试使用同一特征版本与同一输入接口。
-第 23 行 R3：只能使用 CMU-MOSEI 系列数据。
+赛题「四、结果与提交说明·（二）附件提交要求」：全部附件合计不超过 50 MB，且不得含身份信息。
+「二、数据说明」附件1的注 R1：不替换、不增加、不删除、不修改任何样本或标签。
+「二、数据说明」附件2/3/4的注 R2：训练/验证/专项测试使用同一特征版本与同一输入接口。
+「五、补充说明·1.数据与工具使用规范」R3：只能使用 CMU-MOSEI 系列数据。
 
 本脚本不产生新模型，只做**核账**：把将要随论文提交的产物逐个量体积、
 扫描敏感内容，并输出一份可引用的核算表。它刻意不统计原始数据
@@ -41,6 +41,11 @@ INCLUDED_DIRS = (
     ("q1_delivery", os.path.join("data", "q1_delivery")),
     ("q2", os.path.join("data", "q2")),
     ("q3", os.path.join("data", "q3")),
+    # audit 步的产物：缺失结构审计。它是问题二「缺失从何而来」的唯一凭据，
+    # 论文 5.2.1 与附录引用它，故必须计入体积——漏计会让「≤50 MB」的结论失去依据。
+    ("q2q3_audit", os.path.join("data", "q2q3")),
+    # 打包核验自身的产物（体积台账、核验回执）
+    ("package_check", os.path.join("data", "package_check")),
 )
 # 代码与文档也要随论文提交，但多数赛制把代码单独列；这里单列出来供选择
 CODE_DIRS = (("code", "code"),)
@@ -245,7 +250,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     if args.sanitize:
         print("\n[脱敏] 就地改写交付物中的本机绝对路径")
-        san = sanitize_delivery([r[1] for r in INCLUDED_DIRS])
+        # 脱敏范围必须与下面的身份扫描范围**一致**（交付物目录 + 代码目录）。
+        # 曾只覆盖交付物目录，于是 code/logs/*.log 里的本机路径被扫描检出、
+        # 却永远轮不到脱敏——「已加 --sanitize 但仍报身份信息=需处理」的假阳性。
+        san = sanitize_delivery([r[1] for r in INCLUDED_DIRS] + [r[1] for r in CODE_DIRS])
         print(f"  改写 {san['files_changed']} 个文件")
         for d in san["details"]:
             print(f"    {d['file']}  （{d['replacements']} 处）")

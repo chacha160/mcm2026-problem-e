@@ -1,0 +1,38 @@
+========================================================================
+问题二：缺失模态鲁棒情感预测
+========================================================================
+附件2：train=3395  valid=728  test=727
+验证集平凡基线：MAE(预测训练均值)=0.598  Acc(预测多数类 Positive)=0.464
+
+[文本蒸馏表] 7569 个词元 id，覆盖词元区 100.0% 的词元；768→64 维
+  仅由附件2 train 统计（验证/测试/附件3/附件4 未参与），缓存于 ../data/q2_ablation\text_emb_table.npz
+
+[结构消融] 探针 = text缺失/middle/medium；变体 = full/no_state_emb/no_obs_mask/union_mask/no_md
+  五个变体共用同一划分、同一种子、同一轮数与同一蒸馏初值；只写 structure_ablation.csv，不改动交付模型与既有产物。
+
+[结构消融] full —— 完整（交付配置）
+D:\23届建模\code\q2_model.py:253: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.encoder = nn.TransformerEncoder(enc_layer, num_layers=cfg.n_layers)
+    干净 valid: macroF1=0.5256 MAE=0.4993  |  探针 valid: macroF1=0.5181 MAE=0.5312 r=0.3900
+
+[结构消融] no_state_emb —— 去掉缺失状态嵌入
+D:\23届建模\code\q2_model.py:253: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.encoder = nn.TransformerEncoder(enc_layer, num_layers=cfg.n_layers)
+    干净 valid: macroF1=0.5334 MAE=0.5005  |  探针 valid: macroF1=0.5142 MAE=0.5328 r=0.3826
+
+[结构消融] no_obs_mask —— 注意力不屏蔽缺失槽
+    干净 valid: macroF1=0.5387 MAE=0.5276  |  探针 valid: macroF1=0.5184 MAE=0.5363 r=0.3685
+
+[结构消融] union_mask —— 掩码退化为跨模态并集
+    干净 valid: macroF1=0.5338 MAE=0.4957  |  探针 valid: macroF1=0.4665 MAE=0.5640 r=0.3611
+
+[结构消融] no_md —— 去掉训练期模态丢弃
+    干净 valid: macroF1=0.5275 MAE=0.5028  |  探针 valid: macroF1=0.5260 MAE=0.5282 r=0.3791
+
+  [相对完整配置的差值（探针 valid）]  基准 macroF1=0.5181
+    no_state_emb   ΔmacroF1=-0.0039  ΔMAE=+0.0016
+    no_obs_mask    ΔmacroF1=+0.0003  ΔMAE=+0.0051
+    union_mask     ΔmacroF1=-0.0516  ΔMAE=+0.0328
+    no_md          ΔmacroF1=+0.0078  ΔMAE=-0.0031
+
+产物：../data/q2_ablation\structure_ablation.csv

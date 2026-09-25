@@ -25,9 +25,9 @@ q1_fusion.py —— 问题一交付物的融合增强层（**只读既有产物�
 
 赛题对应
 --------
-第 22 行「时序组织可核验性」→ 三层语义把「有没有这一段」与「这一段有没有内容」分开，
+赛题问题1的「时序组织的可核验性」→ 三层语义把「有没有这一段」与「这一段有没有内容」分开，
     使 `slot_valid=1` 不再被误读成「该模态可用」；
-第 10 行 R1（不增删改样本与标签）→ 本模块只读，并对 `counts_as_deletion ≡ 0` 再次断言。
+「二、数据说明」附件1的注 R1（不增删改样本与标签）→ 本模块只读，并对 `counts_as_deletion ≡ 0` 再次断言。
 """
 
 from __future__ import annotations
@@ -132,9 +132,9 @@ def build_validity_layers() -> Tuple[List[Dict], Dict]:
 
     rows: List[Dict] = []
     for sid, a in samples.items():
-        row = summary.get(sid.replace("_", "_", 1), None)
-        # summary 的 sample_id 用下划线连接，alignment 的键也是下划线形式，直接查
-        row = summary.get(sid) or row
+        # summary 的 sample_id 与 alignment 的键都是下划线形式，先直接查；
+        # 查不到再退回「把官方 `video$_$clip` 形式归一成下划线」的写法。
+        row = summary.get(sid) or summary.get(str(sid).replace("$_$", "_"))
         if row is None:
             continue
 

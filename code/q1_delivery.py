@@ -594,13 +594,23 @@ def build_extract_config(unaligned_root: str, out_path: str, deep_hash: bool = F
         "audio_hop_length": {
             "config_declared": int(config.AUDIO_HOP_LENGTH),
             "actual_effective": int(ameta["hop_length"]),
-            "explanation": "config.AUDIO_HOP_LENGTH=512 **从未被使用**。"
+            "explanation": "config.AUDIO_HOP_LENGTH=512 未被任何计算路径使用："
+                           "全库仅本处引用它，用于记录这处声明与实际的偏离。"
                            "unaligned_audio.py 用 hop = round(sr/rate_hz) = 16000/20 = 800。"
                            "交付参数以 actual_effective 为准。"},
         "text_align_strategy": {
             "config_declared": str(config.TEXT_ALIGN_STRATEGY),
             "actual_effective": "由 align_multimodal.align_series 独立完成（time_bin）",
-            "explanation": "该常量属于上一版「直接对齐」流水线，当前管线先出变长特征再单独对齐。"},
+            "explanation": "该常量属于上一版「直接对齐」流水线，当前管线先出变长特征再单独对齐；"
+                           "同样仅本处引用，无计算路径依赖。"},
+        "video_fps": {
+            "config_declared": float(config.VIDEO_FPS),
+            "actual_effective": float(vmeta.get("target_fps", 0)),
+            "realized_fps": float(vmeta.get("realized_fps", 0)),
+            "explanation": "config.VIDEO_FPS=25 未被任何计算路径使用：视觉抽帧速率由 "
+                           "unaligned_vision.OFFICIAL_RATE_HZ=15.0 决定（该常量是模块级常量，"
+                           "不取自 config）；实测抽帧率为 realized_fps。容器标称 nominal_fps "
+                           "只作记录，不参与抽帧，故三者互不相等是预期行为。"},
     }
 
     cfg = {
