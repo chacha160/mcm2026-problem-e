@@ -58,26 +58,18 @@ dist/
 # 可重跑的提取/对齐中间产物（14 + 17 MB；q1raw 约 35 分钟）
 data/unaligned_features/
 data/aligned/
-# 预研模型产物（268 KB，非赛题问题2 口径）
-data/model/
-# 结构消融的独立重跑产物，与 data/q2/ 重复（1.7 MB）
-data/q2_ablation/
 
 # 一次性核验的旧快照
 data/_backup_20260924/
-data/_determinism_check/
 
 # 论文只引用 timeline 中的 1 对；余 3 对不入库
 data/timeline/-3g5yACwYnA_13_*
 data/timeline/-3g5yACwYnA_3_*
 data/timeline/-UacrmKiTn4_10_*
 
-# 提交附件包：由 `python _pack_attachments.py` 从 data/ 与 code/ 复制而来（约 42 MB），
-# 与源逐字节相同，入库等于把同一批交付物存两遍。生成凭据是包内的 `清单.md`。
-提交包/
-
-# 问题一提交包：同上一条的理由，只是换成了 `python _make_q1_submit.py` 生成
-# （19 MB / 128 个文件，同样是对 data/ 与 code/ 的复制）。跑一遍脚本即可原样重建。
+# 问题一提交包：由 `python _make_q1_submit.py` 从 data/ 与 code/ 复制而来
+# （19 MB / 128 个文件），与源逐字节相同，入库等于把同一批交付物存两遍。
+# 跑一遍脚本即可原样重建。
 问题一提交/
 
 # v2 提取/对齐的按样本缓存（7 MB），供 `--overwrite` 缺省时跳过重算；
