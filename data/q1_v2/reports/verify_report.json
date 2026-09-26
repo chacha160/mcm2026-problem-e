@@ -1,0 +1,413 @@
+{
+  "schema_version": "q1v2-feature-v1.0",
+  "generated_at_utc": "2026-09-26T15:13:18.893806+00:00",
+  "quick": false,
+  "inputs": {
+    "manifest_sha256": "5493c1b75f4dc0b3bf4f47e223cd6e33d4df884e13640fe505baff5818a2cda4",
+    "config_sha256": "2f9a7e731fd744f40638f1f66ba49efd67f3dae0b2a875dfd67389bcda423a36",
+    "n_feature_files": 100
+  },
+  "all_passed": true,
+  "n_checks": 16,
+  "n_executed": 15,
+  "n_skipped": 1,
+  "n_passed": 15,
+  "n_failed": 0,
+  "total_assertions_checked": 20686,
+  "total_assertions_failed": 0,
+  "skipped_codes": [
+    "V12"
+  ],
+  "checks": [
+    {
+      "code": "V1",
+      "name": "双向集合相等（输入/登记/两张表/产物/日志）",
+      "passed": true,
+      "checked": 300,
+      "failed": 0,
+      "detail": "登记 100 / 产物 100 / manifest 100 / results 100",
+      "evidence": {
+        "problems": [],
+        "n_registry": 100,
+        "n_features": 100,
+        "n_manifest": 100,
+        "n_results": 100,
+        "n_logs": 100
+      },
+      "caveat": ""
+    },
+    {
+      "code": "V2",
+      "name": "NPZ schema 自洽（字段/形状/dtype/掩码一致）",
+      "passed": true,
+      "checked": 8200,
+      "failed": 0,
+      "detail": "100 个 NPZ 与 schema 比对",
+      "evidence": {
+        "problems": []
+      },
+      "caveat": ""
+    },
+    {
+      "code": "V3",
+      "name": "词单元可重建（1926 口径的独立复算）",
+      "passed": true,
+      "checked": 400,
+      "failed": 0,
+      "detail": "100 条文本按 source_words 重算并逐元素比对",
+      "evidence": {
+        "expected_word_units": 1926,
+        "expected_whitespace_chunks": 1932,
+        "problems": []
+      },
+      "caveat": "词单元文本与字符区间由 source_words 从 official_text 纯函数重算；槽→词映射落盘为 aligner_slot_to_word_index（对照实现的 P1-02 缺口处），块→词映射是文本的纯函数故不落盘、核验时现场复算"
+    },
+    {
+      "code": "V4",
+      "name": "词级聚合可回溯重算（CSR 回捞 + 独立重选）",
+      "passed": true,
+      "checked": 3006,
+      "failed": 0,
+      "detail": "3006 个有效词用 CSR 回捞源观测重算 mean/std(ddof=0)，并独立按 s<=c<e 重选索引比对",
+      "evidence": {
+        "rtol": 1e-05,
+        "atol": 1e-06,
+        "problems": []
+      },
+      "caveat": "无效（word_time_valid=0）的词特征整行为零，不参与重算——本套代码不为无区间词找邻近观测顶替"
+    },
+    {
+      "code": "V5",
+      "name": "时间轴一致性（共享 t0 / 支撑区间 / 覆盖交叠）",
+      "passed": true,
+      "checked": 1000,
+      "failed": 0,
+      "detail": "100 个样本的共享原点、LLD 时间标签、视觉支撑区间、词区间包含关系",
+      "evidence": {
+        "problems": []
+      },
+      "caveat": "LLD 的 start/end 是 openSMILE 返回值，首末窗被夹到切片边界，故称「输出时间标签」而非物理分析窗"
+    },
+    {
+      "code": "V8",
+      "name": "产物新鲜度（缓存 → 产物 → 表）",
+      "passed": true,
+      "checked": 104,
+      "failed": 0,
+      "detail": "比对 mtime 链：.cache/text、.cache/align < features < manifest.csv",
+      "evidence": {
+        "problems": [],
+        "n_features": 100,
+        "previous_report_matches_current_manifest": true
+      },
+      "caveat": "续跑模式下缓存早于产物是预期状态，此处检的是反向（缓存新于产物）。「报告晚于 manifest」不作为判据（同一次运行里自指，只会产生假警报）；改记上一轮报告里的 manifest 摘要是否与当前一致，仅供人读。"
+    },
+    {
+      "code": "V9",
+      "name": "跨样本查重（重复必须可解释）",
+      "passed": true,
+      "checked": 299,
+      "failed": 0,
+      "detail": "三模态 raw 数组按 md5 分组，重复组须有数字静音 / 全零视觉 / 同源片段之一的解释",
+      "evidence": {
+        "summary": {
+          "audio": {
+            "n_unique": 100,
+            "n_duplicate_groups": 0,
+            "n_unexplained_groups": 0
+          },
+          "vision": {
+            "n_unique": 99,
+            "n_duplicate_groups": 1,
+            "n_unexplained_groups": 0
+          },
+          "text": {
+            "n_unique": 100,
+            "n_duplicate_groups": 0,
+            "n_unexplained_groups": 0
+          }
+        },
+        "unexplained": []
+      },
+      "caveat": "重复本身不是缺陷——同一段视频的多个切片会合法地产生相同数组"
+    },
+    {
+      "code": "V10",
+      "name": "异常只标注不删除（counts_as_deletion ≡ 0）",
+      "passed": true,
+      "checked": 229,
+      "failed": 0,
+      "detail": "登记 100 条 / 产物 100 个 / 台账 29 行，全部 counts_as_deletion=0",
+      "evidence": {
+        "problems": [],
+        "n_ledger_rows": 29,
+        "n_registry": 100,
+        "n_features": 100
+      },
+      "caveat": "异常阈值永不作为删除样本或标签的理由"
+    },
+    {
+      "code": "V11",
+      "name": "路由可复算（纯函数重放逐字段比对）",
+      "passed": true,
+      "checked": 700,
+      "failed": 0,
+      "detail": "100 个样本用落盘标量重跑 route_sample，比对 7 个字段；并断言 content_assertion≡0、audio_speech_valid≠1、未发出禁用类别",
+      "evidence": {
+        "problems": []
+      },
+      "caveat": "路由是纯函数，故结论可复算；这正是 q1v2_route 不含任何 IO 的原因"
+    },
+    {
+      "code": "V13",
+      "name": "对齐结构：文本层硬断言 + 对齐器规模对照实现",
+      "passed": true,
+      "checked": 5787,
+      "failed": 0,
+      "detail": "硬：词单元 1926=1926、空白块 1932=1932、mapping_fail 0=0、无槽词 0=0、有效 1719+零时长 207=词单元。对照实现：槽 1929（对照实现的 1926）、零时长词 207（对照实现的 161）、含零时长词样本 53（对照实现的 37）",
+      "evidence": {
+        "sum_word_units": 1926,
+        "sum_whitespace_chunks": 1932,
+        "sum_aligner_slots": 1929,
+        "sum_mapping_fail": 0,
+        "n_words_without_slot": 0,
+        "sum_structurally_valid_words": 1719,
+        "sum_zero_duration_word_count": 207,
+        "n_samples_with_zero_duration_words": 53,
+        "hard_mismatch": [],
+        "differences_vs_reference": [
+          {
+            "field": "sum_aligner_slots",
+            "measured": 1929,
+            "control_impl_value": 1926,
+            "delta": 3,
+            "n_samples_affected": 3,
+            "samples": [
+              {
+                "sample_key": "-dxfTGcXJoc$_$0",
+                "n_official_words": 40,
+                "n_aligner_slots": 41
+              },
+              {
+                "sample_key": "-HwX2H8Z4hY$_$2",
+                "n_official_words": 7,
+                "n_aligner_slots": 8
+              },
+              {
+                "sample_key": "-wny0OAz3g8$_$1",
+                "n_official_words": 22,
+                "n_aligner_slots": 23
+              }
+            ],
+            "attribution": "本套代码跑的是自己这一次冻结对齐（alignment_source=q1v2_own_stable_ts_run）；对照实现复用了旧 alignment trace（其 model_assets.json 记 stable_ts_alignment_reused_from_audit: true），且其 alignment 后处理脚本未随包交付（对照实现自报 P1-02 未闭合）。多出的槽源于对齐器把一个官方词切成两段——本实现的词区间取该词**全部槽的并集** [min(start), max(end)]，故不丢观测。mapping_fail=0 且无槽词=0 表明每个官方词都被覆盖。",
+            "impact": "无：词级数组长度由词单元数决定，槽数只影响区间并集的取法"
+          },
+          {
+            "field": "n_samples_with_zero_duration_words",
+            "measured": 53,
+            "control_impl_value": 37,
+            "soft_range": [
+              30,
+              44
+            ],
+            "n_samples_with_all_words_zero_duration": 3,
+            "all_zero_duration_samples": [
+              {
+                "sample_key": "-mJ2ud6oKI8$_$1",
+                "zero_duration_words": 13,
+                "n_official_words": 13,
+                "audio_speech_valid": 0
+              },
+              {
+                "sample_key": "-mJ2ud6oKI8$_$2",
+                "zero_duration_words": 11,
+                "n_official_words": 11,
+                "audio_speech_valid": 0
+              },
+              {
+                "sample_key": "-ri04Z7vwnc$_$0",
+                "zero_duration_words": 8,
+                "n_official_words": 8,
+                "audio_speech_valid": -1
+              }
+            ],
+            "attribution": "零时长词集中在无语音样本：本套对齐固定 remove_instant_words=False（保留瞬时词），故说话人为空的片段必然产出一批零时长词。全部词都零时长的样本共 3 条，是这一部分的来源。对照实现的 37 来自它复用的旧 trace，两者不可互引。"
+          }
+        ]
+      },
+      "caveat": "**对对照实现的数不做断言**：槽数取决于这一次对齐运行，对照实现的 1926 来自它复用的旧 trace，我们的 1929 来自本次冻结运行——把后者写成断言等于用一次运行结果冒充客观约束。真正可断言的是文本层纯函数（1926 / 1932）与零失败性质。槽数多于词数是正常结构：一个官方词可被切成两段，本实现取并集"
+    },
+    {
+      "code": "M1",
+      "name": "媒体全量硬锚点（帧数 / 人脸帧 / 零面部样本数）",
+      "passed": true,
+      "checked": 3,
+      "failed": 0,
+      "detail": "视频帧 23241（硬 23241）/ 人脸帧 16806（硬 16806）/ 零面部样本 24（硬 24）",
+      "evidence": {
+        "sum_video_frame_count": 23241,
+        "sum_face_detected_frame_count": 16806,
+        "n_samples_without_face": 24,
+        "problems": []
+      },
+      "caveat": "三个数取自对照实现的审计合计，是本套代码独立重跑的对照硬锚点"
+    },
+    {
+      "code": "M2",
+      "name": "受保护基线未变（既有交付未被破坏）",
+      "passed": true,
+      "checked": 530,
+      "failed": 0,
+      "detail": "基线 530 个文件，新增 0 / 删除 0 / 实质改动 0 / 名单内重写 2（记录不判失败）",
+      "evidence": {
+        "unchanged": true,
+        "unchanged_strict": false,
+        "added": [],
+        "removed": [],
+        "changed": [],
+        "changed_volatile_by_design": [
+          {
+            "file": "data/q1_delivery/verify_report.json",
+            "reason": "v1 核验器 code/q1_verify.py 每次运行都会重写"
+          },
+          {
+            "file": "data/q1_delivery/verify_report.md",
+            "reason": "同上（同一份报告的 Markdown 版）"
+          }
+        ],
+        "volatile_keys_not_in_baseline": [],
+        "baseline_total_files": 530,
+        "current_total_files": 530
+      },
+      "caveat": "基线覆盖 data/q1_delivery、data/word_align、data/unaligned_features、data/aligned。差异按 VOLATILE_BY_DESIGN 分流：只在名单内的差异（如 v1 核验器自己重写的 verify_report）记录并归因，不判失败；任何其他文件的差异一律硬失败。"
+    },
+    {
+      "code": "V6",
+      "name": "外部 ffprobe 交叉核对（解码覆盖 vs 容器声明）",
+      "passed": true,
+      "checked": 100,
+      "failed": 0,
+      "detail": "100 条重跑 ffprobe；容差 0.15s。覆盖与容器时长**本就不必相等**（对照实现实测 6.800 vs 6.8667），此处核对的是二者相容而非相等",
+      "evidence": {
+        "problems": [],
+        "quick": false,
+        "packet_vs_frame": {
+          "note": "包数/帧数比值仅供观察：两者定义不同，不构成判据",
+          "n": 100,
+          "min": 1.0,
+          "max": 3.4198,
+          "n_below_one": 0
+        }
+      },
+      "caveat": ""
+    },
+    {
+      "code": "V7",
+      "name": "权重真实性（RoBERTa / MediaPipe / openSMILE / whisper）",
+      "passed": true,
+      "checked": 14,
+      "failed": 0,
+      "detail": "四项探针：RoBERTa 6 个文件逐字节 SHA + 掩码补全指纹、MediaPipe 枚举名单 + 真帧 detect、openSMILE 配置 SHA 与特征名顺序、whisper 检查点 SHA",
+      "evidence": {
+        "roberta_n_files": 6,
+        "roberta_model_safetensors_sha256": "5bde1d28afb363d0103324efeb5afc8b2b397fe5e04beabb9b1ef355255ade81",
+        "roberta_embedding_std": 0.13147923350334167,
+        "roberta_asset_identity_sha256": "283466c9ea44add5f597701949175c0d29c490bcb06e2369d9c92904c0a8870e",
+        "roberta_mask_probe": [
+          {
+            "prompt": "The capital of France is <mask>.",
+            "top": [
+              "Paris",
+              "Lyon"
+            ],
+            "expect": "Paris"
+          },
+          {
+            "prompt": "Paris is the capital of <mask>.",
+            "top": [
+              "France",
+              "Europe"
+            ],
+            "expect": "France"
+          },
+          {
+            "prompt": "Water freezes at zero degrees <mask>.",
+            "top": [
+              "Celsius",
+              "Fahrenheit",
+              "C",
+              "F",
+              "C"
+            ],
+            "expect": "Celsius"
+          }
+        ],
+        "blendshape_count": 52,
+        "blendshape_first_three": [
+          "_neutral",
+          "browDownLeft",
+          "browDownRight"
+        ],
+        "face_probe_source": "-yRb-Jum7EQ$_$1 第 26 帧",
+        "detected_category_count": 52,
+        "detected_first_three": [
+          "_neutral",
+          "browDownLeft",
+          "browDownRight"
+        ],
+        "opensmile_config_sha256": "ef451953badced2ed112ba4ffb997f9d2a7e7c444a09e8092665eadd9f24109e",
+        "whisper_sha256": "25a8566e1d0c1e2231d1c762132cd20e0f96a85d16145c3a00adf5d1ac670ead",
+        "problems": []
+      },
+      "caveat": "RoBERTa 强制 local_files_only=True，运行期零网络。本套的 roberta_asset_identity_sha256 是对 (model_id, revision, hidden_dim) 求的摘要，而 对照实现的同名字段是对逐文件 SHA 字典求的摘要——构造不同，数值不可互比；字节级身份由 roberta_model_sha256 承担。"
+    },
+    {
+      "code": "V14",
+      "name": "数字静音位精确复现（覆盖/窗数/逐采样全零）",
+      "passed": true,
+      "checked": 14,
+      "failed": 0,
+      "detail": "2 条数字静音样本：音频覆盖末端、LLD 窗数、词单元数、路由结论，并**真解码一遍**确认 int16 逐采样为零",
+      "evidence": {
+        "-mJ2ud6oKI8$_$1": {
+          "coverage_end": 6.0545,
+          "lld_frames": 601,
+          "words": 13,
+          "expected": {
+            "coverage_end": 6.0545,
+            "lld_frames": 601,
+            "words": 13
+          },
+          "nonzero_int16_samples": 0,
+          "n_samples": 96872
+        },
+        "-mJ2ud6oKI8$_$2": {
+          "coverage_end": 5.7016875,
+          "lld_frames": 566,
+          "words": 11,
+          "expected": {
+            "coverage_end": 5.7016875,
+            "lld_frames": 566,
+            "words": 11
+          },
+          "nonzero_int16_samples": 0,
+          "n_samples": 91227
+        },
+        "problems": []
+      },
+      "caveat": "这是最强的端到端复现锚点：它同时锁住解码路径、重采样与 openSMILE 窗口划分"
+    },
+    {
+      "code": "V12",
+      "name": "与对照路由对拍",
+      "passed": true,
+      "checked": 0,
+      "failed": 0,
+      "detail": "未提供外部对照文件，跳过（默认关闭）",
+      "evidence": {
+        "skipped": true
+      },
+      "caveat": "这是开发期回归核验，结果不进交付物"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+ "n_official_words": 25,
+ "n_aligned_words": 7,
+ "zero_duration_words": 2,
+ "coverage": 0.28,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 1.15,
+ "last_t": 3.0,
+ "span": 1.85,
+ "word_start_sec": [
+  1.15,
+  1.2,
+  1.2,
+  1.42,
+  2.16,
+  2.6,
+  3.0
+ ],
+ "word_end_sec": [
+  1.2,
+  1.2,
+  1.36,
+  1.94,
+  2.6,
+  3.0,
+  3.0
+ ],
+ "word_ts_sec": [
+  1.175,
+  1.2,
+  1.28,
+  1.68,
+  2.38,
+  2.8,
+  3.0
+ ],
+ "error": null,
+ "sample_id": "-iRBcNs9oI8_8",
+ "official_id": "-iRBcNs9oI8$_$8",
+ "duration_sec": 8.093,
+ "text_original": "I've drawn this man here, and if you can tell, he has a lot of big muscles, he looks very strong",
+ "word_source": "data/unaligned_features/text/-iRBcNs9oI8_8.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:35",
+ "mode": "clip_level"
+}

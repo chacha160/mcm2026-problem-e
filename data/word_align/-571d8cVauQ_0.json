@@ -1,0 +1,46 @@
+{
+ "n_official_words": 14,
+ "n_aligned_words": 5,
+ "zero_duration_words": 0,
+ "coverage": 0.3571,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 1.06,
+ "last_t": 2.04,
+ "span": 0.98,
+ "word_start_sec": [
+  1.06,
+  1.16,
+  1.26,
+  1.46,
+  1.78
+ ],
+ "word_end_sec": [
+  1.16,
+  1.26,
+  1.46,
+  1.78,
+  2.04
+ ],
+ "word_ts_sec": [
+  1.11,
+  1.21,
+  1.36,
+  1.62,
+  1.91
+ ],
+ "error": null,
+ "sample_id": "-571d8cVauQ_0",
+ "official_id": "-571d8cVauQ$_$0",
+ "duration_sec": 5.066667,
+ "text_original": "This is Rhett Reiger, White Caspian Studios on behalf of Expert Village.",
+ "word_source": "data/unaligned_features/text/-571d8cVauQ_0.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:01",
+ "mode": "clip_level"
+}

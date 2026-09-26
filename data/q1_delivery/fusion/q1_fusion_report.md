@@ -33,24 +33,25 @@
 ## 三、文本↔语音对应关系三态
 
 - 样本总数：100
-- `confirmed_match`：0
+- `confirmed_match`：7
 - `confirmed_mismatch`：5
-- `not_asserted`：95
+- `not_asserted`：88
 
 - 弱证据一致性检查通过：98/100（文本占用槽数 = 词数，且占用槽单调）
 
-### 为什么 `confirmed_match` 为 0
+### 为什么 `confirmed_match` 只有 7 条
 
-- 实测文本时间基准取值集合：`['uniform_assumption']`
-- 本批 100 条的文本时间基准全部是 `uniform_assumption`（词时间=(i+0.5)·T/W 均分），没有任何一条是真实测量的词时间。因此在本判定规则下 `confirmed_match` 结构性为 0——这不是缺陷，而是事实：**文本与语音的逐词对应关系在问题一交付里从未被真实测量过**。方案一自己在 meta.text_time_basis_warning 里也写明了这一点，但交付表里没有任何字段承载它，本层把这个差别显式化。
+- 实测文本时间基准取值集合：`['measured_forced_alignment', 'uniform_assumption']`
+- 本批 100 条里只有 7 条的文本时间基准是真实测量的（`measured_forced_alignment`），其余 93 条为 `uniform_assumption`（词时间=(i+0.5)·T/W 均分）。均匀假设档不构成「已确认对应」，故不计入 `confirmed_match`——这不是缺陷，而是事实：**多数样本的文本与语音逐词对应关系在问题一交付里没有被真实测量过**。实测档的准入判据是「官方每个词都被对齐到、无零时长词、区间不越界」，详见 data/word_align/ 与核验项 V13。（注意此处的时间基准分布与对应三态是**两个划分**：均匀假设 93 条，而 `not_asserted` 88 条还含证据不足者。）
 
 - 在无真实词时间的前提下仍可核验必要条件：文本占用槽数是否等于词数、占用槽是否单调。该检查只能证伪不能证真，故只作为补充标记，不把 not_asserted 升级为 confirmed_match。
 
 判定顺序为 mismatch > not_asserted > match：先排除结构性非法，再排除无证据样本，最后才允许下正面断言。
 
-意义：方案一把「文本时间基准 = 均匀假设」写进了 `meta.text_time_basis_warning`，
-但交付表里没有任何字段承载这个差别。三态分离后，
-**「已确认对应」的样本数是一个可引用的下界**，而不是把 100 条全算成已对齐。
+意义：本方案已把「时间基准是实测还是假设」逐样本落进 `alignment_mode` 字段
+（`measured_forced_alignment` 7 条 / `uniform_assumption` 93 条），故这一差别在交付表里是可查的、并由 V13 跨四份产物核验。
+在此之上再做三态分离，**「已确认对应」的样本数才是一个可引用的下界**，
+而不是把 100 条全算成已对齐——有字段承载差别，与敢不敢据此下断言，是两件事。
 
 ## 四、红线 R1 自检
 

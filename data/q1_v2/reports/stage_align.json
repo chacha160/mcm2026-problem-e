@@ -1,0 +1,14 @@
+{
+  "stage": "align",
+  "n_selected": 100,
+  "n_written": 98,
+  "n_skipped_existing": 2,
+  "n_failed": 0,
+  "sum_aligner_slots": 1929,
+  "sum_official_words": 1926,
+  "sum_mapping_fail": 0,
+  "sum_zero_duration_word_count": 207,
+  "n_samples_with_zero_duration_words": 53,
+  "runtime_sec": 99.1,
+  "failures": []
+}

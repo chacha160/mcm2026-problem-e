@@ -1,0 +1,37 @@
+{
+ "n_official_words": 27,
+ "n_aligned_words": 2,
+ "zero_duration_words": 1,
+ "coverage": 0.0741,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.0,
+ "last_t": 0.14,
+ "span": 0.14,
+ "word_start_sec": [
+  0.0,
+  0.14
+ ],
+ "word_end_sec": [
+  0.14,
+  0.14
+ ],
+ "word_ts_sec": [
+  0.07,
+  0.14
+ ],
+ "error": null,
+ "sample_id": "-9y-fZ3swSY_0",
+ "official_id": "-9y-fZ3swSY$_$0",
+ "duration_sec": 6.833333,
+ "text_original": "is, you can say, hey I really like baby skin, they are so soft, they don’t have any hair on their face",
+ "word_source": "data/unaligned_features/text/-9y-fZ3swSY_0.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:13",
+ "mode": "clip_level"
+}

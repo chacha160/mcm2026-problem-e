@@ -1,0 +1,43 @@
+{
+ "n_official_words": 16,
+ "n_aligned_words": 4,
+ "zero_duration_words": 2,
+ "coverage": 0.25,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.77,
+ "last_t": 0.98,
+ "span": 0.21,
+ "word_start_sec": [
+  0.77,
+  0.92,
+  0.98,
+  0.98
+ ],
+ "word_end_sec": [
+  0.92,
+  0.98,
+  0.98,
+  0.98
+ ],
+ "word_ts_sec": [
+  0.845,
+  0.95,
+  0.98,
+  0.98
+ ],
+ "error": null,
+ "sample_id": "-NFrJFQijFE_1",
+ "official_id": "-NFrJFQijFE$_$1",
+ "duration_sec": 5.746,
+ "text_original": "Structural mounts inside have to be properly stress analyzed so we make sure all that happens",
+ "word_source": "data/unaligned_features/text/-NFrJFQijFE_1.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:01",
+ "mode": "clip_level"
+}

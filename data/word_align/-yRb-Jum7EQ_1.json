@@ -1,0 +1,37 @@
+{
+ "n_official_words": 55,
+ "n_aligned_words": 2,
+ "zero_duration_words": 0,
+ "coverage": 0.0364,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.8,
+ "last_t": 1.46,
+ "span": 0.66,
+ "word_start_sec": [
+  0.8,
+  1.4
+ ],
+ "word_end_sec": [
+  1.4,
+  1.46
+ ],
+ "word_ts_sec": [
+  1.1,
+  1.43
+ ],
+ "error": null,
+ "sample_id": "-yRb-Jum7EQ_1",
+ "official_id": "-yRb-Jum7EQ$_$1",
+ "duration_sec": 29.288021,
+ "text_original": "it comes with the assistance and agitation of states and regimes, Yesterday Iran announced that it will finance the families of the terrorists and murderers this shows that Iran, even after the nuclear agreement, is continuing to aid terrorism, including Palestinian terrorism, Hezbollah terrorism and its assistance to Hamas.",
+ "word_source": "data/unaligned_features/text/-yRb-Jum7EQ_1.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:38",
+ "mode": "clip_level"
+}

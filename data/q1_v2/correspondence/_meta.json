@@ -1,0 +1,109 @@
+{
+  "schema_version": "q1v2-feature-v1.0",
+  "generated_at_utc": "2026-09-26T10:37:55.634368+00:00",
+  "tool": {
+    "python": "3.13.9",
+    "module": "code/q1v2_correspondence.py",
+    "note": "只读成品 NPZ，不读媒体、不加载模型，故耗时为秒级"
+  },
+  "selection": {
+    "mode": "auto",
+    "criteria": {
+      "词数区间": [
+        10,
+        30
+      ],
+      "人脸有效率下限": 0.9,
+      "三模态共同有效词占比下限": 0.8,
+      "得分定义": "同时含 ≥2 个 LLD 窗与 ≥2 个人脸帧的词数（降序）；同分按 sample_key 升序"
+    },
+    "selected": [
+      "-THoVjtIkeU$_$6",
+      "-dxfTGcXJoc$_$6",
+      "-wny0OAz3g8$_$7"
+    ]
+  },
+  "coordinate_note": "词区间与 raw_video_pts_sec 同在共享 presentation 时间轴上，可直接比较；raw_audio_lld_center_sec 由 openSMILE 按音频切片给出，本模块照 reaggregate_one 的写法用『词区间 − audio_presentation_coverage_sec[0]』与它比较。**本批 100 条样本的 shared_t0_sec 恒为 0，而 audio_presentation_coverage_sec[0] == shared_t0（V5 断言），故该偏移在本批上是空操作，两种口径数值重合——它未被本批数据区分，不声称已被验证。**",
+  "column_note": "n_face_frames / face_frame_range 只含参与 word_vision_feat 聚合的**人脸有效帧**；n_frames_in_span / frame_range_in_span 是该时段内的**全部帧**（含未检出人脸的帧）。两列并列，便于核对掩码语义。",
+  "files": [
+    {
+      "sample_key": "-THoVjtIkeU$_$6",
+      "csv": "-THoVjtIkeU___6_correspondence.csv",
+      "source_npz": "-THoVjtIkeU___6.npz",
+      "source_npz_sha256": "fa9bb31b4c44025edc922ce86602eccfec00b70ee66e7c2904f213429fd721b2",
+      "n_rows": 30,
+      "score": 29,
+      "n_words": 30,
+      "n_words_valid_time": 29,
+      "n_words_valid_text": 30,
+      "n_words_valid_audio": 29,
+      "n_words_valid_vision": 29,
+      "valid_length": 29,
+      "face_valid_ratio": 0.995850622406639,
+      "rows_with_mismatched_zero": [],
+      "rows_flagged_valid_but_all_zero": [],
+      "audio_offset_sec": 0.0,
+      "shared_t0_sec": 0.0,
+      "csr_check": {
+        "audio_csr_reproduced": 29,
+        "audio_csr_mismatch": [],
+        "vision_csr_reproduced": 29,
+        "vision_csr_mismatch": [],
+        "all_reproduced": true
+      }
+    },
+    {
+      "sample_key": "-dxfTGcXJoc$_$6",
+      "csv": "-dxfTGcXJoc___6_correspondence.csv",
+      "source_npz": "-dxfTGcXJoc___6.npz",
+      "source_npz_sha256": "3a79eb835599573b94332e20fcd47775154fd5d179fde1511d643fe3cfb5c434",
+      "n_rows": 27,
+      "score": 27,
+      "n_words": 27,
+      "n_words_valid_time": 27,
+      "n_words_valid_text": 27,
+      "n_words_valid_audio": 27,
+      "n_words_valid_vision": 27,
+      "valid_length": 27,
+      "face_valid_ratio": 0.9973753280839895,
+      "rows_with_mismatched_zero": [],
+      "rows_flagged_valid_but_all_zero": [],
+      "audio_offset_sec": 0.0,
+      "shared_t0_sec": 0.0,
+      "csr_check": {
+        "audio_csr_reproduced": 27,
+        "audio_csr_mismatch": [],
+        "vision_csr_reproduced": 27,
+        "vision_csr_mismatch": [],
+        "all_reproduced": true
+      }
+    },
+    {
+      "sample_key": "-wny0OAz3g8$_$7",
+      "csv": "-wny0OAz3g8___7_correspondence.csv",
+      "source_npz": "-wny0OAz3g8___7.npz",
+      "source_npz_sha256": "a8ca07c67e4fb1660b74f92d0015ea6500beb8c305da8347d011e4e8e11d13d3",
+      "n_rows": 29,
+      "score": 27,
+      "n_words": 29,
+      "n_words_valid_time": 28,
+      "n_words_valid_text": 29,
+      "n_words_valid_audio": 28,
+      "n_words_valid_vision": 27,
+      "valid_length": 27,
+      "face_valid_ratio": 0.95,
+      "rows_with_mismatched_zero": [],
+      "rows_flagged_valid_but_all_zero": [],
+      "audio_offset_sec": 0.0,
+      "shared_t0_sec": 0.0,
+      "csr_check": {
+        "audio_csr_reproduced": 28,
+        "audio_csr_mismatch": [],
+        "vision_csr_reproduced": 28,
+        "vision_csr_mismatch": [],
+        "all_reproduced": true
+      }
+    }
+  ],
+  "stale_removed": []
+}

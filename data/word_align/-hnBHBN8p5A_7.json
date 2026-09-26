@@ -1,0 +1,43 @@
+{
+ "n_official_words": 16,
+ "n_aligned_words": 4,
+ "zero_duration_words": 0,
+ "coverage": 0.25,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.32,
+ "last_t": 2.36,
+ "span": 2.04,
+ "word_start_sec": [
+  0.32,
+  0.52,
+  1.04,
+  1.06
+ ],
+ "word_end_sec": [
+  0.52,
+  1.04,
+  1.06,
+  2.36
+ ],
+ "word_ts_sec": [
+  0.42,
+  0.78,
+  1.05,
+  1.71
+ ],
+ "error": null,
+ "sample_id": "-hnBHBN8p5A_7",
+ "official_id": "-hnBHBN8p5A$_$7",
+ "duration_sec": 7.372,
+ "text_original": "Picture this, before we actually start hacking, we’re in a room formal setting",
+ "word_source": "data/unaligned_features/text/-hnBHBN8p5A_7.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:07",
+ "mode": "clip_level"
+}

@@ -2,13 +2,15 @@
 """
 run_unaligned_all.py —— 一键跑通「三模态分别提取（不对齐）→ 统一对齐 → 时间轴可视化」
 
-流水线四步（每一步都能单独重跑，产物各自独立）：
+流水线五步（每一步都能单独重跑，产物各自独立）：
     1) unaligned_text.py    文本 → 词级 RoBERTa 向量 (W, 768)，无时间槽
     2) unaligned_audio.py   语音 → 逐帧 74 维 @ 20 Hz + 实测 pts
     3) unaligned_vision.py  视觉 → 逐帧 35 维 @ 15 Hz + 实测 pts（人脸特征）
-    4) align_multimodal.py  三步产物 → 统一秒轴 → (50, D) 定长张量 + 槽↔时间映射
-    5) timeline_visualize.py（可选）画共享时间轴图 + 逐槽对应表
-    6) 问题一的验收（**可选、默认关闭**）：face_probe.py / q1_delivery.py / q1_verify.py
+    4) word_align.py        官方文本 → stable-ts 强制对齐 → 实测词时间 + 证据路由
+    5) align_multimodal.py  上述产物（含第 4 步的路由结论）→ 统一秒轴 → (50, D) 定长张量
+                            + 槽↔时间映射
+    6) timeline_visualize.py（可选）画共享时间轴图 + 逐槽对应表
+    7) 问题一的验收（**可选、默认关闭**）：face_probe.py / q1_delivery.py / q1_verify.py
        只读 1~5 步的产物，另写 data/q1_delivery/，不改动任何特征文件。
 
 用法：
@@ -16,12 +18,13 @@ run_unaligned_all.py —— 一键跑通「三模态分别提取（不对齐）�
     python run_unaligned_all.py --limit 3       # 先跑 3 条验证链路
     python run_unaligned_all.py --skip-vision   # 跳过最慢的视觉步骤
     python run_unaligned_all.py --timeline      # 跑完顺带出图
-    python run_unaligned_all.py --verify        # 跑完执行 12 项机器核验
+    python run_unaligned_all.py --verify        # 跑完执行 13 项机器核验
     python run_unaligned_all.py --deliver       # 跑完生成交付物（含人脸探测，约 +10 分钟）
 
 耗时参考（CPU，8 线程，本机实测）：
     文本 ~1.5 s/条；语音 ~1.5 s/条；视觉 ~135 ms/帧（全量约 11800 帧 ≈ 27 分钟）；
-    对齐 <1 s/条。全量合计约 35 分钟，视觉占绝大部分。
+    词对齐 ~0.8 s/条（本机 3 条实测；模型加载一次性约 6 s，首次另需下 base.en 权重约 140 MB）；
+    三模态对齐 <1 s/条。全量合计约 36 分钟，视觉占绝大部分。
 """
 
 from __future__ import annotations
@@ -101,6 +104,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p.add_argument("--skip-audio", action="store_true")
     p.add_argument("--skip-vision", action="store_true")
     p.add_argument("--skip-align", action="store_true")
+    p.add_argument("--skip-word-align", action="store_true",
+                   help="跳过 stable-ts 强制对齐：文本模态一律用均匀假设时间戳"
+                        "（无 stable-ts/openai-whisper 环境时的降级路径）")
     p.add_argument("--timeline", action="store_true", help="跑完自动为典型样本出时间轴图")
     p.add_argument("--threads", type=int, default=8, help="视觉推理线程数")
     p.add_argument("--sample-timeout", type=float, default=900.0,
@@ -151,11 +157,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             import unaligned_vision as M3
             steps.append(("视觉（35 维人脸特征 @ 15 Hz，不对齐）",
                           lambda: M3.run(samples, vout, overwrite=args.overwrite)))
+    # 词对齐必须排在「三模态对齐」之前：后者要读前者的路由结论来决定
+    # 文本模态用实测词时刻还是均匀假设。
+    wadir = os.path.join(root, "word_align")
+    if not args.skip_word_align and not args.skip_align:
+        import word_align as WA
+        steps.append(("文本强制对齐（stable-ts → 实测词时间 + 证据路由）",
+                      lambda: WA.run(samples, wadir, overwrite=args.overwrite)))
     if not args.skip_align:
         import align_multimodal as M4
         slots = int(args.slots or config.ALIGN_SEQ_LEN)
         steps.append(("三模态对齐（统一秒轴 → (50,D)）",
-                      lambda: M4.run(samples, uroot, adir, n_slots=slots)))
+                      lambda: M4.run(samples, uroot, adir, n_slots=slots,
+                                     word_align_dir=wadir if not args.skip_word_align else None,
+                                     word_align_enabled=not args.skip_word_align)))
 
     for i, (name, fn) in enumerate(steps, 1):
         t0 = time.time()
@@ -177,7 +192,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     # 这两步不产生任何特征、也不修改 data/unaligned_features 与 data/aligned，
     # 只读它们并另写 data/q1_delivery/。默认关闭是为了避免「跑一次流水线」
     # 顺带触发十几分钟的人脸探测与出图——它们有自己的入口，可随时单独跑：
-    #     python q1_verify.py       （12 项机器核验）
+    #     python q1_verify.py       （13 项机器核验）
     #     python q1_delivery.py     （四项交付物 + 台账 + 体积 + 五类典型样本）
     if args.verify or args.deliver:
         q1_out = os.path.join(root, "q1_delivery")

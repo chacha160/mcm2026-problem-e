@@ -1,0 +1,37 @@
+{
+ "n_official_words": 14,
+ "n_aligned_words": 2,
+ "zero_duration_words": 0,
+ "coverage": 0.1429,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 1.28,
+ "last_t": 1.4,
+ "span": 0.12,
+ "word_start_sec": [
+  1.28,
+  1.38
+ ],
+ "word_end_sec": [
+  1.38,
+  1.4
+ ],
+ "word_ts_sec": [
+  1.33,
+  1.39
+ ],
+ "error": null,
+ "sample_id": "-iRBcNs9oI8_7",
+ "official_id": "-iRBcNs9oI8$_$7",
+ "duration_sec": 4.104,
+ "text_original": "Well, for starters, let's look at the word \"power\"",
+ "word_source": "data/unaligned_features/text/-iRBcNs9oI8_7.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:31",
+ "mode": "clip_level"
+}

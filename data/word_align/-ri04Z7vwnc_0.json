@@ -1,0 +1,43 @@
+{
+ "n_official_words": 8,
+ "n_aligned_words": 4,
+ "zero_duration_words": 1,
+ "coverage": 0.5,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.0,
+ "last_t": 1.72,
+ "span": 1.72,
+ "word_start_sec": [
+  0.0,
+  0.46,
+  0.7,
+  1.72
+ ],
+ "word_end_sec": [
+  0.46,
+  0.7,
+  1.72,
+  1.72
+ ],
+ "word_ts_sec": [
+  0.23,
+  0.58,
+  1.21,
+  1.72
+ ],
+ "error": null,
+ "sample_id": "-ri04Z7vwnc_0",
+ "official_id": "-ri04Z7vwnc$_$0",
+ "duration_sec": 2.807,
+ "text_original": "going to get married or are already married",
+ "word_source": "data/unaligned_features/text/-ri04Z7vwnc_0.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:25",
+ "mode": "clip_level"
+}

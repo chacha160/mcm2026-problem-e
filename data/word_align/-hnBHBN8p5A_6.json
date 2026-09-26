@@ -1,0 +1,37 @@
+{
+ "n_official_words": 14,
+ "n_aligned_words": 2,
+ "zero_duration_words": 0,
+ "coverage": 0.1429,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.72,
+ "last_t": 2.26,
+ "span": 1.54,
+ "word_start_sec": [
+  0.72,
+  2.16
+ ],
+ "word_end_sec": [
+  2.16,
+  2.26
+ ],
+ "word_ts_sec": [
+  1.44,
+  2.21
+ ],
+ "error": null,
+ "sample_id": "-hnBHBN8p5A_6",
+ "official_id": "-hnBHBN8p5A$_$6",
+ "duration_sec": 6.401,
+ "text_original": "Discussion, how to discuss ideas and opinions more effectively than a native speaker",
+ "word_source": "data/unaligned_features/text/-hnBHBN8p5A_6.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:09",
+ "mode": "clip_level"
+}

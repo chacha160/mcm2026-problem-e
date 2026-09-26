@@ -1,0 +1,52 @@
+{
+ "n_official_words": 41,
+ "n_aligned_words": 7,
+ "zero_duration_words": 0,
+ "coverage": 0.1707,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.46,
+ "last_t": 1.74,
+ "span": 1.28,
+ "word_start_sec": [
+  0.46,
+  0.56,
+  0.7,
+  0.9,
+  1.18,
+  1.3,
+  1.64
+ ],
+ "word_end_sec": [
+  0.56,
+  0.7,
+  0.9,
+  1.06,
+  1.3,
+  1.64,
+  1.74
+ ],
+ "word_ts_sec": [
+  0.51,
+  0.63,
+  0.8,
+  0.98,
+  1.24,
+  1.47,
+  1.69
+ ],
+ "error": null,
+ "sample_id": "-dxfTGcXJoc_1",
+ "official_id": "-dxfTGcXJoc$_$1",
+ "duration_sec": 16.161003,
+ "text_original": "For the 10th straight year, some of Kentucky’s best and most innovative biotech companies and technologies were on display at the annual BIO International Convention, which I and other state officials attended this week in Chicago.",
+ "word_source": "data/unaligned_features/text/-dxfTGcXJoc_1.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:13",
+ "mode": "clip_level"
+}

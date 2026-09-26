@@ -1,0 +1,49 @@
+{
+ "n_official_words": 28,
+ "n_aligned_words": 6,
+ "zero_duration_words": 0,
+ "coverage": 0.2143,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.66,
+ "last_t": 2.62,
+ "span": 1.96,
+ "word_start_sec": [
+  0.66,
+  0.88,
+  1.0,
+  1.26,
+  1.8,
+  2.2
+ ],
+ "word_end_sec": [
+  0.88,
+  1.0,
+  1.22,
+  1.8,
+  2.2,
+  2.62
+ ],
+ "word_ts_sec": [
+  0.77,
+  0.94,
+  1.11,
+  1.53,
+  2.0,
+  2.41
+ ],
+ "error": null,
+ "sample_id": "-3g5yACwYnA_9",
+ "official_id": "-3g5yACwYnA$_$9",
+ "duration_sec": 8.816992,
+ "text_original": "We have many new opportunities through the way things have changed through the years, looking for new niche high-end, value-added products.",
+ "word_source": "data/unaligned_features/text/-3g5yACwYnA_9.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:31:45",
+ "mode": "clip_level"
+}

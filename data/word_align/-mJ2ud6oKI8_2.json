@@ -1,0 +1,46 @@
+{
+ "n_official_words": 11,
+ "n_aligned_words": 5,
+ "zero_duration_words": 5,
+ "coverage": 0.4545,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 5.702,
+ "last_t": 5.702,
+ "span": 0.0,
+ "word_start_sec": [
+  5.702,
+  5.702,
+  5.702,
+  5.702,
+  5.702
+ ],
+ "word_end_sec": [
+  5.702,
+  5.702,
+  5.702,
+  5.702,
+  5.702
+ ],
+ "word_ts_sec": [
+  5.702,
+  5.702,
+  5.702,
+  5.702,
+  5.702
+ ],
+ "error": null,
+ "sample_id": "-mJ2ud6oKI8_2",
+ "official_id": "-mJ2ud6oKI8$_$2",
+ "duration_sec": 5.731,
+ "text_original": "So physical therapists and chiropractors will do joint manipulations and mobilizations",
+ "word_source": "data/unaligned_features/text/-mJ2ud6oKI8_2.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:37",
+ "mode": "clip_level"
+}

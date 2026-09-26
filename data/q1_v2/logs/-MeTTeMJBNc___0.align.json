@@ -1,0 +1,19 @@
+{
+  "all_words_structurally_valid": false,
+  "common_end_sec": 9.2183125,
+  "common_start_sec": 0.0,
+  "mapping_fail_count": 0,
+  "mapping_method": "positional",
+  "mapping_status": "word_partial",
+  "n_aligner_slots": 21,
+  "n_official_words": 21,
+  "n_structurally_valid_words": 20,
+  "n_words_without_slot": 0,
+  "non_monotonic_word_count": 0,
+  "out_of_range_word_count": 0,
+  "sample_key": "-MeTTeMJBNc$_$0",
+  "some_words_structurally_valid": true,
+  "status": "PASS",
+  "zero_duration_slot_count": 1,
+  "zero_duration_word_count": 1
+}

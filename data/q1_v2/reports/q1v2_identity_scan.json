@@ -1,0 +1,11 @@
+{
+  "scanned_files": 435,
+  "scanned_npz_strings": 11826,
+  "n_hits": 0,
+  "hits": [],
+  "patterns": [
+    "[A-Za-z]:[\\\\/]+Users[\\\\/]+[^\\\\/\\s\\\"',;)]+",
+    "/home/[A-Za-z0-9_.-]+"
+  ],
+  "scope_note": "data/q1_v2/** 与 code/q1v2_*.py。**不含项目根目录下的既有 .md/.docx**（那属于既有交付的范围，不在本次 v2 之内）。"
+}

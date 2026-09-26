@@ -39,3 +39,11 @@ protobuf>=4.24.0
 
 # ---------- 人脸检测 (纯PyTorch，无需dlib) ----------
 facenet-pytorch>=2.5.0
+
+# ---------- 文本强制对齐（问题一：官方文本 → 实测逐词时间）----------
+# 仅 word_align.py 需要。缺这两项时可加 --skip-word-align 跳过该环节，
+# 文本模态一律退回均匀假设——形状与核验都不受影响，只是没有实测词时刻。
+stable-ts==2.19.1
+openai-whisper==20250625
+# Whisper 音频解码走 PyAV（与 unaligned_common.decode_audio 同一条路径）
+av>=12.0.0

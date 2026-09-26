@@ -1,0 +1,16 @@
+{
+  "n_samples": 100,
+  "roles": {
+    "long_duration_proxy": 10,
+    "ordinary_median_duration_proxy": 80,
+    "short_duration_proxy": 10
+  },
+  "assets_ok": true,
+  "protected_dirs": {
+    "data\\q1_delivery": 3,
+    "data\\word_align": 3,
+    "data\\unaligned_features": 3,
+    "data\\aligned": 3
+  },
+  "config_sha256": "2f9a7e731fd744f40638f1f66ba49efd67f3dae0b2a875dfd67389bcda423a36"
+}

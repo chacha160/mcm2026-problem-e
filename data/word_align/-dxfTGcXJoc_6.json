@@ -1,0 +1,52 @@
+{
+ "n_official_words": 31,
+ "n_aligned_words": 7,
+ "zero_duration_words": 0,
+ "coverage": 0.2258,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.56,
+ "last_t": 2.94,
+ "span": 2.38,
+ "word_start_sec": [
+  0.56,
+  0.78,
+  0.88,
+  1.14,
+  1.98,
+  2.08,
+  2.52
+ ],
+ "word_end_sec": [
+  0.78,
+  0.88,
+  1.14,
+  1.92,
+  2.08,
+  2.52,
+  2.94
+ ],
+ "word_ts_sec": [
+  0.67,
+  0.83,
+  1.01,
+  1.53,
+  2.03,
+  2.3,
+  2.73
+ ],
+ "error": null,
+ "sample_id": "-dxfTGcXJoc_6",
+ "official_id": "-dxfTGcXJoc$_$6",
+ "duration_sec": 12.735026,
+ "text_original": "Kentucky’s participation at the annual BIO International Convention is the primary means by which our high-tech companies and institutions can reach out to the global scientific community.",
+ "word_source": "data/unaligned_features/text/-dxfTGcXJoc_6.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:16",
+ "mode": "clip_level"
+}

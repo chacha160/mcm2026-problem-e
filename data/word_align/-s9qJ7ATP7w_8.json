@@ -1,0 +1,43 @@
+{
+ "n_official_words": 17,
+ "n_aligned_words": 4,
+ "zero_duration_words": 0,
+ "coverage": 0.2353,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.28,
+ "last_t": 0.86,
+ "span": 0.58,
+ "word_start_sec": [
+  0.28,
+  0.58,
+  0.66,
+  0.84
+ ],
+ "word_end_sec": [
+  0.58,
+  0.66,
+  0.84,
+  0.86
+ ],
+ "word_ts_sec": [
+  0.43,
+  0.62,
+  0.75,
+  0.85
+ ],
+ "error": null,
+ "sample_id": "-s9qJ7ATP7w_8",
+ "official_id": "-s9qJ7ATP7w$_$8",
+ "duration_sec": 3.294987,
+ "text_original": "\" And I said, \"Oh, make a profit, and all these other things",
+ "word_source": "data/unaligned_features/text/-s9qJ7ATP7w_8.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:35",
+ "mode": "clip_level"
+}

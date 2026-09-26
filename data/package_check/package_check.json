@@ -1,47 +1,73 @@
 {
   "limit_bytes": 52428800,
-  "deliverable_bytes": 37537885,
-  "deliverable_ratio": 0.715978,
-  "remaining_bytes": 14890915,
+  "limit_bytes_strict": 50000000,
+  "limit_note": "「50 MB」两种读法：宽松 50×1024²=52,428,800 B（执行口径），严格 50×10⁶=50,000,000 B（评审可能采用）。前者更宽松。",
+  "deliverable_bytes": 40612481,
+  "deliverable_ratio": 0.774622,
+  "deliverable_ratio_vs_strict": 0.81225,
+  "remaining_bytes": 11816319,
+  "remaining_bytes_strict": 9387519,
   "groups": [
     {
-      "group": "q1_delivery",
-      "path": "data\\q1_delivery",
+      "group": "q1_v2",
+      "path": "data\\q1_v2",
       "exists": 1,
-      "n_files": 27,
-      "bytes": 16089203
+      "n_files": 125,
+      "bytes": 19164936,
+      "excluded": [
+        ".cache",
+        "logs"
+      ]
     },
     {
       "group": "q2",
       "path": "data\\q2",
       "exists": 1,
       "n_files": 14,
-      "bytes": 11138755
+      "bytes": 11137253,
+      "excluded": []
     },
     {
       "group": "q3",
       "path": "data\\q3",
       "exists": 1,
       "n_files": 17,
-      "bytes": 10283745
+      "bytes": 10283240,
+      "excluded": []
     },
     {
       "group": "q2q3_audit",
       "path": "data\\q2q3",
       "exists": 1,
       "n_files": 1,
-      "bytes": 23848
+      "bytes": 23848,
+      "excluded": []
     },
     {
       "group": "package_check",
       "path": "data\\package_check",
       "exists": 1,
       "n_files": 2,
-      "bytes": 2334
+      "bytes": 3204,
+      "excluded": []
     }
   ],
-  "code_bytes": 1164706,
+  "code_bytes": 1718608,
   "identity_hits": [],
+  "identity_scan_scope": {
+    "delivery_dirs": [
+      "data\\q1_v2",
+      "data\\q2",
+      "data\\q3",
+      "data\\q2q3",
+      "data\\package_check"
+    ],
+    "code_dirs": [
+      "code"
+    ],
+    "n_non_deliverable_root_docs_scanned": 2,
+    "note": "根级非交付文档也纳入扫描（不计体积），否则「零命中」这句话对它们不成立；文件名不写入本报告。"
+  },
   "interface_check": {
     "expected_fields": [
       "text_bert",

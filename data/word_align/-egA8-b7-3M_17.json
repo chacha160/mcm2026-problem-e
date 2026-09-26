@@ -1,0 +1,49 @@
+{
+ "n_official_words": 19,
+ "n_aligned_words": 6,
+ "zero_duration_words": 1,
+ "coverage": 0.3158,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.52,
+ "last_t": 1.86,
+ "span": 1.34,
+ "word_start_sec": [
+  0.52,
+  0.72,
+  0.84,
+  1.02,
+  1.28,
+  1.86
+ ],
+ "word_end_sec": [
+  0.72,
+  0.84,
+  1.02,
+  1.28,
+  1.86,
+  1.86
+ ],
+ "word_ts_sec": [
+  0.62,
+  0.78,
+  0.93,
+  1.15,
+  1.57,
+  1.86
+ ],
+ "error": null,
+ "sample_id": "-egA8-b7-3M_17",
+ "official_id": "-egA8-b7-3M$_$17",
+ "duration_sec": 7.271029,
+ "text_original": "As you have more experience, you have more times exhibiting, you get to know more people.",
+ "word_source": "data/unaligned_features/text/-egA8-b7-3M_17.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:19",
+ "mode": "clip_level"
+}

@@ -220,7 +220,11 @@ VIDEO_FACE_SIZE = 160       # 人脸图像缩放尺寸
 
 # ==================== 可复现性配置 ====================
 RANDOM_SEED = 42
-PIPELINE_VERSION = "1.1.0"  # 特征提取流水线版本号
+PIPELINE_VERSION = "1.1.0"  # 特征提取流水线版本号：由三个 unaligned_*.py 写进未对齐 npz。
+                            # 词对齐环节（word_align）不改变未对齐特征，故不在此升版；
+                            # 它给对齐阶段带来的变化记在 ALIGN_VERSION。
+ALIGN_VERSION = "1.2.0"     # 对齐阶段版本号：1.2.0 起文本模态按证据路由选时间基准
+                            # （word_level → 实测词时刻；clip_level → 均匀假设）
 
 # ==================== 运行配置 ====================
 # 批处理时并行worker数（Windows建议设为0，即主进程串行，避免multiprocessing问题）

@@ -1,0 +1,52 @@
+{
+ "n_official_words": 50,
+ "n_aligned_words": 7,
+ "zero_duration_words": 0,
+ "coverage": 0.14,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.12,
+ "last_t": 2.59,
+ "span": 2.47,
+ "word_start_sec": [
+  0.12,
+  0.62,
+  0.82,
+  1.0,
+  1.22,
+  1.48,
+  1.94
+ ],
+ "word_end_sec": [
+  0.62,
+  0.7,
+  1.0,
+  1.22,
+  1.48,
+  1.94,
+  2.59
+ ],
+ "word_ts_sec": [
+  0.37,
+  0.66,
+  0.91,
+  1.11,
+  1.35,
+  1.71,
+  2.265
+ ],
+ "error": null,
+ "sample_id": "-t217m2on-s_7",
+ "official_id": "-t217m2on-s$_$7",
+ "duration_sec": 17.183008,
+ "text_original": "If you find that your ears consistently do this and you can't pop them often, you'll definitely need to see a physician regarding those things, it could be something more of a nasal infection or a sinus infection that he would need to deal with.",
+ "word_source": "data/unaligned_features/text/-t217m2on-s_7.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:44",
+ "mode": "clip_level"
+}

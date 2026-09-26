@@ -11,8 +11,17 @@
   *.mp4 视频流   ──► unaligned_vision.py  ──► (T, 35)   逐帧 @ 15 Hz + 实测 pts
                           └─────────────────────────────────────────────┘
                                             │
+                                            │
                           ┌─────────────────▼───────────────────────────┐
-                          │  第二步：投影到同一根秒轴，离散成 50 槽      │
+                          │  第二步：官方文本强制对齐到音轨              │
+                          │  取逐词实测半开区间 [start, end)             │
+                          │  按对齐质量给出逐样本证据路由档位            │
+                          └─────────────────────────────────────────────┘
+  word_align.py ─────────► word_level（全词对齐+无零时长词）/ clip_level
+                          实测词时刻落盘，供对齐阶段按档位替换文本时间基准
+                                            │
+                          ┌─────────────────▼───────────────────────────┐
+                          │  第三步：投影到同一根秒轴，离散成 50 槽      │
                           └─────────────────────────────────────────────┘
   align_multimodal.py ──► (50, 768) / (50, 74) / (50, 35) + valid_mask
                           + 槽↔时间可逆映射 + 逐槽来源单元（可溯源）
@@ -33,6 +42,7 @@
 | `unaligned_text.py` | 文本 → 词级 RoBERTa 向量 (W, 768)，**不做时间槽分配** |
 | `unaligned_audio.py` | 语音 → 逐帧 74 维 @ 20 Hz + 实测 pts，**不做时间槽分配** |
 | `unaligned_vision.py` | 视觉 → 逐帧 35 维人脸特征 @ 15 Hz + 实测 pts，**不做时间槽分配** |
+| `word_align.py` | **词对齐模块**：官方文本 → stable-ts 强制对齐 → 逐词实测区间 + 证据路由档位 |
 | `align_multimodal.py` | **对齐模块**：三模态归一到同一秒轴 → (50, D)，输出槽↔时间可逆映射 |
 | `timeline_visualize.py` | 共享时间轴可视化 + 逐槽对应表 |
 | `run_unaligned_all.py` | 一键跑通全流程 |
@@ -41,7 +51,7 @@
 本方案不依赖它们、也没有任何 `import` 指向它们。历史对照见下方「与上一版的差异」一节
 （每个模块的文件头也各有一段同口径的说明）。
 
-> **问题一的验证与交付**：`q1_verify.py`（12 项机器核验）、`q1_delivery.py`（四项交付物
+> **问题一的验证与交付**：`q1_verify.py`（13 项机器核验）、`q1_delivery.py`（四项交付物
 > + 异常台账 + 体积核算 + 五类典型样本）、`face_probe.py`（「多人/远景」判据取证）、
 > `q1_readme.py`（自动生成交付说明文档）是独立的一层，产物在 `data/q1_delivery/`。
 > 逐条要求与实现见
@@ -247,7 +257,8 @@ python run_unaligned_all.py --threads 8 --timeline
 python unaligned_text.py                     # 文本（约 1.5 s/条）
 python unaligned_audio.py                    # 语音（约 1.5 s/条）
 python unaligned_vision.py --threads 8       # 视觉（约 135 ms/帧，全量约 27 分钟）
-python align_multimodal.py                   # 对齐（< 1 s/条）
+python word_align.py                         # 词对齐（实测约 0.8 s/条，全量约 1.5 分钟）
+python align_multimodal.py                   # 对齐（< 1 s/条，读上一步的路由）
 ```
 
 先小批量验证链路：
@@ -283,6 +294,11 @@ python timeline_visualize.py --pick typical --correspondence
 | `run_unaligned_all.py --sample-timeout 900` | 视觉环节每样本的墙钟超时（0 = 关闭看门狗） |
 | `unaligned_audio.py --rate 20` | 语音帧率，默认 20 Hz（官方口径） |
 | `unaligned_vision.py --fps 15 --dim 35` | 视觉帧率与维度 |
+| `word_align.py --out-dir` | 词对齐记录输出目录，默认 `data/word_align/` |
+| `word_align.py --overwrite` | 忽略缓存，全部重跑对齐（默认命中即复用） |
+| `align_multimodal.py --word-align-dir` | 词对齐记录目录，默认 `data/word_align/` |
+| `align_multimodal.py --no-word-align` | 关闭实测词时间（消融/对照用，文本一律均匀假设） |
+| `run_unaligned_all.py --skip-word-align` | 跳过词对齐环节（无 stable-ts/whisper 环境时的降级路径） |
 | `align_multimodal.py --slots 50` | 对齐槽数，默认 50 |
 | `align_multimodal.py --method time_bin\|interp` | 对齐方法：按时间戳归属+均值 / 按时间插值 |
 | `align_multimodal.py --duration video\|max_pts` | 公共时间轴取视频流时长 / 各模态末帧最大值 |

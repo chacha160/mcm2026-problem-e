@@ -1,0 +1,46 @@
+{
+ "n_official_words": 9,
+ "n_aligned_words": 5,
+ "zero_duration_words": 0,
+ "coverage": 0.5556,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.14,
+ "last_t": 1.96,
+ "span": 1.82,
+ "word_start_sec": [
+  0.14,
+  0.58,
+  0.84,
+  1.24,
+  1.54
+ ],
+ "word_end_sec": [
+  0.58,
+  0.84,
+  1.24,
+  1.54,
+  1.96
+ ],
+ "word_ts_sec": [
+  0.36,
+  0.71,
+  1.04,
+  1.39,
+  1.75
+ ],
+ "error": null,
+ "sample_id": "-UuX1xuaiiE_3",
+ "official_id": "-UuX1xuaiiE$_$3",
+ "duration_sec": 4.130013,
+ "text_original": "My goal is to become a human rights lawyer",
+ "word_source": "data/unaligned_features/text/-UuX1xuaiiE_3.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:09",
+ "mode": "clip_level"
+}

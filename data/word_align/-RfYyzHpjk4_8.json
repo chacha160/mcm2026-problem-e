@@ -1,0 +1,43 @@
+{
+ "n_official_words": 20,
+ "n_aligned_words": 4,
+ "zero_duration_words": 0,
+ "coverage": 0.2,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.24,
+ "last_t": 0.92,
+ "span": 0.68,
+ "word_start_sec": [
+  0.24,
+  0.54,
+  0.74,
+  0.86
+ ],
+ "word_end_sec": [
+  0.54,
+  0.56,
+  0.86,
+  0.92
+ ],
+ "word_ts_sec": [
+  0.39,
+  0.55,
+  0.8,
+  0.89
+ ],
+ "error": null,
+ "sample_id": "-RfYyzHpjk4_8",
+ "official_id": "-RfYyzHpjk4$_$8",
+ "duration_sec": 4.588997,
+ "text_original": "It's pretty, pretty easy to do but you got to set up those numbers ahead of time.",
+ "word_source": "data/unaligned_features/text/-RfYyzHpjk4_8.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:21",
+ "mode": "clip_level"
+}

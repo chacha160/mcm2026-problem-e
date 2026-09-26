@@ -1,0 +1,46 @@
+{
+ "n_official_words": 10,
+ "n_aligned_words": 5,
+ "zero_duration_words": 0,
+ "coverage": 0.5,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.24,
+ "last_t": 2.68,
+ "span": 2.44,
+ "word_start_sec": [
+  0.24,
+  1.1,
+  1.48,
+  1.9,
+  2.3
+ ],
+ "word_end_sec": [
+  1.1,
+  1.48,
+  1.9,
+  2.3,
+  2.68
+ ],
+ "word_ts_sec": [
+  0.67,
+  1.29,
+  1.69,
+  2.1,
+  2.49
+ ],
+ "error": null,
+ "sample_id": "-HwX2H8Z4hY_5",
+ "official_id": "-HwX2H8Z4hY$_$5",
+ "duration_sec": 5.652995,
+ "text_original": "\" President Ronald Reagan blamed the professional bureaucracy of education",
+ "word_source": "data/unaligned_features/text/-HwX2H8Z4hY_5.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:31:49",
+ "mode": "clip_level"
+}

@@ -1,0 +1,12 @@
+{
+  "stage": "text",
+  "n_selected": 100,
+  "n_written": 97,
+  "n_skipped_existing": 3,
+  "n_failed": 0,
+  "sum_word_units": 1926,
+  "sum_whitespace_chunks": 1932,
+  "max_input_tokens": 80,
+  "runtime_sec": 5.7,
+  "failures": []
+}

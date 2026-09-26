@@ -1,0 +1,43 @@
+{
+ "n_official_words": 28,
+ "n_aligned_words": 4,
+ "zero_duration_words": 0,
+ "coverage": 0.1429,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.02,
+ "last_t": 0.72,
+ "span": 0.7,
+ "word_start_sec": [
+  0.02,
+  0.12,
+  0.22,
+  0.4
+ ],
+ "word_end_sec": [
+  0.12,
+  0.22,
+  0.4,
+  0.72
+ ],
+ "word_ts_sec": [
+  0.07,
+  0.17,
+  0.31,
+  0.56
+ ],
+ "error": null,
+ "sample_id": "-s9qJ7ATP7w_0",
+ "official_id": "-s9qJ7ATP7w$_$0",
+ "duration_sec": 6.8,
+ "text_original": "they have doubt, they have fear, they lose in a Ferrari race, or they lose in a race, and then they just give up",
+ "word_source": "data/unaligned_features/text/-s9qJ7ATP7w_0.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:31",
+ "mode": "clip_level"
+}

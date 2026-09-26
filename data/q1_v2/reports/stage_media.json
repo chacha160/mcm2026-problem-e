@@ -1,0 +1,13 @@
+{
+  "stage": "media",
+  "n_selected": 100,
+  "n_written": 100,
+  "n_skipped_existing": 0,
+  "n_failed": 0,
+  "isolated_subprocess": true,
+  "sum_video_frame_count": 23241,
+  "sum_face_detected_frame_count": 16806,
+  "n_samples_without_face": 24,
+  "runtime_sec": 737.2,
+  "failures": []
+}

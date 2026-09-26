@@ -1,0 +1,52 @@
+{
+ "n_official_words": 46,
+ "n_aligned_words": 7,
+ "zero_duration_words": 0,
+ "coverage": 0.1522,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.0,
+ "last_t": 2.48,
+ "span": 2.48,
+ "word_start_sec": [
+  0.0,
+  0.64,
+  0.82,
+  1.14,
+  1.42,
+  1.68,
+  1.78
+ ],
+ "word_end_sec": [
+  0.56,
+  0.82,
+  1.14,
+  1.42,
+  1.68,
+  1.78,
+  2.48
+ ],
+ "word_ts_sec": [
+  0.28,
+  0.73,
+  0.98,
+  1.28,
+  1.55,
+  1.73,
+  2.13
+ ],
+ "error": null,
+ "sample_id": "-AUZQgSxyPQ_2",
+ "official_id": "-AUZQgSxyPQ$_$2",
+ "duration_sec": 22.511003,
+ "text_original": "The perfect soul mate to the Clarisonic Spot Therapy Brush, this gentle, Ph balanced and hydrating exfoliant containing jojoba and acai fruit oils and bamboo and prickly bear extracts deliver intense healing, while smooth granules buff away dead, dry skin cells.",
+ "word_source": "data/unaligned_features/text/-AUZQgSxyPQ_2.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:16",
+ "mode": "clip_level"
+}

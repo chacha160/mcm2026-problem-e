@@ -1,0 +1,52 @@
+{
+ "n_official_words": 15,
+ "n_aligned_words": 7,
+ "zero_duration_words": 0,
+ "coverage": 0.4667,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.54,
+ "last_t": 2.26,
+ "span": 1.72,
+ "word_start_sec": [
+  0.54,
+  0.68,
+  0.84,
+  1.06,
+  1.24,
+  1.42,
+  1.88
+ ],
+ "word_end_sec": [
+  0.68,
+  0.84,
+  1.06,
+  1.24,
+  1.42,
+  1.88,
+  2.26
+ ],
+ "word_ts_sec": [
+  0.61,
+  0.76,
+  0.95,
+  1.15,
+  1.33,
+  1.65,
+  2.07
+ ],
+ "error": null,
+ "sample_id": "-UacrmKiTn4_4",
+ "official_id": "-UacrmKiTn4$_$4",
+ "duration_sec": 4.741016,
+ "text_original": "Just given to their own devices they are not going to read the textbook.",
+ "word_source": "data/unaligned_features/text/-UacrmKiTn4_4.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:06",
+ "mode": "clip_level"
+}

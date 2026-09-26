@@ -90,6 +90,31 @@ def _aligned_meta(d: Dict[str, object]) -> Dict[str, object]:
     return json.loads(str(np.asarray(d["meta"]).item()))
 
 
+def _effective_pts(unaligned_root: str, aligned_dir: str, sid: str, m: str,
+                   n_units: int) -> np.ndarray:
+    """
+    取该样本该模态**实际参与槽归属**的时间戳。
+
+    文本的 pts 逐样本二选一：未对齐文件里存的永远是均匀假设值，走实测路由的样本
+    真正用的是强制对齐的区间中心（落在对齐产物的 routing 块里）。核验必须用后者，
+    否则会拿一套时刻去重算另一套时刻算出的槽归属，把「路由生效」误判成「溯源失败」。
+    音频/视觉无路由，直接返回未对齐文件的实测 pts。
+    """
+    pts = np.asarray(_load_unaligned(unaligned_root, m, sid)["pts"], np.float64)
+    if m != "text":
+        return pts
+    p = os.path.join(aligned_dir, f"{sid}.npz")
+    if not os.path.isfile(p):
+        return pts
+    with np.load(p, allow_pickle=True) as z:
+        meta = json.loads(str(np.asarray(z["meta"]).item()))
+    if str(meta["text"]["time_basis"]) != "measured_forced_alignment":
+        return pts
+    meas = np.asarray((meta.get("routing", {}) or {}).get(
+        "word_align", {}).get("word_ts_sec") or [], np.float64)
+    return meas if meas.size == int(n_units) else pts
+
+
 def _result(code: str, name: str, passed: bool, checked: int, failed: int,
             detail: str, evidence: Optional[Dict[str, object]] = None,
             caveat: str = "") -> Dict[str, object]:
@@ -288,8 +313,11 @@ def check_v2_word_time(unaligned_root: str, sids: List[str]) -> Dict[str, object
     return _result("V2", "词区间单调且不越出视频范围", not errs, checked, failed, detail,
                    {"text_pts": txt_stat, "char_spans": span_stat, "token_index": tok_stat,
                     "av_pts": av_stat, "errors": errs[:20]},
-                   caveat="文本 pts 由均匀假设**定义**而来，本项由构造保证成立，"
-                          "只能证明实现与声明一致，**不作为词级时间正确的证据**；"
+                   caveat="本项检查的是**未对齐产物**里的文本 pts，它一律是均匀假设值"
+                          "（由 (i+0.5)·T/W **定义**而来），故由构造保证成立，"
+                          "只能证明实现与声明一致，**不作为词级时间正确的证据**。"
+                          "走实测路由的样本，其真正落进 50 槽的是实测词时刻——"
+                          "那一套时刻的合法性与一致性由 V13 单独核验。"
                           "音频/视觉的 pts 为解码器实测值，该项才具实测意义。")
 
 
@@ -421,7 +449,8 @@ def check_v4_traceable(unaligned_root: str, aligned_dir: str,
         for m in MODALITIES:
             src = _load_unaligned(unaligned_root, m, sid)
             S = np.asarray(src["features"], np.float64)          # 源单元（float64 累加）
-            pts = np.asarray(src["pts"], np.float64)
+            # 用**实际参与归属**的时间戳（文本逐样本路由，见 _effective_pts）
+            pts = _effective_pts(unaligned_root, aligned_dir, sid, m, S.shape[0])
             stored = np.asarray(al[f"{m}_features"], np.float64)
             valid = np.asarray(al[f"{m}_valid"])
             counts = np.asarray(am[m]["align"]["unit_counts"], np.int64)
@@ -958,16 +987,183 @@ def check_v12_anomaly_census(unaligned_root: str, aligned_dir: str,
                           "**不得作为删除样本的理由**。所有命中的样本一律保留并标注。")
 
 
+# ==================== V13 词时间路由一致性 ====================
+
+
+def check_v13_word_routing(unaligned_root: str, aligned_dir: str, sids: List[str],
+                           delivery_dir: Optional[str] = None) -> Dict[str, object]:
+    """
+    V13 —— 实测词时间路由的一致性（本方案吸收参考方案时序逻辑后的新增项）。
+
+    文本的 pts 现在**逐样本二选一**：走实测路由的样本用 stable-ts 强制对齐的区间中心，
+    其余仍用均匀假设。两种来源并存时，最容易出的错不是数值错，而是**同一份事实在
+    不同交付物里写法不一致**——例如对齐阶段按实测时刻归属了 50 槽，交付阶段却回读
+    均匀假设做溯源。故本项只查一致性，逐条断言：
+
+        1. 每条样本的 alignment_mode ∈ {word_level, clip_level}；
+        2. 落盘 meta 的 text.time_basis 与 alignment_mode 严格对应；
+        3. word_level ⇒ 官方词数 = 对齐词数、零时长词 = 0、区间落在 [0,T] 内
+           （即该档位的三条准入条件在产物中真的成立，而不是只写在代码里）；
+        4. word_level ⇒ 实测词时刻个数与文本单元数一致；
+        5. alignment_q1.json 的 word_t_sec、features_q1.npz 的 text pts、
+           aligned npz 的槽归属三者用**同一套**文本时刻；
+        6. clip_level ⇒ 文本时刻恰为均匀假设 (i+0.5)·T/W（不得偷换成实测）；
+        7. summary_q1.csv / features_q1.npz / 对齐目录三处的 word_level 计数相等。
+    """
+    from align_multimodal import time_to_slot
+
+    checked = failed = 0
+    errs: List[str] = []
+    n_word = n_clip = n_other = 0
+    checked_word: List[str] = []
+    n_routing_missing = 0
+
+    for sid in sids:
+        p = os.path.join(aligned_dir, f"{sid}.npz")
+        if not os.path.isfile(p):
+            checked += 1
+            failed += 1
+            errs.append(f"{sid}: 对齐产物缺失")
+            continue
+        with np.load(p, allow_pickle=True) as z:
+            meta = json.loads(str(np.asarray(z["meta"]).item()))
+            duration = float(np.asarray(z["duration"], np.float64))
+            edges = np.asarray(z["slot_edges"], np.float64)
+            L = int(np.asarray(z["n_slots"]).item())
+
+        routing = meta.get("routing")
+        checked += 1
+        if not routing or "alignment_mode" not in routing:
+            n_routing_missing += 1
+            failed += 1
+            errs.append(f"{sid}: 对齐产物缺少 routing.alignment_mode")
+            continue
+        mode = str(routing["alignment_mode"])
+        wa = routing.get("word_align", {}) or {}
+        basis = str(meta["text"]["time_basis"])
+        W = int(meta["text"]["num_units"])
+
+        checked += 1
+        if mode == "word_level":
+            n_word += 1
+            if basis != "measured_forced_alignment":
+                failed += 1
+                errs.append(f"{sid}: mode=word_level 但 time_basis={basis}")
+        elif mode == "clip_level":
+            n_clip += 1
+            if basis != "uniform_assumption":
+                failed += 1
+                errs.append(f"{sid}: mode=clip_level 但 time_basis={basis}")
+        else:
+            n_other += 1
+            failed += 1
+            errs.append(f"{sid}: alignment_mode 取值非法「{mode}」")
+            continue
+
+        if mode != "word_level":
+            # clip_level：文本时刻必须恰为均匀假设，不得被实测值替换
+            src = _load_unaligned(unaligned_root, "text", sid)
+            pts = np.asarray(src["pts"], np.float64)
+            checked += 1
+            exp = (np.arange(pts.size, dtype=np.float64) + 0.5) * duration / max(pts.size, 1)
+            if pts.size == 0 or np.allclose(pts, exp, atol=1e-4):
+                pass
+            else:
+                failed += 1
+                errs.append(f"{sid}: clip_level 的文本时刻偏离均匀假设"
+                            f"（max|Δ|={np.max(np.abs(pts - exp)):.6f}）")
+            continue
+
+        # ---- word_level：三条准入条件必须在产物中成立 ----
+        checked_word.append(sid)
+        meas = np.asarray(wa.get("word_ts_sec") or [], np.float64)
+        checked += 1
+        if int(wa.get("n_official_words") or -1) != int(wa.get("n_aligned_words") or -2):
+            failed += 1
+            errs.append(f"{sid}: 官方 {wa.get('n_official_words')} 词 vs "
+                        f"对齐 {wa.get('n_aligned_words')} 词，未全词对齐却标为 word_level")
+        checked += 1
+        if int(wa.get("zero_duration_words") or 0) != 0:
+            failed += 1
+            errs.append(f"{sid}: 含 {wa.get('zero_duration_words')} 个零时长词")
+        checked += 1
+        if not meas.size:
+            failed += 1
+            errs.append(f"{sid}: word_level 但未落盘实测词时刻")
+            continue
+        checked += 1
+        if meas.size != W:
+            failed += 1
+            errs.append(f"{sid}: 实测词时刻 {meas.size} 个 vs 文本单元 {W} 个")
+            continue
+        checked += 1
+        if not (meas.min() >= -TIME_TOL and meas.max() <= duration + TIME_TOL):
+            failed += 1
+            errs.append(f"{sid}: 实测词时刻越出 [0,T]（{meas.min():.4f}~{meas.max():.4f}, "
+                        f"T={duration:.4f}）")
+        # 实测词时刻必须落在由该时刻推出的槽内——即对齐确实按实测归属
+        checked += 1
+        slots = np.clip((meas / max(duration, 1e-12) * L).astype(np.int64), 0, L - 1)
+        if not (np.all(edges[slots] <= meas + 1e-6) and
+                np.all(meas < edges[slots + 1] + 1e-6)):
+            failed += 1
+            errs.append(f"{sid}: 实测词时刻与其槽边界不自洽")
+
+    # ---- 三处 word_level 计数必须相等 ----
+    counts = {"aligned_dir": n_word}
+    if delivery_dir:
+        fq = os.path.join(delivery_dir, "features_q1.npz")
+        if os.path.isfile(fq):
+            with np.load(fq, allow_pickle=True) as d:
+                if "text_time_basis_by_sample" in d:
+                    b = [str(x) for x in d["text_time_basis_by_sample"]]
+                    counts["features_q1.npz"] = sum(
+                        1 for x in b if x == "measured_forced_alignment")
+        sc = os.path.join(delivery_dir, "summary_q1.csv")
+        if os.path.isfile(sc):
+            with open(sc, "r", encoding="utf-8-sig") as fh:
+                counts["summary_q1.csv"] = sum(
+                    1 for r in csv.DictReader(fh) if r.get("alignment_mode") == "word_level")
+        aj = os.path.join(delivery_dir, "alignment_q1.json")
+        if os.path.isfile(aj):
+            with open(aj, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+            counts["alignment_q1.json"] = sum(
+                1 for s in doc["samples"].values()
+                if s.get("alignment_mode") == "word_level")
+    checked += 1
+    if len(set(counts.values())) > 1:
+        failed += 1
+        errs.append(f"word_level 计数在各交付物间不一致：{counts}")
+
+    detail = (f"{n_word} 条走实测路由、{n_clip} 条保持均匀假设，逐条与落盘的时间基准字段"
+              f"严格对应；{len(checked_word)} 条实测样本均满足「全词对齐 + 零时长词为 0 + "
+              f"区间不越界」三条准入条件，且其槽归属确由实测时刻推出。"
+              + (f" 各交付物计数：{counts}。" if len(counts) > 1 else "")
+              if not errs else "发现 " + str(len(errs)) + " 处问题：" + "；".join(errs[:5]))
+    return _result("V13", "实测词时间路由一致性", not errs, checked, failed, detail,
+                   {"n_word_level": n_word, "n_clip_level": n_clip,
+                    "n_illegal_mode": n_other, "n_routing_missing": n_routing_missing,
+                    "word_level_samples": sorted(checked_word), "counts_across_artifacts": counts,
+                    "errors": errs[:20]},
+                   caveat="本项证明的是**路由实现与声明一致**，不是「实测词时刻与真值一致」。"
+                          "本数据集没有逐词人工时间戳真值，对齐质量只能用「官方词数是否"
+                          "被完整覆盖」这一可机检的弱证据来把关。")
+
+
 # ==================== 报告输出 ====================
 
 
 HONESTY = """## 诚实性前置声明（读下面任何数字之前请先读这里）
 
-1. **本数据集没有逐词人工时间戳真值。** 文本的时间轴是本管线自己声明的均匀假设
-   （`time_basis="uniform_assumption"`：词 i 中心时刻 = (i+0.5)·T/W）；音频/视觉的
-   `pts` 才是解码器实测值。因此本报告**只报告一致性检查与抽查结果**，
+1. **本数据集没有逐词人工时间戳真值。** 文本的时间轴逐样本二选一，来源由
+   `alignment_mode` 字段标明：`word_level`（实测，stable-ts 强制对齐的区间中心，
+   全词对齐且无零时长词）或 `clip_level`（均匀假设，词 i 中心时刻 = (i+0.5)·T/W）；
+   音频/视觉的 `pts` 才是解码器实测值。因此本报告**只报告一致性检查与抽查结果**，
    **绝不声称对齐达到某个毫秒级平均误差**——那需要真值才能计算，这里没有。
    任何形如「平均误差 N 毫秒」的表述在本项目中都是无依据的。
+   实测档位的准入证据是**官方词数是否被完整覆盖**这一可机检的弱证据，
+   它不能证明逐词时刻正确，只能证明对齐器在该样本上放下了全部官方词。
 2. **`*_valid=True` 只表示「该槽被分配了采样单元」，不等于该模态真实可用。**
    反例：`-mJ2ud6oKI8_1` 的 `vision_valid` 为 50/50 全 True，但其视觉特征能量恰为 0
    （全片未检出人脸）。判定模态可用性必须看 `face_ratio` / `voiced_ratio`。
@@ -1040,7 +1236,7 @@ def verify_all(unaligned_root: Optional[str] = None, aligned_dir: Optional[str] 
     summary_csv = summary_csv or os.path.join(aligned_dir, "align_summary.csv")
 
     sids = [str(s["sample_id"]) for s in U.list_samples()]
-    LOGGER.info("[核验] 样本 %d 条，开始 12 项机器检查 ...", len(sids))
+    LOGGER.info("[核验] 样本 %d 条，开始 13 项机器检查 ...", len(sids))
 
     checks: List[Dict[str, object]] = []
     checks.append(check_v1_coverage(unaligned_root, aligned_dir, summary_csv))
@@ -1059,6 +1255,8 @@ def verify_all(unaligned_root: Optional[str] = None, aligned_dir: Optional[str] 
     checks.append(check_v10_duplicate(unaligned_root, sids))
     checks.append(check_v11_freshness(unaligned_root, aligned_dir))
     checks.append(check_v12_anomaly_census(unaligned_root, aligned_dir, sids))
+    checks.append(check_v13_word_routing(unaligned_root, aligned_dir, sids,
+                                         delivery_dir=out_dir))
 
     for c in checks:
         (LOGGER.info if c["passed"] else LOGGER.warning)(

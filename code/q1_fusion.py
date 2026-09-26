@@ -205,10 +205,9 @@ def build_correspondence_trace() -> Tuple[Dict, Dict]:
 
     为什么必须分三态
     ----------------
-    方案一的时间轴里，文本用 `uniform_assumption`（词时间 = (i+0.5)·T/W 均分），
-    语音/视觉用 `measured_pts`（真实测量）。两者**基准不同**：
-    文本的逐词时间不是测出来的，是算出来的。若把这种样本一律记为
-    「文本与语音已对齐」，等于把假设说成事实。所以：
+    文本的时间基准逐样本二选一：`measured_forced_alignment`（强制对齐实测的区间中心）
+    或 `uniform_assumption`（词时间 = (i+0.5)·T/W 均分）；语音/视觉一律 `measured_pts`。
+    基准不同的样本不能一律记为「文本与语音已对齐」——那等于把假设说成事实。所以：
 
       confirmed_match    该样本的文本时间基准与音视频同为真实测量，且逐词跨度合法
                          → 可以断言对应关系成立
@@ -216,6 +215,10 @@ def build_correspondence_trace() -> Tuple[Dict, Dict]:
                          → 可以断言对应关系有问题，须人工复核
       not_asserted       文本时间基准是均匀假设、或缺证据
                          → 不下任何断言
+
+    注意 `confirmed_match` 的判据是**基准同源 + 结构合法**，不是「对齐正确」。
+    逐词时刻的正确性本数据集无从判定（无人工真值），故这里的 match 只声明
+    「这条样本的词时刻确实是测出来的，且测出来的区间自洽」。
     """
     align = _read_alignment()
     samples = align["samples"]
@@ -289,6 +292,13 @@ def build_correspondence_trace() -> Tuple[Dict, Dict]:
         }
 
     bases = {str(v["text"].get("time_basis", "")) for v in samples.values()}
+    # 时间基准的分布按**文本模态自己的口径**统计。不能拿 counts["not_asserted"]
+    # 顶替：那是「对应三态」里的第三态（含证据不足者），与「时间基准」是两个
+    # 不同的划分——本批恰好一个 88、一个 93，混用会写出一个既非此也非彼的数。
+    n_measured = sum(1 for v in samples.values()
+                     if str(v["text"].get("time_basis", "")) == "measured_forced_alignment")
+    n_uniform = sum(1 for v in samples.values()
+                    if str(v["text"].get("time_basis", "")) == "uniform_assumption")
     meta = {
         "states": {
             "confirmed_match": "文本与音视频时间基准同为真实测量，且逐词跨度结构合法",
@@ -298,13 +308,20 @@ def build_correspondence_trace() -> Tuple[Dict, Dict]:
         "counts": counts,
         "n_samples": len(out),
         "text_time_basis_observed": sorted(bases),
-        "why_confirmed_match_may_be_zero": (
-            "本批 100 条的文本时间基准全部是 `uniform_assumption`（词时间=(i+0.5)·T/W 均分），"
-            "没有任何一条是真实测量的词时间。因此在本判定规则下 "
-            "`confirmed_match` 结构性为 0——这不是缺陷，而是事实："
-            "**文本与语音的逐词对应关系在问题一交付里从未被真实测量过**。"
-            "方案一自己在 meta.text_time_basis_warning 里也写明了这一点，"
-            "但交付表里没有任何字段承载它，本层把这个差别显式化。"
+        "text_time_basis_counts": {"measured_forced_alignment": n_measured,
+                                   "uniform_assumption": n_uniform},
+        "why_confirmed_match_is_small": (
+            "本批 100 条里只有 " + str(n_measured) + " 条的文本时间基准是"
+            "真实测量的（`measured_forced_alignment`），其余 "
+            + str(n_uniform) + " 条为 `uniform_assumption`"
+            "（词时间=(i+0.5)·T/W 均分）。均匀假设档不构成「已确认对应」，"
+            "故不计入 `confirmed_match`——这不是缺陷，而是事实："
+            "**多数样本的文本与语音逐词对应关系在问题一交付里没有被真实测量过**。"
+            "实测档的准入判据是「官方每个词都被对齐到、无零时长词、区间不越界」，"
+            "详见 data/word_align/ 与核验项 V13。"
+            "（注意此处的时间基准分布与对应三态是**两个划分**："
+            "均匀假设 " + str(n_uniform) + " 条，而 `not_asserted` "
+            + str(counts["not_asserted"]) + " 条还含证据不足者。）"
         ),
         "consistency_check_meaning": (
             "在无真实词时间的前提下仍可核验必要条件：文本占用槽数是否等于词数、"
@@ -438,18 +455,23 @@ def _write_report(rows: List[Dict], vmeta: Dict, cm: Dict, cmeta: Dict,
         f"- 弱证据一致性检查通过：{n_ok}/{cmeta['n_samples']}"
         "（文本占用槽数 = 词数，且占用槽单调）",
         "",
-        "### 为什么 `confirmed_match` 为 0",
+        "### 为什么 `confirmed_match` 只有 " + str(cmeta["counts"]["confirmed_match"]) + " 条",
         "",
         f"- 实测文本时间基准取值集合：`{cmeta['text_time_basis_observed']}`",
-        f"- {cmeta['why_confirmed_match_may_be_zero']}",
+        f"- {cmeta['why_confirmed_match_is_small']}",
         "",
         f"- {cmeta['consistency_check_meaning']}",
         "",
         cmeta["rule_note"],
         "",
-        "意义：方案一把「文本时间基准 = 均匀假设」写进了 `meta.text_time_basis_warning`，",
-        "但交付表里没有任何字段承载这个差别。三态分离后，",
-        "**「已确认对应」的样本数是一个可引用的下界**，而不是把 100 条全算成已对齐。",
+        "意义：本方案已把「时间基准是实测还是假设」逐样本落进 `alignment_mode` 字段",
+        "（`measured_forced_alignment` "
+        + str(cmeta["text_time_basis_counts"]["measured_forced_alignment"]) + " 条 / "
+        "`uniform_assumption` "
+        + str(cmeta["text_time_basis_counts"]["uniform_assumption"]) + " 条），"
+        "故这一差别在交付表里是可查的、并由 V13 跨四份产物核验。",
+        "在此之上再做三态分离，**「已确认对应」的样本数才是一个可引用的下界**，",
+        "而不是把 100 条全算成已对齐——有字段承载差别，与敢不敢据此下断言，是两件事。",
         "",
         "## 四、红线 R1 自检",
         "",

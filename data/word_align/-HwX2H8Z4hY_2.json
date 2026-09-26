@@ -1,0 +1,34 @@
+{
+ "n_official_words": 11,
+ "n_aligned_words": 1,
+ "zero_duration_words": 0,
+ "coverage": 0.0909,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.25,
+ "last_t": 0.6,
+ "span": 0.35,
+ "word_start_sec": [
+  0.25
+ ],
+ "word_end_sec": [
+  0.6
+ ],
+ "word_ts_sec": [
+  0.425
+ ],
+ "error": null,
+ "sample_id": "-HwX2H8Z4hY_2",
+ "official_id": "-HwX2H8Z4hY$_$2",
+ "duration_sec": 3.982031,
+ "text_original": "” [President Ronald Reagan:] \"Look at the record",
+ "word_source": "data/unaligned_features/text/-HwX2H8Z4hY_2.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:31:48",
+ "mode": "clip_level"
+}

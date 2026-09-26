@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-_make_paper_docx.py —— 把 论文_正文_展开.md 转成符合《论文格式规范》的 Word 文档
+_make_paper_docx.py —— 《论文格式规范》的排版件与 Markdown→Word 转换器
 
-输入必须是**注入后**的稿子 `论文_正文_展开.md`（由 `_inject_paper_tables.py` 从
-`论文_完整三问.md` 展开 23 张表 + 1 张结构消融表得到）。直接喂 `论文_完整三问.md`
-会把 `{TABLE:...}` 占位符原样写进 Word，故默认值指向展开稿而非源稿。
+本模块现在是**共用排版件**：字体常量（`HEI` / `SONG` / `MONO`）、标题与表格样式、
+公式转换 `latex_to_omml`、行内混排 `add_rich`、`set_font` 都从这里取。两个入口在用它：
+
+* `_make_q1_body_docx.py` —— 问题一正文（`问题一论文正文.md` → `.docx`），
+  当前定稿走的就是这条链，**要出正文请走它**（那条链自带写保护与图件替换）。
+* `_make_report_docx.py` —— 任意报告 markdown → Word。
+
+输入必须是**注入后**的稿子（展开稿），直接喂源稿会把 `{TABLE:...}` 占位符原样
+写进 Word，故默认值指向展开稿而非源稿。
 
 规范来源：`_格式规范.txt`（从官方 docx 提取）与 `_模板.txt`（从官方 .doc 提取）。
 
@@ -18,8 +24,14 @@ _make_paper_docx.py —— 把 论文_正文_展开.md 转成符合《论文格�
   · 公式用 OMML（Word 原生公式对象），不是图片、不是纯文本
 
 用法：
-    python _make_paper_docx.py                    # 输出 论文.docx
+    python _make_paper_docx.py                    # 展开稿 → Word
     python _make_paper_docx.py --md X.md --out Y.docx
+
+> **注意：本脚本的默认输入输出是「通用稿」这一对，不带写保护**。要出当前定稿
+> `问题一论文正文.docx`，走 `_build_q1_body.py`（那条链会在动手前后核对既有
+> 交付物、并替换图件），别直接用本脚本的 `--out` 指过去。
+> 封面上的华为标志图（本脚本只写文字占位「【此处插入华为标志图片】」）与 Word 里
+> 生成的真目录（本脚本只写占位域，需在 Word 中按 F9 重建），两者本脚本都产不出。
 """
 
 from __future__ import annotations
@@ -830,18 +842,21 @@ def build(md_path: str, out_path: str) -> int:
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
-    here = os.path.dirname(os.path.abspath(__file__))
     ap = argparse.ArgumentParser(description="论文 Markdown -> 符合格式规范的 docx")
-    # 默认输入是**展开稿**，不是源稿：源稿 `论文_完整三问.md` 里含 {TABLE:...}
-    # 占位符，直接编译会在 Word 里原样漏出。默认值一度指向问题一单问的旧稿，
-    # 于是 `python _make_paper_docx.py` 无参数运行会**静默**产出一份只有问题一的
-    # 旧论文——产物看着正常，内容却是废的；该旧稿已随清理删除，默认值亦改正。
-    ap.add_argument("--md", default=os.path.join(here, "论文_正文_展开.md"))
-    ap.add_argument("--out", default=os.path.join(here, "论文.docx"))
+    # 输入必须是**展开稿**，不是源稿：源稿里含 {TABLE:...} 占位符，直接编译会在
+    # Word 里原样漏出（下面还有一道显式拦截）。
+    #
+    # 两个路径参数都设成必填，**不留默认值**：曾有过默认值，先是默认到一份问题一
+    # 旧稿上（无参数运行会静默产出一份看着正常、内容却是废的论文），后来又默认到
+    # 早已删除的三问稿上。默认值在这里只会制造"跑出来了、但是错的"这种最难查的
+    # 情况；不给默认，跑错就停在 argparse 上，一步都走不下去。
+    ap.add_argument("--md", required=True, help="展开稿（注入过表格的 markdown）")
+    ap.add_argument("--out", required=True, help="输出的 docx 路径")
     a = ap.parse_args(argv)
     if not os.path.isfile(a.md):
         print(f"找不到输入：{a.md}")
-        print("提示：先跑 `python _inject_paper_tables.py` 生成展开稿。")
+        print("提示：先跑 `python _inject_paper_tables.py` 生成展开稿；"
+              "出当前定稿请走 `python _build_q1_body.py`。")
         return 2
     src = open(a.md, encoding="utf-8").read()
     if re.search(r"\{[A-Z_]+:[A-Za-z0-9_]+\}|\{STRUCT_ABLATION\}", src):

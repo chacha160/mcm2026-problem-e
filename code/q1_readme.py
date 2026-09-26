@@ -6,11 +6,11 @@ q1_readme.py —— 生成 `README_问题一交付与验证.md`（问题一的�
 ------------------------
 这份文档要进论文、要给评审核对。手写的最大风险不是写得不好，而是**数字会过期**：
 改了参数、重跑一次、修了一个缺陷，正文里的数字就悄悄说谎了。
-本模块沿用 `emotion_model.write_readme()` 的既有做法——**所有数字都从产物里现读现算**，
+本模块的做法是「写生成器、不写正文」——**所有数字都从产物里现读现算**，
 文档不可能与产物不一致。
 
 数据来源（全部只读，不写任何交付物）：
-    data/q1_delivery/verify_report.json    12 项机器核验的结果与证据
+    data/q1_delivery/verify_report.json    13 项机器核验的结果与证据
     data/q1_delivery/summary_q1.csv        100 条样本的逐条汇总
     data/q1_delivery/extract_config.json   可复现性快照（参数、版本、失败处理规则）
     data/q1_delivery/anomaly_ledger.csv    异常台账
@@ -50,8 +50,14 @@ MD_NAME = "README_问题一交付与验证.md"
 MD_NAME_ALT = "README_问题一交付与验证.md"      # 放 code/ 下的同名副本
 MODALITIES = ("text", "audio", "vision")
 MOD_ZH = {"text": "文本", "audio": "语音", "vision": "视觉"}
-# 题目给的 50 MB 上限。按 50 × 1024² 取更严格的口径（不要用 50 × 10⁶ 侥幸过关）。
+# 题目给的 50 MB 上限。「50 MB」有两种读法，代码**执行**的是宽松的那个：
+#     宽松 50×1024² = 52,428,800 B = 50.00 MiB = 52.43 MB(decimal)
+#     严格 50×10⁶   = 50,000,000 B = 47.68 MiB = 50.00 MB(decimal)
+# 注意 1024² 那一读法**不是**更严格的那个（52.43 > 50.00）——早先的注释写反了。
+# 因为实际交付物远小于两者，这里沿用宽松口径执行，但报告必须把严格读法下的余量
+# 一并列出，「两种口径都不会超」才是可核验的而不是口头的。
 LIMIT_BYTES = 50 * 1024 * 1024
+LIMIT_STRICT_BYTES = 50 * 10 ** 6
 # 子目录行的说明文字（`_walk_sizes` 把子目录合并成一行，行名形如 `figures/（5 个文件）`）
 DIR_DESC = {
     "figures": "五类典型样本的时间轴图（词—秒—语音段—视频帧同轴）",
@@ -313,9 +319,13 @@ def _sec_pipeline(ctx: Dict[str, object]) -> List[str]:
         "        ③ 文本提取       ④ 语音提取       ⑤ 视觉提取",
         "        RoBERTa 词级     74 维 @20Hz      35 维 @15Hz",
         "        τ = 均匀假设     τ = k·hop/sr     τ = 解码器实测 PTS",
+        "        (⑦ 后按路由替换) ",
         "              └───────────────┼───────────────┘",
         "                              │",
         "                   ⑥ 以视频时长 T 统一锚点",
+        "                              │",
+        "        ⑥' 词对齐(word_align) 官方文本 → 实测逐词区间 + 证据路由",
+        "        word_level(7 条) → 文本 τ = 实测区间中心；其余保持均匀假设",
         "                              │",
         "                   ⑦ 槽归属 slot(τ) = clip(floor(τ/T·L), 0, L-1)",
         "                              │",
@@ -327,7 +337,7 @@ def _sec_pipeline(ctx: Dict[str, object]) -> List[str]:
         "                              │",
         "                   ⑪ data/q1_delivery/  四项交付物 + 台账 + 五类典型样本",
         "                              │",
-        "                   ⑫ q1_verify.py 12 项机器核验（只读，不改产物）",
+        "                   ⑫ q1_verify.py 13 项机器核验（只读，不改产物）",
         "```",
         "",
         "逐步的判据与失败分支：",
@@ -378,15 +388,19 @@ def _sec_features(ctx: Dict[str, object]) -> List[str]:
         "**只取最后 4 层之外的最后一层、不做微调**（冻结预训练权重，零训练成本）。",
         "- 不取 `[CLS]`：本问要的是**逐词**表示以便落到时间轴上，"
         "`[CLS]` 是句级表示、无逐词对应。",
-        "- **时间基准是假设值，不是实测值**：",
+        "- **原文本提取产物里的时间基准是假设值，不是实测值**：",
         "",
         "```",
         "τ_k^t = (k - 0.5) · T / W        （词 k 的中心时刻，均匀分布假设）",
         "```",
         "",
-        "  本数据集**没有逐词时间戳真值**，故 " + "`time_basis = \""
-        + str(tp.get("time_basis", "")) + "\"`。这条时间轴只用于与音频/视觉共轴**可视化**，"
-        "本模型**绝不**据此声称词级时间精度（见第 10 节）。",
+        "  未对齐产物落盘的 `time_basis = \"" + str(tp.get("time_basis", "")) + "\"`。"
+        "本数据集**没有逐词时间戳真值**，这条时间轴只用于与音频/视觉共轴**可视化**。",
+        "- **归约时按证据路由逐样本替换**（`word_align.py`）：把官方文本强制对齐到音轨，"
+        "只有「官方每个词都对齐到、无零时长词、区间不越出 `[0,T]`」的样本才升为 "
+        "`word_level`，其文本时刻换成实测区间中心；其余保持上式的均匀假设并标注 "
+        "`clip_level`。实测分布见 1 节汇总表的「文本时间基准」一行。"
+        "**两档的形状完全相同，差别只在时刻来源**，故接口不受影响（见第 10 节）。",
         "- 溯源三元组（本次新增，`extra` 通道落盘）：",
     ] + [
         "  - `" + k + "`：" + str(v)
@@ -460,8 +474,11 @@ def _sec_features(ctx: Dict[str, object]) -> List[str]:
         + " | " + str(ctx["dims"]["vision"]) + " |",
         "| 采样率 | 每词 1 个 | " + str(ap.get("frame_rate_hz")) + " Hz | "
         + str(vp.get("target_fps")) + " Hz |",
-        "| 时间基准 | " + str(tp.get("time_basis")) + "（假设） | " + str(ap.get("time_basis"))
-        + " | " + str(vp.get("time_basis")) + " |",
+        "| 时间基准（未对齐产物） | " + str(tp.get("time_basis")) + " | "
+        + str(ap.get("time_basis")) + " | " + str(vp.get("time_basis")) + " |",
+        "| 时间基准（归约实际采用） | 实测 " + str(_tbc(ctx).get("measured_forced_alignment", 0))
+        + " 条 / 均匀假设 " + str(_tbc(ctx).get("uniform_assumption", 0)) + " 条 | "
+        + str(ap.get("time_basis")) + " | " + str(vp.get("time_basis")) + " |",
         "| 主要工具 | transformers " + str(ctx["libs"].get("transformers")) + " | librosa "
         + str(ctx["libs"].get("librosa")) + " | torchvision "
         + str(ctx["libs"].get("torchvision")) + " + facenet-pytorch "
@@ -621,7 +638,7 @@ def _sec_requirements(ctx: Dict[str, object]) -> List[str]:
         "## 5. 题目三条要求的逐条对照",
         "",
         "要求原文三条，逐条对应到**可执行的机器检查**（`code/q1_verify.py`，"
-        "12 项、共 " + str(ctx["vsum"].get("total_assertions", "—")) + " 条断言）。"
+        "13 项、共 " + str(ctx["vsum"].get("total_assertions", "—")) + " 条断言）。"
         "下表由核验结果自动生成，`passed` 列即实测结果。",
         "",
         "### 5.1 要求一：原始样本覆盖完整性",
@@ -1109,8 +1126,8 @@ def _sec_reproduce(ctx: Dict[str, object]) -> List[str]:
         "```bash",
         "# 在仓库根目录（含 code/ 与 data/ 的那一层）下执行；路径不做写死，按实际位置对应",
         "cd <仓库根目录>",
-        "python code/run_unaligned_all.py            # 提取 → 对齐（约 35 分钟）",
-        "python code/run_unaligned_all.py --verify   # 跑完执行 12 项机器核验",
+        "python code/run_unaligned_all.py            # 提取 → 词对齐 → 对齐（约 36 分钟）",
+        "python code/run_unaligned_all.py --verify   # 跑完执行 13 项机器核验",
         "python code/run_unaligned_all.py --deliver  # 跑完生成交付物（+人脸探测约 10 分钟）",
         "",
         "python code/q1_verify.py                    # 单独核验（只读，不改任何产物）",
@@ -1216,10 +1233,16 @@ def _sec_budget(ctx: Dict[str, object]) -> List[str]:
         "",
         "## 9. 体积核算与交付清单",
         "",
-        "题目给定上限 **50 MB**。本报告按 **" + "{:.2f}".format(limit_mib)
-        + " MiB = " + "{:,}".format(LIMIT_BYTES) + " B** 执行——"
-        "即把「50 MB」当成 50 × 1024² 而不是 50 × 10⁶，"
-        "**取更严格的那个口径**，这样无论评审判哪种口径都不会超。",
+        "题目给定上限 **50 MB**。**这个数有两种读法，必须先说清用哪一种**：",
+        "",
+        "| 读法 | 字节数 | MiB | MB(decimal) | 本报告 |",
+        "|---|---|---|---|---|",
+        "| 宽松：50 × 1024² | " + "{:,}".format(LIMIT_BYTES) + " | 50.00 | 52.43 | **执行口径** |",
+        "| 严格：50 × 10⁶ | " + "{:,}".format(LIMIT_STRICT_BYTES) + " | 47.68 | 50.00 | 一并核账 |",
+        "",
+        "注意 1024² 那一读法**不是**更严格的那个（52.43 > 50.00）。本报告**执行**宽松口径，"
+        "同时把严格读法下的余量也算出来——实际交付物远小于两者，故两种口径都不超，"
+        "这一点由下面的两行余量共同证明，而不是靠口头声明。",
         "",
         "未压缩估算公式（按题目口径）：`Σ_m (全部单元数) × D_m × 每元素字节数`。",
         "",
@@ -1234,10 +1257,25 @@ def _sec_budget(ctx: Dict[str, object]) -> List[str]:
         for r in sb
     ] + [
         "",
+        # 下面的减法一律在 decimal MB 内做（total 与 LIMIT_*_BYTES 都换算到 10⁶ 字节），
+        # 不能再拿 limit_mib 去减 decimal-MB，那会得到一个既非 MiB 也非 MB 的数。
         "**实测交付物体积**：`data/q1_delivery/` 目录**全部内容**（含图与对应表）合计 **"
-        + "{:.3f}".format(total) + " MB**，距上限余量 **"
-        + "{:.2f}".format(limit_mib - total) + " MB**（用掉 "
-        + "{:.1f}%".format(100.0 * total / limit_mib) + "）。",
+        + "{:.3f}".format(total) + " MB(decimal) = "
+        + "{:.3f}".format(total * 1e6 / 1024 / 1024) + " MiB**。",
+        "",
+        "| 口径 | 上限 | 已用 | 余量 |",
+        "|---|---|---|---|",
+        "| 宽松 50 MiB | " + "{:.3f}".format(LIMIT_BYTES / 1e6) + " MB | "
+        + "{:.3f}".format(total) + " MB | "
+        + "{:.3f}".format((LIMIT_BYTES - total * 1e6) / 1e6) + " MB = "
+        + "{:.3f}".format((LIMIT_BYTES - total * 1e6) / 1024 / 1024) + " MiB |",
+        "| 严格 50 × 10⁶ | " + "{:.3f}".format(LIMIT_STRICT_BYTES / 1e6) + " MB | "
+        + "{:.3f}".format(total) + " MB | "
+        + "{:.3f}".format((LIMIT_STRICT_BYTES - total * 1e6) / 1e6) + " MB = "
+        + "{:.3f}".format((LIMIT_STRICT_BYTES - total * 1e6) / 1024 / 1024) + " MiB |",
+        "",
+        "即无论按哪一种读法，占用都不足上限的 **"
+        + "{:.1f}%".format(100.0 * total * 1e6 / LIMIT_STRICT_BYTES) + "**（严格读法占比）。",
         "",
         "| 交付内容 | 大小 (MB) | 说明 |",
         "|---|---|---|",
@@ -1281,7 +1319,8 @@ def _sec_budget(ctx: Dict[str, object]) -> List[str]:
         "",
         "**结论：不采用。** 变长 float32 三模态合计仅 "
         + NEXT_ROW(sb, "（合计）变长 float32", "uncompressed_MB_f32") + " MB，"
-        "距上限余量 " + "{:.2f}".format(limit_mib - total) + " MB，**根本不紧张**；"
+        "距上限余量 " + "{:.2f}".format((LIMIT_STRICT_BYTES - total * 1e6) / 1e6)
+        + " MB（按严格读法计），**根本不紧张**；"
         "改成 float16 一共只省约 6.5 MB，却把语音维"
         "（量级最大，`max|x|` = "
         + next((r["abs_max_absvalue"] for r in sb if r["block"] == "audio_features"), "—")
@@ -1343,10 +1382,16 @@ ART_DESC = {
     "typical_samples.csv": "五类典型样本的类别/判据/取值",
     "face_probe.csv": "逐样本人脸探测结果（3 帧抽样）",
     "face_probe_frames.csv": "逐探测帧的原始证据（框面积、定位偏差、交叉核对）",
-    "verify_report.json": "12 项机器核验的完整证据",
+    "verify_report.json": "13 项机器核验的完整证据",
     "verify_report.md": "同上的人类可读版",
     "README_问题一交付与验证.md": "本文档（数学模型与验收说明）",
 }
+
+
+def _tbc(ctx: Dict[str, object]) -> Dict[str, int]:
+    """文本时间基准的逐样本分布；缺字段时返回空字典而不是抛错。"""
+    v = ctx.get("text_basis_counts") or {}
+    return v if isinstance(v, dict) else {}
 
 
 def _sec_limits(ctx: Dict[str, object]) -> List[str]:
@@ -1358,15 +1403,22 @@ def _sec_limits(ctx: Dict[str, object]) -> List[str]:
         "| # | 不能声称 | 原因 |",
         "|---|---|---|",
         "| 1 | **对齐达到某个毫秒级平均误差** | "
-        "本数据集**没有逐词人工时间戳真值**；文本的时间轴是本管线自己声明的均匀假设。"
-        "没有真值就无法计算误差。本报告只报**一致性检查**与**抽查** |",
+        "本数据集**没有逐词人工时间戳真值**；" + str(_tbc(ctx).get("uniform_assumption", 0))
+        + " 条样本的文本时间轴是本管线自己声明的均匀假设，另 "
+        + str(_tbc(ctx).get("measured_forced_alignment", 0))
+        + " 条由强制对齐给出实测区间。没有真值就无法计算误差。"
+        "本报告只报**一致性检查**与**抽查** |",
         "| 2 | **「每个聚合值都能溯源到源帧」100% 成立** | "
         "音视频的空槽由插值填充，**本来就没有源帧**。真实可溯源率见 4.5 节，"
         "插值槽被逐个标记为 `interp` 而不是冒充有源 |",
         "| 3 | **`*_valid` 可作为模态可用性判据** | "
         "反例 `-mJ2ud6oKI8_1`：`vision_valid` 50/50 全 True 而视觉能量恰为 0 |",
-        "| 4 | **文本逐词时间正确** | `time_basis=\"uniform_assumption\"`，"
-        "由构造保证，只能证明实现与声明一致（V2 的证据段已明确标注这一点）|",
+        "| 4 | **文本逐词时间正确** | 均匀假设档由构造保证，只能证明实现与声明一致；"
+        "实测档的准入证据是「官方词数是否被完整覆盖」这一**弱证据**，"
+        "它不能证明逐词时刻正确（V2/V13 的证据段已明确标注这一点）|",
+        "| 4b | **100 条样本的文本时间戳同源** | "
+        "实测档与假设档并存，逐样本由 `alignment_mode` 区分。"
+        "按槽统计文本时间前**必须先读该字段**，否则会把两种口径混在一起 |",
         "| 5 | **`max_face_count` 是片段中出现的最大人脸数** | "
         "只抽 3 帧探测，它是**抽样下界** |",
         "| 6 | **以质量为由剔除过任何样本** | 竞赛指南禁止；"
@@ -1452,10 +1504,25 @@ def build(out_dir: str = DEFAULT_OUT_DIR) -> str:
     ids_us = [v for v in vids if "_" in v]
     n_sid_us = sum(1 for r in summary if str(r.get("sample_id", "")).count("_") >= 2)
 
+    # 文本时间基准的实际分布（逐样本），直接从交付矩阵里数，不另设来源
+    text_basis_counts: Dict[str, int] = {}
+    if os.path.isfile(fpath):
+        with np.load(fpath, allow_pickle=True) as z:
+            if "text_time_basis_by_sample" in z.files:
+                for v in z["text_time_basis_by_sample"]:
+                    k = str(v)
+                    text_basis_counts[k] = text_basis_counts.get(k, 0) + 1
+    if not text_basis_counts and summary:
+        for r in summary:
+            k = str(r.get("alignment_mode", ""))
+            if k:
+                text_basis_counts[k] = text_basis_counts.get(k, 0) + 1
+
     ctx: Dict[str, object] = {
         "out_dir": out_dir, "verify": verify, "cfg": cfg, "summary": summary,
         "ledger": ledger, "typical": typical, "probe": probe, "size_rows": size_rows,
         "vsum": verify.get("summary", {}), "n_slots": n_slots, "dims": dims,
+        "text_basis_counts": text_basis_counts,
         "units_sum": units_sum, "libs": cfg.get("libraries", {}), "verdicts": verdicts,
         "n_ids_with_underscore": len(ids_us), "ids_with_underscore": ids_us,
         "n_samples_with_underscore_vid": n_sid_us, "n_video_ids": len(vids),

@@ -1,0 +1,37 @@
+{
+ "n_official_words": 21,
+ "n_aligned_words": 2,
+ "zero_duration_words": 1,
+ "coverage": 0.0952,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.1,
+ "last_t": 0.7,
+ "span": 0.6,
+ "word_start_sec": [
+  0.1,
+  0.7
+ ],
+ "word_end_sec": [
+  0.7,
+  0.7
+ ],
+ "word_ts_sec": [
+  0.4,
+  0.7
+ ],
+ "error": null,
+ "sample_id": "-UacrmKiTn4_10",
+ "official_id": "-UacrmKiTn4$_$10",
+ "duration_sec": 7.361979,
+ "text_original": "Because, if they are not in any way held accountable for reading the material they won't do it.",
+ "word_source": "data/unaligned_features/text/-UacrmKiTn4_10.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:05",
+ "mode": "clip_level"
+}

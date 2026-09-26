@@ -1,0 +1,126 @@
+{
+  "generated_at_utc": "2026-09-26T14:37:16.911430+00:00",
+  "v2": {
+    "counted": {
+      "audit": {
+        "files": 2,
+        "bytes": 17504
+      },
+      "config_snapshot.json": {
+        "files": 1,
+        "bytes": 1252
+      },
+      "correspondence": {
+        "files": 4,
+        "bytes": 16843
+      },
+      "features": {
+        "files": 100,
+        "bytes": 18705996
+      },
+      "manifest.csv": {
+        "files": 1,
+        "bytes": 104434
+      },
+      "metadata": {
+        "files": 5,
+        "bytes": 163648
+      },
+      "README_问题一交付与验证.md": {
+        "files": 1,
+        "bytes": 16632
+      },
+      "reports": {
+        "files": 10,
+        "bytes": 35025
+      },
+      "results_100.csv": {
+        "files": 1,
+        "bytes": 103602
+      }
+    },
+    "not_counted": {
+      ".cache": {
+        "files": 200,
+        "bytes": 6806691
+      },
+      "logs": {
+        "files": 300,
+        "bytes": 359019
+      }
+    },
+    "counted_bytes": 19164936,
+    "not_counted_bytes": 7165710
+  },
+  "whitelist": {
+    "q1_v2": {
+      "relpath": "data\\q1_v2",
+      "files": 125,
+      "bytes": 19164936,
+      "excluded": [
+        ".cache",
+        "logs"
+      ]
+    },
+    "q2": {
+      "relpath": "data\\q2",
+      "files": 14,
+      "bytes": 11137253,
+      "excluded": []
+    },
+    "q3": {
+      "relpath": "data\\q3",
+      "files": 17,
+      "bytes": 10283240,
+      "excluded": []
+    },
+    "q2q3_audit": {
+      "relpath": "data\\q2q3",
+      "files": 1,
+      "bytes": 23848,
+      "excluded": []
+    },
+    "package_check": {
+      "relpath": "data\\package_check",
+      "files": 2,
+      "bytes": 3204,
+      "excluded": []
+    },
+    "code": {
+      "relpath": "code",
+      "files": 47,
+      "bytes": 1718858,
+      "is_code": true
+    }
+  },
+  "replaces": [
+    "q1_delivery"
+  ],
+  "reconcile_with_package_check": {
+    "package_check_json": "D:/23届建模/data/package_check/package_check.json",
+    "delta_bytes": 250,
+    "package_check_total_bytes": 42331089,
+    "note": "残差 = 本台账合计 − package_check.py 合计。二者量同一组文件，差额仅来自 package_check.json 对自身大小的自指。"
+  },
+  "limits": {
+    "loose_bytes": 52428800,
+    "strict_bytes": 50000000,
+    "loose_note": "50×1024² —— 与 data/q1_delivery 既有口径一致",
+    "strict_note": "50×10⁶"
+  },
+  "accounting": {
+    "whitelist_current_bytes": 42331339,
+    "replaced_bytes": 0,
+    "v2_counted_bytes": 19164936,
+    "v2_in_whitelist": true,
+    "old_q1_relpath": "data/q1_delivery",
+    "old_q1_files": 27,
+    "old_q1_bytes": 16129185,
+    "replace_total_bytes": 42331339,
+    "stack_total_bytes": 58460524,
+    "replace_within_loose": true,
+    "replace_within_strict": true,
+    "stack_within_loose": false,
+    "stack_within_strict": false
+  }
+}

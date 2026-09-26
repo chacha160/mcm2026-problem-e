@@ -1,0 +1,17 @@
+{
+  "generated_from": "data/q1_v2",
+  "tables": {
+    "q1v2_spec": "code/q1v2_contract.py 常量 ROBERTA_HIDDEN_DIM / OPENMILE_LLD_DIM / FACE_MODEL_DIM；词级维度由 q1v2_verify V2 逐样本断言",
+    "q1v2_schema": "data/q1_v2/features/*.npz、manifest.csv、results_100.csv",
+    "q1v2_all100": "data/q1_v2/results_100.csv 逐行；维度取 code/q1v2_contract.py 冻结常量",
+    "q1v2_route": "data/q1_v2/metadata/route_policy.json + results_100.csv 的 alignment_mode 计数",
+    "q1v2_route_fields": "data/q1_v2/results_100.csv + metadata/route_policy.json 的 separate_fields",
+    "q1v2_verify": "data/q1_v2/reports/verify_report.json 的 checks 数组",
+    "q1v2_ledger": "data/q1_v2/audit/anomaly_ledger.csv（全量 29 条，counts_as_deletion 恒 0）",
+    "q1v2_budget": "data/q1_v2/reports/q1v2_size_ledger.json 的 accounting",
+    "q1v2_typical": "data/q1_v2/correspondence/_meta.json（选样判据见该文件 selection 字段）",
+    "q1v2_corr": "data/q1_v2/correspondence/-THoVjtIkeU___6_correspondence.csv（样本 -THoVjtIkeU$_$6 全 30 词）",
+    "q1v2_env": "data/q1_v2/metadata/environment.json 的 packages + 对 code/q1v2_*.py 与 code/run_q1v2_all.py 的 AST 静态扫描（「否」项的角色见 _gen_paper_tables_q1.py 的 _TRANSITIVE_DEPS 与扫描结果）",
+    "q1v2_assets": "data/q1_v2/metadata/model_assets.json"
+  }
+}

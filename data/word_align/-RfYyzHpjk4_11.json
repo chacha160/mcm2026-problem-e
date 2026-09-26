@@ -1,0 +1,52 @@
+{
+ "n_official_words": 19,
+ "n_aligned_words": 7,
+ "zero_duration_words": 0,
+ "coverage": 0.3684,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.62,
+ "last_t": 2.34,
+ "span": 1.72,
+ "word_start_sec": [
+  0.62,
+  0.74,
+  1.38,
+  1.56,
+  1.76,
+  2.02,
+  2.24
+ ],
+ "word_end_sec": [
+  0.74,
+  1.38,
+  1.56,
+  1.76,
+  2.02,
+  2.24,
+  2.34
+ ],
+ "word_ts_sec": [
+  0.68,
+  1.06,
+  1.47,
+  1.66,
+  1.89,
+  2.13,
+  2.29
+ ],
+ "error": null,
+ "sample_id": "-RfYyzHpjk4_11",
+ "official_id": "-RfYyzHpjk4$_$11",
+ "duration_sec": 5.238997,
+ "text_original": "So get your friends lined up, get your business colleagues lined up and have a good time.",
+ "word_source": "data/unaligned_features/text/-RfYyzHpjk4_11.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:33:21",
+ "mode": "clip_level"
+}

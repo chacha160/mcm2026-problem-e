@@ -1,0 +1,20 @@
+{
+  "stage": "tables",
+  "n_rows": 100,
+  "manifest": "D:/23届建模/data/q1_v2/manifest.csv",
+  "results_100": "D:/23届建模/data/q1_v2/results_100.csv",
+  "n_missing_media": 0,
+  "missing": [],
+  "alignment_mode_counts": {
+    "UNCERTAIN_REVIEW": 98,
+    "TRI_MODAL_WITH_AUDIO_CONTENT_INVALID": 2
+  },
+  "content_assertion_positive": 0,
+  "word_time_basis_own": 97,
+  "audio_speech_valid_counts": {
+    "1": 0,
+    "0": 2,
+    "-1": 98
+  },
+  "n_anomalies_logged": 29
+}

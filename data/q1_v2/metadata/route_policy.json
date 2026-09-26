@@ -1,0 +1,32 @@
+{
+  "vocabulary": [
+    "TRI_MODAL_WORD_VALID",
+    "TRI_MODAL_WITH_AUDIO_CONTENT_INVALID",
+    "AV_VALID_TEXT_UNALIGNED",
+    "UNCERTAIN_REVIEW",
+    "EXTRACTION_OR_TIMELINE_ANOMALY"
+  ],
+  "emitted_by_this_pipeline": [
+    "EXTRACTION_OR_TIMELINE_ANOMALY",
+    "TRI_MODAL_WITH_AUDIO_CONTENT_INVALID",
+    "UNCERTAIN_REVIEW"
+  ],
+  "never_emitted": {
+    "TRI_MODAL_WORD_VALID": "该类要求「文本内容与讲话已确认对应」（人工听辨结论）且「冻结对齐器下全部官方词区间合法」（机器可判）；本套代码只做机器可判的那一半，不因区间合法就替人工下内容结论，故不发出此类。结构合法的样本由 text_av_time_mapping_status=word_valid/word_partial 与 word_time_basis=own_forced_alignment 标注。",
+    "AV_VALID_TEXT_UNALIGNED": "该类要求「已确认官方文字与实际讲话明显不对应」，属人工听辨结论；ASR 距离、对齐概率、置信度都只是间接量，任何阈值都反推不出该结论（机器分歧度排序与人工听辨判定不是同一件事），故本套代码不发出此类。"
+  },
+  "expected_distribution": {
+    "EXTRACTION_OR_TIMELINE_ANOMALY": 0,
+    "TRI_MODAL_WITH_AUDIO_CONTENT_INVALID": 2,
+    "UNCERTAIN_REVIEW": 98,
+    "TRI_MODAL_WORD_VALID": 0,
+    "AV_VALID_TEXT_UNALIGNED": 0
+  },
+  "distribution_note": "本套代码的期望分布是 TRI_MODAL_WORD_VALID 0 / AV_VALID_TEXT_UNALIGNED 0 / 其余三类非零。那两类恒为 0 **不是漏跑**，而是证据等级不达标：它们都要求「内容是否对应」的人工听辨结论，本套代码不伪造该结论，把这类样本保守地归入 UNCERTAIN_REVIEW。因此本表的计数只描述本套代码，不能当作类别占比的经验估计。",
+  "separate_fields": {
+    "text_av_time_mapping_status": "机器可判的结构闸门：官方词的时间区间够不够用。取值 word_valid / word_partial / clip_only / unavailable。",
+    "text_audio_correspondence": "内容确认：官方文本与实际讲话是否对应。本套代码一律 not_asserted，唯一例外是位精确可证的数字静音（no_speech）。",
+    "content_assertion": "uint8。1 仅当存在外部人工证据，本套代码恒为 0。它的作用是让下游一眼看出「对齐区间存在」不等于「内容已确认」。",
+    "word_time_basis": "词区间来源。own_forced_alignment 表示本样本至少有一个词的区间来自本次冻结 stable-ts 运行；none 表示没有合法词区间。它只声明区间来源，不声明文本内容与讲话对应。"
+  }
+}

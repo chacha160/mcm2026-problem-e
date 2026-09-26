@@ -1,0 +1,182 @@
+{
+  "roberta": {
+    "dir": "e2da8e2f811d1448a5b465c236feacd80ffbac7b",
+    "files_sha256": {
+      "config.json": "ef0185e2aae6e06c5f105a285006952c340e20c7dbf43c86ec82601b13fc45e9",
+      "merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+      "model.safetensors": "5bde1d28afb363d0103324efeb5afc8b2b397fe5e04beabb9b1ef355255ade81",
+      "tokenizer.json": "847bbeab6174d66a88898f729d52fa8d355fafe1bea101cf960dd404581df70e",
+      "tokenizer_config.json": "994f46754c5bf4014f1aa92d34b1374319c3a6b3f702105cd5b742beaecd18ce",
+      "vocab.json": "9e7f63c2d15d666b52e21d250d2e513b87c9b713cfa6987a82ed89e5e6e50655"
+    },
+    "n_files": 6,
+    "all_match": true,
+    "model_id": "FacebookAI/roberta-base",
+    "revision": "e2da8e2f811d1448a5b465c236feacd80ffbac7b",
+    "hidden_dim": 768
+  },
+  "whisper": {
+    "file": "base.en.pt",
+    "sha256": "25a8566e1d0c1e2231d1c762132cd20e0f96a85d16145c3a00adf5d1ac670ead",
+    "bytes": 145261783,
+    "model_name": "base.en"
+  },
+  "mediapipe": {
+    "file": "face_landmarker.task",
+    "sha256": "64184e229b263107bc2b804c6625db1341ff2bb731874b0bcc2fe6544e0bc9ff",
+    "bytes": 3758596,
+    "source_url": "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+    "downloaded_this_run": false
+  },
+  "opensmile": {
+    "config_file": "eGeMAPSv02.conf",
+    "config_path": "D:\\q1v2work\\.venv\\Lib\\site-packages\\opensmile\\core\\config\\egemaps\\v02\\eGeMAPSv02.conf",
+    "config_sha256": "ef451953badced2ed112ba4ffb997f9d2a7e7c444a09e8092665eadd9f24109e",
+    "feature_set": "eGeMAPSv02",
+    "feature_level": "LowLevelDescriptors",
+    "feature_dim": 25,
+    "feature_names": [
+      "Loudness_sma3",
+      "alphaRatio_sma3",
+      "hammarbergIndex_sma3",
+      "slope0-500_sma3",
+      "slope500-1500_sma3",
+      "spectralFlux_sma3",
+      "mfcc1_sma3",
+      "mfcc2_sma3",
+      "mfcc3_sma3",
+      "mfcc4_sma3",
+      "F0semitoneFrom27.5Hz_sma3nz",
+      "jitterLocal_sma3nz",
+      "shimmerLocaldB_sma3nz",
+      "HNRdBACF_sma3nz",
+      "logRelF0-H1-H2_sma3nz",
+      "logRelF0-H1-A3_sma3nz",
+      "F1frequency_sma3nz",
+      "F1bandwidth_sma3nz",
+      "F1amplitudeLogRelF0_sma3nz",
+      "F2frequency_sma3nz",
+      "F2bandwidth_sma3nz",
+      "F2amplitudeLogRelF0_sma3nz",
+      "F3frequency_sma3nz",
+      "F3bandwidth_sma3nz",
+      "F3amplitudeLogRelF0_sma3nz"
+    ],
+    "num_workers": 1,
+    "multiprocessing": false
+  },
+  "label_xlsx": {
+    "file": "data/attachment1/E题数据/E题数据/附件1-数据集原始多模态样本/MOSEI数据集部分原始视频-100条/label-100.xlsx",
+    "sha256": "827334f782b1f242c84ad944a657bc7f7c63643f71ae9c977811a3eecdd3ab33",
+    "matches_reference": true,
+    "reference_sha256": "827334f782b1f242c84ad944a657bc7f7c63643f71ae9c977811a3eecdd3ab33"
+  },
+  "work_root": "D:\\q1v2work",
+  "environment": {
+    "python_version": "3.13.9",
+    "python_implementation": "CPython",
+    "interpreter": "isolated venv (ASCII path)",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "packages": {
+      "torch": "2.14.0+cpu",
+      "torchaudio": "2.11.0+cpu",
+      "transformers": "5.17.0",
+      "av": "18.1.0",
+      "numpy": "2.2.6",
+      "pandas": "3.0.6",
+      "librosa": "1.0.0",
+      "openai-whisper": "20250625",
+      "stable-ts": "2.19.1",
+      "opensmile": "2.6.0",
+      "mediapipe": "0.10.35",
+      "openpyxl": "3.1.5"
+    },
+    "work_root": "D:\\q1v2work",
+    "work_root_reason": "ASCII fallback outside project (project path is non-ASCII)",
+    "work_root_note": "原生资产与隔离 venv 的工作区。openSMILE 的 Python 绑定以 ASCII 编码配置文件路径（opensmile/core/lib.py），MediaPipe 亦把权重路径交给原生层，故二者所在路径必须为纯 ASCII。本仓库根目录含中文，因此工作区被解析到仓库之外的 ASCII 路径。工作区不随仓库提交、不占提交体积。",
+    "venv_python": "D:\\q1v2work\\.venv\\Scripts\\python.exe",
+    "hf_endpoint_note": "环境变量 HF_ENDPOINT 存在时不使用它：运行期零网络，全部模型按本地快照目录直载（local_files_only=True）。",
+    "offline_enforced": true
+  },
+  "version_differences": {
+    "rows": [
+      {
+        "package": "python",
+        "reference": "3.12.10",
+        "ours": "3.13.9",
+        "same": false
+      },
+      {
+        "package": "torch",
+        "reference": "2.8.0",
+        "ours": "2.14.0+cpu",
+        "same": false
+      },
+      {
+        "package": "torchaudio",
+        "reference": "2.8.0",
+        "ours": "2.11.0+cpu",
+        "same": false
+      },
+      {
+        "package": "stable-ts",
+        "reference": "2.19.1",
+        "ours": "2.19.1",
+        "same": true
+      },
+      {
+        "package": "openai-whisper",
+        "reference": "20250625",
+        "ours": "20250625",
+        "same": true
+      },
+      {
+        "package": "opensmile",
+        "reference": "2.6.0",
+        "ours": "2.6.0",
+        "same": true
+      },
+      {
+        "package": "mediapipe",
+        "reference": "0.10.35",
+        "ours": "0.10.35",
+        "same": true
+      },
+      {
+        "package": "transformers",
+        "reference": "4.57.6",
+        "ours": "5.17.0",
+        "same": false
+      },
+      {
+        "package": "av",
+        "reference": "18.0.0",
+        "ours": "18.1.0",
+        "same": false
+      },
+      {
+        "package": "pandas",
+        "reference": "3.0.3",
+        "ours": "3.0.6",
+        "same": false
+      },
+      {
+        "package": "openpyxl",
+        "reference": "3.1.5",
+        "ours": "3.1.5",
+        "same": true
+      }
+    ],
+    "n_same": 5,
+    "n_diff": 6,
+    "policy": "不降级。降级 transformers/torch 会与同一仓库正在运行的问题二/问题三冲突，代价大于收益。差异已由词单元口径（1932/1926/0，本机复算命中）部分排除风险；音频与视觉走的是 PyAV + openSMILE + MediaPipe 的冻结配置，与 torch/transformers 版本无耦合。"
+  },
+  "all_ok": true,
+  "verified_against_frozen_constants": [
+    "mediapipe_model_sha256",
+    "opensmile_config_sha256",
+    "roberta_model_sha256",
+    "whisper_checkpoint_sha256"
+  ]
+}

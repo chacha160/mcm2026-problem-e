@@ -1,0 +1,49 @@
+{
+ "n_official_words": 78,
+ "n_aligned_words": 6,
+ "zero_duration_words": 0,
+ "coverage": 0.0769,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.52,
+ "last_t": 1.98,
+ "span": 1.46,
+ "word_start_sec": [
+  0.52,
+  0.9,
+  1.12,
+  1.26,
+  1.6,
+  1.86
+ ],
+ "word_end_sec": [
+  0.9,
+  1.12,
+  1.26,
+  1.6,
+  1.86,
+  1.98
+ ],
+ "word_ts_sec": [
+  0.71,
+  1.01,
+  1.19,
+  1.43,
+  1.73,
+  1.92
+ ],
+ "error": null,
+ "sample_id": "-a55Q6RWvTA_3",
+ "official_id": "-a55Q6RWvTA$_$3",
+ "duration_sec": 22.153971,
+ "text_original": "And if you clip coupons, if you don't go out for dinner and movies and things of that nature and try to take up things in life that, well, they always say, \"the best things in life are free\". Reading a book, going for a nice walk, and, of course, combining exercise and various things of that nature where you're not spending money per se.",
+ "word_source": "data/unaligned_features/text/-a55Q6RWvTA_3.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:10",
+ "mode": "clip_level"
+}

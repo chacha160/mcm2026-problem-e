@@ -1,0 +1,43 @@
+{
+ "n_official_words": 39,
+ "n_aligned_words": 4,
+ "zero_duration_words": 0,
+ "coverage": 0.1026,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.48,
+ "last_t": 1.94,
+ "span": 1.46,
+ "word_start_sec": [
+  0.48,
+  0.58,
+  0.96,
+  1.56
+ ],
+ "word_end_sec": [
+  0.58,
+  0.96,
+  1.56,
+  1.94
+ ],
+ "word_ts_sec": [
+  0.53,
+  0.77,
+  1.26,
+  1.75
+ ],
+ "error": null,
+ "sample_id": "-dxfTGcXJoc_2",
+ "official_id": "-dxfTGcXJoc$_$2",
+ "duration_sec": 16.697982,
+ "text_original": "An estimated 20,000 biotech scientists, executives and industry experts from more than 50 nations were at the BIO conference to learn about the latest scientific advances, and to exchange ideas and establish business relationships.",
+ "word_source": "data/unaligned_features/text/-dxfTGcXJoc_2.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:15",
+ "mode": "clip_level"
+}

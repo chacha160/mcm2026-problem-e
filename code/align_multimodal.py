@@ -263,13 +263,47 @@ def resolve_duration(loaded: Dict[str, Dict[str, object]], policy: str = "video"
     return float(max(last_pts)) if last_pts else 0.0
 
 
+def resolve_text_pts(sample_id: str, n_units: int,
+                     word_align_dir: Optional[str] = None
+                     ) -> Tuple[Optional[np.ndarray], Optional[Dict[str, object]]]:
+    """
+    取文本模态该用的时间戳：实测优先，否则 None（调用方保持原均匀假设时间）。
+
+    只有证据路由判为 word_level 的样本才返回实测词时间。判据与理由见
+    ``word_align.decide_mode``；此处额外校验词数与该样本文本特征行数一致，
+    不一致说明词对齐记录与未对齐特征不同源（例如只重跑了其中一步），
+    此时宁可回退均匀假设，也不能让时间戳与特征行错位。
+    """
+    import word_align as WA
+
+    rec = WA.load_word_align(sample_id, word_align_dir)
+    if not rec:
+        return None, None
+    if rec.get("mode") != WA.MODE_WORD_LEVEL:
+        return None, rec
+    ts = rec.get("word_ts_sec") or []
+    if len(ts) != int(n_units):
+        LOGGER.warning("[对齐] %s 实测词数 %d 与文本特征行 %d 不符，回退均匀假设",
+                       sample_id, len(ts), int(n_units))
+        return None, rec
+    return np.asarray(ts, dtype=np.float64), rec
+
+
 def align_sample(sample_id: str, unaligned_root: str, n_slots: int = 50,
                  method: str = "time_bin", duration_policy: str = "video",
-                 fills: Optional[Dict[str, str]] = None) -> Optional[Dict[str, object]]:
+                 fills: Optional[Dict[str, str]] = None,
+                 word_align_dir: Optional[str] = None,
+                 word_align_enabled: bool = True) -> Optional[Dict[str, object]]:
     """
     对一条样本做三模态对齐。
 
     三模态共用同一个 duration，因此共用同一根秒轴——这是「共享时间轴」的落地方式。
+
+    文本模态的时间戳按证据路由决定来源（见 word_align 模块）：
+        word_level  —— 用 stable-ts 强制对齐得到的实测词区间中心
+        clip_level  —— 保持均匀假设 t_j=(j+0.5)*T/W
+    两条路径都只改「词落在哪个槽」，不改特征、不改槽数与维度，故
+    附件2/3/4 的接口形状与问题二/三的输入完全不受影响。
     """
     fills = fills or _FILL_DEFAULT
     loaded: Dict[str, Dict[str, object]] = {}
@@ -285,24 +319,59 @@ def align_sample(sample_id: str, unaligned_root: str, n_slots: int = 50,
         LOGGER.error("[对齐] %s 无法确定片段时长，跳过", sample_id)
         return None
 
+    # ---- 文本时间戳来源：实测词时间优先 ----
+    n_text_units = int(loaded["text"]["features"].shape[0])
+    text_pts_measured, wa_rec = (None, None)
+    if word_align_enabled:
+        try:
+            text_pts_measured, wa_rec = resolve_text_pts(sample_id, n_text_units, word_align_dir)
+        except Exception as exc:  # noqa: BLE001
+            LOGGER.warning("[对齐] %s 读取词对齐记录失败，回退均匀假设: %s", sample_id, exc)
+
     edges = slot_edges(duration, n_slots)
     out: Dict[str, object] = {"sample_id": sample_id, "duration": float(duration),
                               "slot_edges": edges, "duration_policy": duration_policy,
                               "modalities": {}}
     for m in MODALITIES:
         d = loaded[m]
+        pts = np.asarray(d["pts"], np.float32)
+        time_basis = d["meta"].get("time_basis", "unknown")
+        if m == "text" and text_pts_measured is not None:
+            pts = text_pts_measured
+            time_basis = "measured_forced_alignment"
         aligned, valid, meta = align_series(np.asarray(d["features"], np.float32),
-                                           np.asarray(d["pts"], np.float32),
-                                           duration, n_slots, method, fills.get(m, "zero"))
+                                           pts, duration, n_slots, method, fills.get(m, "zero"))
         out["modalities"][m] = {
             "aligned": aligned, "valid": valid,
             "num_units": int(d["features"].shape[0]),
             "feature_dim": int(d["features"].shape[1]) if d["features"].ndim == 2 else 0,
             "src_duration": float(d["pts"][-1]) if len(d["pts"]) else 0.0,
-            "time_basis": d["meta"].get("time_basis", "unknown"),
+            "time_basis": time_basis,
             "extra": d["extra"],
             "align_meta": meta,
         }
+
+    # ---- 证据路由与词对齐摘要（落进交付物，供核验与论文引用）----
+    align_mode = (wa_rec or {}).get("mode") or "not_run"
+    out["alignment_mode"] = align_mode
+    out["word_align"] = {
+        "mode": align_mode,
+        "text_time_basis": out["modalities"]["text"]["time_basis"],
+        "n_official_words": (wa_rec or {}).get("n_official_words"),
+        "n_aligned_words": (wa_rec or {}).get("n_aligned_words"),
+        "zero_duration_words": (wa_rec or {}).get("zero_duration_words"),
+        "coverage": (wa_rec or {}).get("coverage"),
+        "first_t": (wa_rec or {}).get("first_t"),
+        "last_t": (wa_rec or {}).get("last_t"),
+        "aligner": (wa_rec or {}).get("aligner"),
+        "aligner_version": (wa_rec or {}).get("aligner_version"),
+        "whisper_model": (wa_rec or {}).get("whisper_model"),
+        "interval_convention": (wa_rec or {}).get("interval_convention"),
+        # 实测词时刻落进对齐产物，使交付阶段「只读 unaligned + aligned」即可
+        # 复现 slot_src_pts / word_t_sec，无需再依赖 data/word_align/ 目录。
+        "word_ts_sec": (list(wa_rec.get("word_ts_sec") or [])
+                        if align_mode == "word_level" else []),
+    }
     return out
 
 
@@ -330,6 +399,11 @@ def save_sample_aligned(out_dir: str, res: Dict[str, object]) -> str:
                        "src_duration": md["src_duration"], "time_basis": md["time_basis"],
                        "align": {k: v for k, v in md["align_meta"].items() if k != "slot_unit_index"},
                        "slot_unit_index": md["align_meta"]["slot_unit_index"]}
+    # 证据路由写在顶层 routing 键下（与 text/audio/vision 并列），
+    # 使「这条样本的文本时间戳是实测还是假设」无需读 word_align 目录即可判定。
+    meta_all["routing"] = {"alignment_mode": res.get("alignment_mode", "not_run"),
+                           "align_version": config.ALIGN_VERSION,
+                           "word_align": res.get("word_align", {})}
     payload["meta"] = np.array(json.dumps(meta_all, ensure_ascii=False))
     np.savez_compressed(path, **payload)
     return path
@@ -442,25 +516,31 @@ def save_summary_csv(out_dir: str, results: List[Dict[str, object]]) -> str:
 def run(samples: List[Dict[str, object]], unaligned_root: str, out_dir: str,
         n_slots: int = config.ALIGN_SEQ_LEN, method: str = "time_bin",
         duration_policy: str = "video", fills: Optional[Dict[str, str]] = None,
-        overwrite: bool = False) -> List[Dict[str, object]]:
+        overwrite: bool = False, word_align_dir: Optional[str] = None,
+        word_align_enabled: bool = True) -> List[Dict[str, object]]:
     os.makedirs(out_dir, exist_ok=True)
     results: List[Dict[str, object]] = []
     n_fail = 0
+    n_word_level = 0
     for i, s in enumerate(samples, 1):
         sid = str(s["sample_id"])
         try:
-            res = align_sample(sid, unaligned_root, n_slots, method, duration_policy, fills)
+            res = align_sample(sid, unaligned_root, n_slots, method, duration_policy, fills,
+                               word_align_dir=word_align_dir,
+                               word_align_enabled=word_align_enabled)
             if res is None:
                 n_fail += 1
                 continue
             save_sample_aligned(out_dir, res)
             results.append(res)
-            LOGGER.info("[对齐] (%d/%d) %s 时长=%.2fs 槽宽=%.4fs | 有效槽 文本%d/语音%d/视觉%d",
+            n_word_level += int(res.get("alignment_mode") == "word_level")
+            LOGGER.info("[对齐] (%d/%d) %s 时长=%.2fs 槽宽=%.4fs | 有效槽 文本%d/语音%d/视觉%d | %s",
                         i, len(samples), sid, float(res["duration"]),
                         float(res["duration"]) / n_slots,
                         int(res["modalities"]["text"]["valid"].sum()),
                         int(res["modalities"]["audio"]["valid"].sum()),
-                        int(res["modalities"]["vision"]["valid"].sum()))
+                        int(res["modalities"]["vision"]["valid"].sum()),
+                        res.get("alignment_mode"))
         except Exception as exc:
             n_fail += 1
             LOGGER.error("[对齐] (%d/%d) 失败 %s: %s: %s", i, len(samples), sid, type(exc).__name__, exc)
@@ -473,7 +553,8 @@ def run(samples: List[Dict[str, object]], unaligned_root: str, out_dir: str,
     LOGGER.info("[对齐]   %s", save_aggregate(out_dir, results))
     LOGGER.info("[对齐]   %s", save_slot_time_map(out_dir, results, n_slots))
     LOGGER.info("[对齐]   %s", save_summary_csv(out_dir, results))
-    LOGGER.info("[对齐] 完成：成功 %d / 失败 %d / 槽数 %d / 方法 %s", len(results), n_fail, n_slots, method)
+    LOGGER.info("[对齐] 完成：成功 %d / 失败 %d / 槽数 %d / 方法 %s | 实测词时间 %d 条，均匀假设 %d 条",
+                len(results), n_fail, n_slots, method, n_word_level, len(results) - n_word_level)
     return results
 
 
@@ -491,6 +572,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                    help="音频与视觉的空槽补齐策略")
     p.add_argument("--unaligned-root", default=None, help="未对齐特征根目录，默认 data/unaligned_features")
     p.add_argument("--out", default=None, help="输出目录，默认 data/aligned")
+    p.add_argument("--word-align-dir", default=None,
+                   help="词对齐记录目录，默认 data/word_align（由 code/word_align.py 生成）")
+    p.add_argument("--no-word-align", action="store_true",
+                   help="关闭实测词时间，文本模态一律用均匀假设（消融/对照用）")
     args = p.parse_args(argv)
 
     root = args.unaligned_root or os.path.join(os.path.dirname(_CODE_DIR), "data", "unaligned_features")
@@ -499,7 +584,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     LOGGER.info("[对齐] 待处理样本 %d 条；未对齐根目录 %s", len(samples), root)
     run(samples, root, out_dir, n_slots=args.slots, method=args.method,
         duration_policy=args.duration,
-        fills={"text": args.fill_text, "audio": args.fill_av, "vision": args.fill_av})
+        fills={"text": args.fill_text, "audio": args.fill_av, "vision": args.fill_av},
+        word_align_dir=args.word_align_dir,
+        word_align_enabled=not args.no_word_align)
     return 0
 
 

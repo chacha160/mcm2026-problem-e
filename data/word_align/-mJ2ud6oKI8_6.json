@@ -1,0 +1,46 @@
+{
+ "n_official_words": 5,
+ "n_aligned_words": 5,
+ "zero_duration_words": 0,
+ "coverage": 1.0,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.0,
+ "last_t": 1.23,
+ "span": 1.23,
+ "word_start_sec": [
+  0.0,
+  0.1,
+  0.52,
+  0.88,
+  0.98
+ ],
+ "word_end_sec": [
+  0.1,
+  0.52,
+  0.6,
+  0.98,
+  1.23
+ ],
+ "word_ts_sec": [
+  0.05,
+  0.31,
+  0.56,
+  0.93,
+  1.105
+ ],
+ "error": null,
+ "sample_id": "-mJ2ud6oKI8_6",
+ "official_id": "-mJ2ud6oKI8$_$6",
+ "duration_sec": 2.257,
+ "text_original": "They are all very safe",
+ "word_source": "data/unaligned_features/text/-mJ2ud6oKI8_6.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:38",
+ "mode": "word_level"
+}

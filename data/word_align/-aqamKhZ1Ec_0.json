@@ -1,0 +1,40 @@
+{
+ "n_official_words": 16,
+ "n_aligned_words": 3,
+ "zero_duration_words": 1,
+ "coverage": 0.1875,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.37,
+ "last_t": 1.98,
+ "span": 1.61,
+ "word_start_sec": [
+  0.37,
+  1.52,
+  1.98
+ ],
+ "word_end_sec": [
+  1.52,
+  1.98,
+  1.98
+ ],
+ "word_ts_sec": [
+  0.945,
+  1.75,
+  1.98
+ ],
+ "error": null,
+ "sample_id": "-aqamKhZ1Ec_0",
+ "official_id": "-aqamKhZ1Ec$_$0",
+ "duration_sec": 10.966667,
+ "text_original": "In 2008, there were very serious tribal warfare in Kenya following a disputed election.",
+ "word_source": "data/unaligned_features/text/-aqamKhZ1Ec_0.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:12",
+ "mode": "clip_level"
+}

@@ -1,0 +1,100 @@
+{
+  "python_version": "3.13.9",
+  "python_implementation": "CPython",
+  "interpreter": "isolated venv (ASCII path)",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "machine": "AMD64",
+  "packages": {
+    "torch": "2.14.0+cpu",
+    "torchaudio": "2.11.0+cpu",
+    "transformers": "5.17.0",
+    "av": "18.1.0",
+    "numpy": "2.2.6",
+    "pandas": "3.0.6",
+    "librosa": "1.0.0",
+    "openai-whisper": "20250625",
+    "stable-ts": "2.19.1",
+    "opensmile": "2.6.0",
+    "mediapipe": "0.10.35",
+    "openpyxl": "3.1.5"
+  },
+  "work_root": "D:\\q1v2work",
+  "work_root_reason": "ASCII fallback outside project (project path is non-ASCII)",
+  "work_root_note": "原生资产与隔离 venv 的工作区。openSMILE 的 Python 绑定以 ASCII 编码配置文件路径（opensmile/core/lib.py），MediaPipe 亦把权重路径交给原生层，故二者所在路径必须为纯 ASCII。本仓库根目录含中文，因此工作区被解析到仓库之外的 ASCII 路径。工作区不随仓库提交、不占提交体积。",
+  "venv_python": "D:\\q1v2work\\.venv\\Scripts\\python.exe",
+  "hf_endpoint_note": "环境变量 HF_ENDPOINT 存在时不使用它：运行期零网络，全部模型按本地快照目录直载（local_files_only=True）。",
+  "offline_enforced": true,
+  "version_differences_from_reference": {
+    "rows": [
+      {
+        "package": "python",
+        "reference": "3.12.10",
+        "ours": "3.13.9",
+        "same": false
+      },
+      {
+        "package": "torch",
+        "reference": "2.8.0",
+        "ours": "2.14.0+cpu",
+        "same": false
+      },
+      {
+        "package": "torchaudio",
+        "reference": "2.8.0",
+        "ours": "2.11.0+cpu",
+        "same": false
+      },
+      {
+        "package": "stable-ts",
+        "reference": "2.19.1",
+        "ours": "2.19.1",
+        "same": true
+      },
+      {
+        "package": "openai-whisper",
+        "reference": "20250625",
+        "ours": "20250625",
+        "same": true
+      },
+      {
+        "package": "opensmile",
+        "reference": "2.6.0",
+        "ours": "2.6.0",
+        "same": true
+      },
+      {
+        "package": "mediapipe",
+        "reference": "0.10.35",
+        "ours": "0.10.35",
+        "same": true
+      },
+      {
+        "package": "transformers",
+        "reference": "4.57.6",
+        "ours": "5.17.0",
+        "same": false
+      },
+      {
+        "package": "av",
+        "reference": "18.0.0",
+        "ours": "18.1.0",
+        "same": false
+      },
+      {
+        "package": "pandas",
+        "reference": "3.0.3",
+        "ours": "3.0.6",
+        "same": false
+      },
+      {
+        "package": "openpyxl",
+        "reference": "3.1.5",
+        "ours": "3.1.5",
+        "same": true
+      }
+    ],
+    "n_same": 5,
+    "n_diff": 6,
+    "policy": "不降级。降级 transformers/torch 会与同一仓库正在运行的问题二/问题三冲突，代价大于收益。差异已由词单元口径（1932/1926/0，本机复算命中）部分排除风险；音频与视觉走的是 PyAV + openSMILE + MediaPipe 的冻结配置，与 torch/transformers 版本无耦合。"
+  }
+}

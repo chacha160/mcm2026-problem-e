@@ -6,15 +6,20 @@
       "not_asserted": "文本时间基准为均匀假设或证据不足，不下断言"
     },
     "counts": {
-      "confirmed_match": 0,
+      "confirmed_match": 7,
       "confirmed_mismatch": 5,
-      "not_asserted": 95
+      "not_asserted": 88
     },
     "n_samples": 100,
     "text_time_basis_observed": [
+      "measured_forced_alignment",
       "uniform_assumption"
     ],
-    "why_confirmed_match_may_be_zero": "本批 100 条的文本时间基准全部是 `uniform_assumption`（词时间=(i+0.5)·T/W 均分），没有任何一条是真实测量的词时间。因此在本判定规则下 `confirmed_match` 结构性为 0——这不是缺陷，而是事实：**文本与语音的逐词对应关系在问题一交付里从未被真实测量过**。方案一自己在 meta.text_time_basis_warning 里也写明了这一点，但交付表里没有任何字段承载它，本层把这个差别显式化。",
+    "text_time_basis_counts": {
+      "measured_forced_alignment": 7,
+      "uniform_assumption": 93
+    },
+    "why_confirmed_match_is_small": "本批 100 条里只有 7 条的文本时间基准是真实测量的（`measured_forced_alignment`），其余 93 条为 `uniform_assumption`（词时间=(i+0.5)·T/W 均分）。均匀假设档不构成「已确认对应」，故不计入 `confirmed_match`——这不是缺陷，而是事实：**多数样本的文本与语音逐词对应关系在问题一交付里没有被真实测量过**。实测档的准入判据是「官方每个词都被对齐到、无零时长词、区间不越界」，详见 data/word_align/ 与核验项 V13。（注意此处的时间基准分布与对应三态是**两个划分**：均匀假设 93 条，而 `not_asserted` 88 条还含证据不足者。）",
     "consistency_check_meaning": "在无真实词时间的前提下仍可核验必要条件：文本占用槽数是否等于词数、占用槽是否单调。该检查只能证伪不能证真，故只作为补充标记，不把 not_asserted 升级为 confirmed_match。",
     "rule_note": "判定顺序为 mismatch > not_asserted > match：先排除结构性非法，再排除无证据样本，最后才允许下正面断言。"
   },
@@ -139,10 +144,10 @@
       }
     },
     "-HwX2H8Z4hY_6": {
-      "state": "not_asserted",
+      "state": "confirmed_match",
       "consistency_check": "ok",
       "evidence": {
-        "text_time_basis": "uniform_assumption",
+        "text_time_basis": "measured_forced_alignment",
         "audio_time_basis": "measured_pts",
         "vision_time_basis": "measured_pts",
         "n_words": 8,
@@ -224,10 +229,10 @@
       }
     },
     "-THoVjtIkeU_2": {
-      "state": "not_asserted",
+      "state": "confirmed_match",
       "consistency_check": "ok",
       "evidence": {
-        "text_time_basis": "uniform_assumption",
+        "text_time_basis": "measured_forced_alignment",
         "audio_time_basis": "measured_pts",
         "vision_time_basis": "measured_pts",
         "n_words": 11,
@@ -751,10 +756,10 @@
       }
     },
     "-mJ2ud6oKI8_6": {
-      "state": "not_asserted",
+      "state": "confirmed_match",
       "consistency_check": "ok",
       "evidence": {
-        "text_time_basis": "uniform_assumption",
+        "text_time_basis": "measured_forced_alignment",
         "audio_time_basis": "measured_pts",
         "vision_time_basis": "measured_pts",
         "n_words": 5,
@@ -1006,10 +1011,10 @@
       }
     },
     "-wny0OAz3g8_0": {
-      "state": "not_asserted",
+      "state": "confirmed_match",
       "consistency_check": "ok",
       "evidence": {
-        "text_time_basis": "uniform_assumption",
+        "text_time_basis": "measured_forced_alignment",
         "audio_time_basis": "measured_pts",
         "vision_time_basis": "measured_pts",
         "n_words": 10,
@@ -1312,10 +1317,10 @@
       }
     },
     "-9y-fZ3swSY_4": {
-      "state": "not_asserted",
+      "state": "confirmed_match",
       "consistency_check": "ok",
       "evidence": {
-        "text_time_basis": "uniform_assumption",
+        "text_time_basis": "measured_forced_alignment",
         "audio_time_basis": "measured_pts",
         "vision_time_basis": "measured_pts",
         "n_words": 10,
@@ -1329,10 +1334,10 @@
       }
     },
     "-9y-fZ3swSY_8": {
-      "state": "not_asserted",
+      "state": "confirmed_match",
       "consistency_check": "ok",
       "evidence": {
-        "text_time_basis": "uniform_assumption",
+        "text_time_basis": "measured_forced_alignment",
         "audio_time_basis": "measured_pts",
         "vision_time_basis": "measured_pts",
         "n_words": 13,
@@ -1635,10 +1640,10 @@
       }
     },
     "-s9qJ7ATP7w_6": {
-      "state": "not_asserted",
+      "state": "confirmed_match",
       "consistency_check": "ok",
       "evidence": {
-        "text_time_basis": "uniform_assumption",
+        "text_time_basis": "measured_forced_alignment",
         "audio_time_basis": "measured_pts",
         "vision_time_basis": "measured_pts",
         "n_words": 5,

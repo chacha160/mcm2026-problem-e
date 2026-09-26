@@ -1,6 +1,6 @@
-﻿group,path,exists,n_files,bytes
-q1_delivery,data\q1_delivery,1,27,16089203
-q2,data\q2,1,14,11138755
-q3,data\q3,1,17,10283745
-q2q3_audit,data\q2q3,1,1,23848
-package_check,data\package_check,1,2,2334
+﻿group,path,exists,n_files,bytes,excluded
+q1_v2,data\q1_v2,1,125,19164936,".cache,logs"
+q2,data\q2,1,14,11137253,
+q3,data\q3,1,17,10283240,
+q2q3_audit,data\q2q3,1,1,23848,
+package_check,data\package_check,1,2,3204,

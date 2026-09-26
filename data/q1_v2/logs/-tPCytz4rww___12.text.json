@@ -1,0 +1,10 @@
+{
+  "input_length": 31,
+  "n_chunks": 26,
+  "n_words": 26,
+  "sample_key": "-tPCytz4rww$_$12",
+  "status": "PASS",
+  "tokenizer_failure_count": 0,
+  "tokenizer_failures": [],
+  "valid_words": 26
+}

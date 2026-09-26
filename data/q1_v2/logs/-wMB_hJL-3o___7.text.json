@@ -1,0 +1,10 @@
+{
+  "input_length": 25,
+  "n_chunks": 22,
+  "n_words": 22,
+  "sample_key": "-wMB_hJL-3o$_$7",
+  "status": "PASS",
+  "tokenizer_failure_count": 0,
+  "tokenizer_failures": [],
+  "valid_words": 22
+}

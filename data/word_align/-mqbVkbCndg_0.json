@@ -1,0 +1,37 @@
+{
+ "n_official_words": 17,
+ "n_aligned_words": 2,
+ "zero_duration_words": 0,
+ "coverage": 0.1176,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.22,
+ "last_t": 0.54,
+ "span": 0.32,
+ "word_start_sec": [
+  0.22,
+  0.34
+ ],
+ "word_end_sec": [
+  0.34,
+  0.54
+ ],
+ "word_ts_sec": [
+  0.28,
+  0.44
+ ],
+ "error": null,
+ "sample_id": "-mqbVkbCndg_0",
+ "official_id": "-mqbVkbCndg$_$0",
+ "duration_sec": 6.466667,
+ "text_original": "How, at a particular moment in time—our moment in time—are they limited",
+ "word_source": "data/unaligned_features/text/-mqbVkbCndg_0.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:42",
+ "mode": "clip_level"
+}

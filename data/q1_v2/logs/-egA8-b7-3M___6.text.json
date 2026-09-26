@@ -1,0 +1,10 @@
+{
+  "input_length": 15,
+  "n_chunks": 12,
+  "n_words": 12,
+  "sample_key": "-egA8-b7-3M$_$6",
+  "status": "PASS",
+  "tokenizer_failure_count": 0,
+  "tokenizer_failures": [],
+  "valid_words": 12
+}

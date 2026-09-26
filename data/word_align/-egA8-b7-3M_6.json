@@ -1,0 +1,49 @@
+{
+ "n_official_words": 13,
+ "n_aligned_words": 6,
+ "zero_duration_words": 0,
+ "coverage": 0.4615,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.52,
+ "last_t": 2.98,
+ "span": 2.46,
+ "word_start_sec": [
+  0.52,
+  0.82,
+  1.26,
+  1.68,
+  1.8,
+  2.1
+ ],
+ "word_end_sec": [
+  0.82,
+  1.26,
+  1.68,
+  1.8,
+  2.1,
+  2.98
+ ],
+ "word_ts_sec": [
+  0.67,
+  1.04,
+  1.47,
+  1.74,
+  1.95,
+  2.54
+ ],
+ "error": null,
+ "sample_id": "-egA8-b7-3M_6",
+ "official_id": "-egA8-b7-3M$_$6",
+ "duration_sec": 6.264974,
+ "text_original": "First exhibiting is a wonderful opportunity to network with other legal vendors.",
+ "word_source": "data/unaligned_features/text/-egA8-b7-3M_6.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:26",
+ "mode": "clip_level"
+}

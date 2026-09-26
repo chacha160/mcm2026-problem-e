@@ -1,0 +1,37 @@
+{
+ "n_official_words": 13,
+ "n_aligned_words": 2,
+ "zero_duration_words": 0,
+ "coverage": 0.1538,
+ "monotonic": true,
+ "in_range": true,
+ "first_t": 0.52,
+ "last_t": 0.9,
+ "span": 0.38,
+ "word_start_sec": [
+  0.52,
+  0.66
+ ],
+ "word_end_sec": [
+  0.66,
+  0.9
+ ],
+ "word_ts_sec": [
+  0.59,
+  0.78
+ ],
+ "error": null,
+ "sample_id": "-egA8-b7-3M_16",
+ "official_id": "-egA8-b7-3M$_$16",
+ "duration_sec": 5.538021,
+ "text_original": "Third, another big benefit of exhibiting is connecting with existing clients.",
+ "word_source": "data/unaligned_features/text/-egA8-b7-3M_16.npz::extra__words",
+ "aligner": "stable-ts",
+ "aligner_version": "2.19.1",
+ "whisper_version": "20250625",
+ "whisper_model": "base.en",
+ "interval_convention": "half-open [start,end)",
+ "slot_query": "interval center",
+ "generated_at": "2026-09-26 15:32:22",
+ "mode": "clip_level"
+}

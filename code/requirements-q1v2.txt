@@ -1,0 +1,38 @@
+# 问题一 v2 专用依赖锁定
+#
+# 为什么不并进 requirements.txt：mediapipe 会连带拉入 opencv-contrib-python，
+# 覆盖 Q2/Q3 正在使用的 cv2。合并会让「装 Q1 v2 的依赖」这件事悄悄改掉
+# 另两个问题的运行环境——那是不可接受的副作用。
+#
+# 正确做法：一个独立 venv，且**不带 --system-site-packages 的隔离**做不到
+# （见下方说明），因此用带 --system-site-packages 的 venv 继承既有的大依赖
+# （torch/transformers/av 不必重装），只在 venv 内新增下面两个包。
+#
+#   python -m venv --system-site-packages <ASCII_PATH>\.venv
+#   <ASCII_PATH>\.venv\Scripts\python.exe -m pip install -r requirements-q1v2.txt
+#
+# **路径必须是纯 ASCII。** opensmile 的 Python 绑定在
+# `opensmile/core/lib.py::initialize` 里执行 `bytes(config_file, "ascii")`，
+# 且 `smile.py` 还会从包目录构造外部 I/O 配置路径传给原生代码，
+# 所以只要包路径含非 ASCII 字符，`Smile()` 构造就会抛 UnicodeEncodeError。
+# 本机项目路径含中文，故 venv 放在 `<盘符>:\q1v2work\.venv`；
+# 该约束已编码进 `q1v2_contract._resolve_work_root()`，不是一句注释。
+
+opensmile==2.6.0
+mediapipe==0.10.35
+
+# ---- 下列版本由 venv 从系统环境继承，此处仅记录实测值供复现核对 ----
+# python          3.13.9
+# torch           2.14.0+cpu
+# transformers    5.17.0
+# stable-ts       2.19.1
+# av              18.1.0
+# numpy           2.2.6
+# pandas          3.0.6
+# protobuf        7.36.2
+#
+# 与参考方案 A 的资格环境存在版本差异（A：Python 3.12.10 / transformers 4.57.6 /
+# torch 2.8.0）。本套代码**不降级**——降级会与在跑的 Q2/Q3 冲突。
+# 差异记为 environment.json 的 version_differences_from_reference，
+# 并由文本层的硬锚点（1926 词单元 / 1932 空白块 / 最长 80 token）证明
+# 差异未影响分词与词单元口径。

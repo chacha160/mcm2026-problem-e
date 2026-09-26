@@ -1,0 +1,47 @@
+{
+  "schema_version": "q1v2-feature-v1.0",
+  "align_params": {
+    "language": "en",
+    "remove_instant_words": false,
+    "failure_threshold": null,
+    "regroup": false,
+    "stream": false
+  },
+  "align_source": "q1v2_own_stable_ts_run",
+  "aligner_name": "stable-ts",
+  "roberta_model_id": "FacebookAI/roberta-base",
+  "roberta_revision": "e2da8e2f811d1448a5b465c236feacd80ffbac7b",
+  "roberta_hidden_dim": 768,
+  "face_model_dim": 52,
+  "opensmile_lld_dim": 25,
+  "opensmile_feature_names": [
+    "Loudness_sma3",
+    "alphaRatio_sma3",
+    "hammarbergIndex_sma3",
+    "slope0-500_sma3",
+    "slope500-1500_sma3",
+    "spectralFlux_sma3",
+    "mfcc1_sma3",
+    "mfcc2_sma3",
+    "mfcc3_sma3",
+    "mfcc4_sma3",
+    "F0semitoneFrom27.5Hz_sma3nz",
+    "jitterLocal_sma3nz",
+    "shimmerLocaldB_sma3nz",
+    "HNRdBACF_sma3nz",
+    "logRelF0-H1-H2_sma3nz",
+    "logRelF0-H1-A3_sma3nz",
+    "F1frequency_sma3nz",
+    "F1bandwidth_sma3nz",
+    "F1amplitudeLogRelF0_sma3nz",
+    "F2frequency_sma3nz",
+    "F2bandwidth_sma3nz",
+    "F2amplitudeLogRelF0_sma3nz",
+    "F3frequency_sma3nz",
+    "F3bandwidth_sma3nz",
+    "F3amplitudeLogRelF0_sma3nz"
+  ],
+  "asset_policy": {
+    "runtime_network": false
+  }
+}

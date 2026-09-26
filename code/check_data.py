@@ -73,7 +73,7 @@ print(f"\n[4] 当前流水线输出路径检查:")
 for _label, _sub in (("未对齐特征", "unaligned_features"),
                      ("对齐结果", "aligned"),
                      ("问题一交付物", "q1_delivery"),
-                     ("问题二模型", "model")):
+                     ("问题一 v2 交付物", "q1_v2")):
     _p = os.path.normpath(os.path.join(_PCODE, "..", "data", _sub))
     print(f"    {_label}: {_p} -> {'✅ 存在' if os.path.exists(_p) else '（尚未生成）'}")
 
